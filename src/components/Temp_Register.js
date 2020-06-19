@@ -68,21 +68,21 @@ export class Temp_Register extends Component {
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Email" 
-                                 value={this.state.email} onChange={this.onChange}/>
+                                 defaultValue={this.state.email} onChange={this.onChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Username" 
-                                 value={this.state.username} onChange={this.onChange}/>
+                                 defaultValue={this.state.username} onChange={this.onChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
                                 <input type="password" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Password" 
-                                 value={this.state.password} onChange={this.onChange}/>
+                                 defaultValue={this.state.password} onChange={this.onChange}/>
                             </div>
                         </div>
                         </form>

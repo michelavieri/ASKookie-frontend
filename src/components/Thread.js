@@ -18,18 +18,22 @@ export class Thread extends Component {
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
     render() {
+        var urlArray = [];
+        var myURL= window.location.href;
+        urlArray = myURL.split('/');
+
         return (
             <div className="container-fluid margin-top">
                 <Navigation />
                 <div class="row content">
                     <div class="col-sm-9 text-left">
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == 1 ).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length-1] ).map((feeds, index) => (
                             <div class="card mb-3 border border-secondary">
                                 <div class="card-body">
                                     <ul class="list-group">
                                         <li>
                                             <div class="sub-text">
-                                                <h8>@ {feeds.postID} </h8>
+                                                <h8>@ {`${feeds.postID}`}</h8>
                                                 {/* &middot; Posted on 17/01/2020 */}
                                             </div>
                                         </li>
@@ -62,7 +66,7 @@ export class Thread extends Component {
                         <h2> <b>Answers: </b></h2>
 
                         {/* start answer */}
-                        {this.state.feeds && this.state.feeds.filter(feeds =>feeds.postID == 1).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds =>feeds.postID == urlArray[urlArray.length-1]).map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body mr-4">
                                     <ul>

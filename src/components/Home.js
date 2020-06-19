@@ -63,8 +63,8 @@ export class Home extends Component {
                             </div>
                         </div>
 
-                        {/* feeds to be replaced */}
-                        {this.state.feeds.map((feeds, index) => (
+                        {/* feeds */}
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).map((feeds, index) => (
                             <div class="card mb-3">
                             <div class="card-body">
                                 <ul class="list-group">
@@ -88,6 +88,7 @@ export class Home extends Component {
                         </div>
                         ))} 
                         {/* end of feeds */}
+
                     </div>
                     <div class="col-sm-2">
                         <div class="card d-none d-xl-block text-left" style={{ width: '13rem' }}>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../logo.png'
+import logo from '../logo.png';
+import { register } from './UserFunction';
 
 export class Temp_Register extends Component {
     constructor() {
@@ -10,11 +11,27 @@ export class Temp_Register extends Component {
             email: '',
             password: ''
         };
+
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
-    componentDidMount() {
-        fetch('/register')
-            .then(res => res.json())
-            .then(res => this.setState({feeds: res.data}, () => console.log('Data fetched', res)))
+    
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value})
+    }
+
+    onSubmit(e) {
+        e.preventDefault()
+        const user = {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
+        }
+        register(user).then(res => {
+            if(res) {
+                this.props.history.push(`\signin`)
+            }
+        })
     }
 
     render() {
@@ -46,18 +63,29 @@ export class Temp_Register extends Component {
                         <h1 class="text-animation">
                             <span>Register Now</span>
                         </h1>
+                        <form onSubmit={this.onSubmit}>
+                        <div class="form-group row">
+                            <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Email" 
+                                 value={this.state.email} onChange={this.onChange}/>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Username" />
+                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Username" 
+                                 value={this.state.username} onChange={this.onChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Password" />
+                                <input type="password" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Password" 
+                                 value={this.state.password} onChange={this.onChange}/>
                             </div>
                         </div>
+                        </form>
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">
@@ -66,7 +94,7 @@ export class Temp_Register extends Component {
                                     </button>
                                 </li>
                                 <li class="row mt-3">
-                                    <NavLink class="btn unanswered pl-0" to='/signinform'>Already have an account? Sign Here</NavLink>
+                                    <NavLink class="btn unanswered pl-0" to='/signinform'>Already have an account? Sign in Here</NavLink>
                                 </li>
                             </ul>
                         </div>

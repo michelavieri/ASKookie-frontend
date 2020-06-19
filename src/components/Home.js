@@ -21,9 +21,9 @@ export class Home extends Component {
     };
 
     render() {
-        const first = this.state.feeds[0];
-        var id = first;
-        console.log(first);
+        // const first = this.state.feeds[0];
+        // var id = first;
+        // console.log(first);
         return (
             <div class="container-fluid text-center margin-top">
                 <Navigation />
@@ -70,13 +70,13 @@ export class Home extends Component {
                                     <ul class="list-group">
                                         <li>
                                             <div class="sub-text">
-                                                <NavLink class="sub-link" to="#"><h8> @{feeds.postID} </h8></NavLink>
+                                                <NavLink class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                         &middot; posted by
                                         <NavLink class="sub-link" to=""><h8> {feeds.asker} </h8></NavLink>
                                             </div>
                                         </li>
                                         <li>
-                                            <NavLink class="btn-category unanswered font-weight-bold lead" to="">{feeds.post}</NavLink>
+                                            <NavLink class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
                                         </li>
                                         <li>
                                             <div class="show-more" data-type="text" data-number="80">
@@ -98,7 +98,7 @@ export class Home extends Component {
                             </div>
                             <ul class="list-group list-group-flush">
                                 {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).map((feeds, index) => (
-                                    <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                    <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">

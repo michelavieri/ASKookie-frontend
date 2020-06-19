@@ -18,11 +18,11 @@ function App() {
     <BrowserRouter>
       <div className="container">
         <Switch>
-          <Route path='/' component={Home} exact />
+          <Route exact path='/' component={Home} exact />
           <Route path='/answer' component={Answer} />
           <Route path='/signin' component={Sign_in} />
           <Route path='/categories' component={Categories} />
-          <Route path='/thread' component={Thread} />
+          <Route path='/thread/:id' component={Thread} />
           <Route path='/signinform' component={Temp_Sign_In} />
           <Route path='/register' component={Temp_Register} />
           <Route path='/about_us' component={About_Us} />

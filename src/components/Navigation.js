@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-//  import { Navbar, Nav } from 'react-bootstrap';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
 
@@ -53,7 +52,7 @@ componentDidMount() {
 
 
                         <ul class="navbar-nav">
-                            <li class="nav-item dropdown nav-icon">
+                            {/* <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
@@ -63,16 +62,16 @@ componentDidMount() {
                                     <div class="dropdown-divider"></div>
                                     <NavLink class="dropdown-item" to="#">Someone commented on your answer!</NavLink>
                                 </div>
-                            </li>
+                            </li> */}
                             <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" class="rounded-circle" /></NavLink>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="#">Followed Categories/Threads</NavLink>
+                                    {/* <NavLink class="dropdown-item" to="#">Followed Categories/Threads</NavLink>
                                     <NavLink class="dropdown-item" to="#">Your Asked/Answered Questions</NavLink>
                                     <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
                                     <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
-                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider"></div> */}
                                     <NavLink class="dropdown-item" to="#">Help</NavLink>
                                     <NavLink class="dropdown-item" to="#">Logout</NavLink>
                                 </div>

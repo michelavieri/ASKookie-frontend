@@ -66,49 +66,47 @@ export class Home extends Component {
                         {/* feeds */}
                         {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).map((feeds, index) => (
                             <div class="card mb-3">
-                            <div class="card-body">
-                                <ul class="list-group">
-                                    <li>
-                                        <div class="sub-text">
-                                            <NavLink class="sub-link" to="#"><h8> @{feeds.postID} </h8></NavLink>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li>
+                                            <div class="sub-text">
+                                                <NavLink class="sub-link" to="#"><h8> @{feeds.postID} </h8></NavLink>
                                         &middot; posted by
                                         <NavLink class="sub-link" to=""><h8> {feeds.asker} </h8></NavLink>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <NavLink class="btn-category unanswered font-weight-bold lead" to="">{feeds.post}</NavLink>
-                                    </li>
-                                    <li>
-                                        <div class="show-more" data-type="text" data-number="80">
-                                            <p>{feeds.answer} </p>
-                                        </div>
-                                    </li>
-                                </ul>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <NavLink class="btn-category unanswered font-weight-bold lead" to="">{feeds.post}</NavLink>
+                                        </li>
+                                        <li>
+                                            <div class="show-more" data-type="text" data-number="80">
+                                                <p>{feeds.answer} </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        ))} 
+                        ))}
                         {/* end of feeds */}
-
                     </div>
+
+                    {/* unanswered questions */}
                     <div class="col-sm-2">
                         <div class="card d-none d-xl-block text-left" style={{ width: '13rem' }}>
                             <div class="card-header">
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">What is the difference
-                                    between exchange and NOC?</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
-                                <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">How is CS1231
-                                    different from CS1231S?</p><i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
-                                <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">What are your experiences on internships?</p><i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
-                                <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">What is the difference between each residential colleges?</p><i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
-                                <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">Why should I choose Residential College 4?</p><i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).map((feeds, index) => (
+                                    <NavLink class="btn-category" to="/thread"><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                ))}
                             </ul>
                             <div class="card-footer overflow-auto">
                                 <button class="btn refresh-button pull-right"><i class="fa fa-fw fa-refresh mx-lg-1 fa-lg"></i>Refresh</button>
                             </div>
                         </div>
                     </div>
+                    {/* end of unanswered questions */}
                 </div>
             </div >
         )

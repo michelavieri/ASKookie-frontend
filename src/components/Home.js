@@ -14,7 +14,7 @@ export class Home extends Component {
     componentDidMount() {
         fetch('/home')
             .then(res => res.json())
-            .then(res => this.setState({feeds: res.data}, () => console.log('Data fetched', res)))
+            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -64,67 +64,30 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds to be replaced */}
-                        <div class="card mb-3">
+                        {this.state.feeds.map((feeds, index) => (
+                            <div class="card mb-3">
                             <div class="card-body">
                                 <ul class="list-group">
                                     <li>
                                         <div class="sub-text">
-                                            <NavLink class="sub-link" to="/thread"><h8> @{this.state.feeds[0] && this.state.feeds[0].postID} </h8></NavLink>
+                                            <NavLink class="sub-link" to="#"><h8> @{feeds.postID} </h8></NavLink>
                                         &middot; posted by
-                                        <NavLink class="sub-link" to=""><h8> {this.state.feeds[0] && this.state.feeds[0].asker} </h8></NavLink>
+                                        <NavLink class="sub-link" to=""><h8> {feeds.asker} </h8></NavLink>
                                         </div>
                                     </li>
                                     <li>
-                                        <NavLink class="btn-category unanswered font-weight-bold lead" to="">What residence should I pick?</NavLink>
+                                        <NavLink class="btn-category unanswered font-weight-bold lead" to="">{feeds.post}</NavLink>
                                     </li>
                                     <li>
                                         <div class="show-more" data-type="text" data-number="80">
-                                            <p>{this.state.feeds[0] && this.state.feeds[0].post}
-                                        <br /><br />
-                                                <img src={logo} class="img-responsive" width="100%"></img>
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis disLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        <br /><br />
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium leo in ex
-                                        vehicula sagittis.  Tortor hendrerit elit porta auctor. Maecenas fringilla eleifend ante,
-                                        sed hendrerit massa rutrum vel. Orci varius natoque penatibus et magnis dis</p>
+                                            <p>{feeds.answer} </p>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="sub-text">
-                                    <NavLink class="sub-link" to="/thread"><h8> @{this.state.feeds[1] && this.state.feeds[1].postID} </h8></NavLink>
-                                        &middot; posted by
-                                        <NavLink class="sub-link" to=""><h8> {this.state.feeds[1] && this.state.feeds[1].asker} </h8></NavLink>
-                                </div>
-                                <p>{this.state.feeds[1] && this.state.feeds[1].post} <br /><br /><br /><br /><br /><br /><br /><br />
-                                    <br /><br /><br /><br /><br /><br /></p>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="sub-text">
-                                    <NavLink class="sub-link" to="/thread"><h8>@1728 </h8></NavLink>
-                                        &middot; posted by
-                                        <NavLink class="sub-link" to=""><h8> Michela Vieri </h8></NavLink>
-                                </div>
-                                <p>sdaskdfhlskjdfhlaksdjh <br /><br /><br /><br /><br /><br /><br /><br />
-                                    <br /><br /><br /><br /><br /><br /></p>
-                            </div>
-                        </div>
-
-
+                        ))} 
+                        {/* end of feeds */}
                     </div>
                     <div class="col-sm-2">
                         <div class="card d-none d-xl-block text-left" style={{ width: '13rem' }}>

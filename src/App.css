@@ -318,19 +318,6 @@ li {
   position: relative;
   display: inline-block;
 }
-/* .autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  background-color: white;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  width: 400px; 
-  /*position the autocomplete items to be the same width as the container:*/
-  /* top: 100%;
-  left: 0;
-  right: 0;
-} */
 
 .suggestion-box {
   padding-left: 0px;
@@ -359,36 +346,21 @@ li {
   text-decoration: none;
 }
 
-.autocomplete-items {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
 
-.autocomplete-items {
-  display: block;
-  width: 400px;
-  position: absolute;
-  top: 200%;
-  background-color: #f9f9f9;
-  border: 1px solid #d4d4d4;
-  padding: 12px 16px;
-  z-index: 1;
-  left: 0px;
-  right: 0px;
-}
+/* input[type="search"]::-webkit-search-cancel-button {
+ 
+  -webkit-appearance: none;
+  
+  height: 15px;
+  width: 15px;
+  background-color: black;
+} */
 
-.autocomplete-items:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
+input[type="search"]::-webkit-search-cancel-button {
+  cursor:pointer;
+  height: 20px;
+  width: 20px;
 }
-.autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important;
-  color: #ffffff;
-}
-
 
 .textRevealContainer {
   position: absolute;

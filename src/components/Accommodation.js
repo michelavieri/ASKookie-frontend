@@ -4,7 +4,7 @@ import { Navigation } from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
 
-export class Home extends Component {
+export class Accommodation extends Component {
     constructor() {
         super();
         this.state = {
@@ -12,7 +12,7 @@ export class Home extends Component {
         };
     }
     componentDidMount() {
-        fetch('/home')
+        fetch('/feeds/accommodation')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
@@ -37,12 +37,12 @@ export class Home extends Component {
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush large-space">
-                                        <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="/accomodation"><li>Accomodation</li></NavLink>
-                                        <NavLink class="listku" to="/studentlife"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="/jobs"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/exchange"><li>Exchange/NOC</li></NavLink>
-                                        <NavLink class="listku" to="/others"><li>Others</li></NavLink>
+                                        <NavLink class="listku card-link" to="/feeds/faculties"><li>Faculties</li></NavLink>
+                                        <NavLink class="listku" to="/feeds/accomodation"><li>Accomodation</li></NavLink>
+                                        <NavLink class="listku" to="/feeds/studentlife"><li>Student Life</li></NavLink>
+                                        <NavLink class="listku" to="/feeds/jobs"><li>Job/Internship</li></NavLink>
+                                        <NavLink class="listku" to="/feeds/exchange"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink class="listku" to="/feeds/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>
                                 <div class="card-footer">

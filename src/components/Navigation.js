@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
-
-
-
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/AutoComplete';
 
 export class Navigation extends Component {
     constructor() {
@@ -15,6 +14,12 @@ export class Navigation extends Component {
             filteredData: []
         };
     }
+
+
+
+    // closeBox() {
+    //     document.getElementById("suggestion").style.visibility = "hidden";
+    // }
 
 
     componentDidMount() {
@@ -54,11 +59,6 @@ export class Navigation extends Component {
             });
     };
 
-    componentDidMount() {
-        fetch('/home')
-            .then(res => res.json())
-            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-    }
 
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -85,28 +85,67 @@ export class Navigation extends Component {
                             </li>
 
                         </ul>
-                        <form class="form-inline my-2 my-lg-0 ml-auto">
 
+
+                        {/* <div style={{ width: 300 }}>
+                            <Autocomplete
+                                // freeSolo
+                                disableClearable
+                                autoSelect={true}
+                                id="searchSelect"
+                                onChange={this.handleInputChange}
+                                value={this.state.query}
+                                // options={this.state.filteredData && this.state.filteredData.map(
+                                //     feeds =>
+                                //         <li class="dropdown-item" >
+                                //             <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
+                                //         </li>
+                                // )}
+                                options={['Hello']}
+                                renderInput={params => (
+
+                                    <TextField
+                                        {...params}
+                                        label="Type In Content"
+                                        id="searchBar"
+                                        value=''
+                                        autoSelect={true}
+                                        margin="normal"
+                                        variant="outlined"
+                                        fullWidth
+                                        InputProps={{ ...params.InputProps, type: 'search' }}
+                                    />
+                                )}
+                            />
+                        </div> */}
+
+
+                        {/* FORM BERFUNGSI INI */}
+                        <form class="form-inline my-2 my-lg-0 ml-auto">
                             <div class="form-group has-search autocomplete">
                                 <span class="fa fa-search form-control-feedback  d-none d-xl-block"></span>
 
                                 <input
-                                    type="text"
+                                    id="searchBar"
+                                    type="search"
                                     class="form-control"
                                     placeholder="Search"
                                     value={this.state.query}
                                     onChange={this.handleInputChange}
+                                    autocomplete="off"
                                 />
-                    
-                                <div class="suggestion-box">
-                                {this.state.filteredData.map(feeds =>
-                                    <li class="dropdown-item">
-                                        <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
-                                    </li>
-                                )}
+                                <button class="btn" onclick={this.closeBox} data-toggle="collapse" target="_blank"></button>
+
+                                <div class="suggestion-box" id="suggestion" ref={node => { this.node = node; }}>
+                                    {this.state.filteredData.map(feeds =>
+                                        <li class="dropdown-item" >
+                                            <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
+                                        </li>
+                                    )}
                                 </div>
                             </div>
                         </form>
+
 
 
                         {/* modal button */}
@@ -125,6 +164,7 @@ export class Navigation extends Component {
                                     <NavLink class="dropdown-item" to="#">Someone commented on your answer!</NavLink>
                                 </div>
                             </li> */}
+
                             <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" class="rounded-circle" /></NavLink>
@@ -134,7 +174,7 @@ export class Navigation extends Component {
                                     <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
                                     <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
                                     <div class="dropdown-divider"></div> */}
-                                    <NavLink class="dropdown-item" to="#">Help</NavLink>
+                                    <a class="dropdown-item" href="mailto:askookie@gmail.com" target="_blank">Help</a>
                                     <NavLink class="dropdown-item" to="#">Logout</NavLink>
                                 </div>
                             </li>

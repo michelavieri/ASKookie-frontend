@@ -4,17 +4,62 @@ import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
 
 
-export class Navigation extends Component {constructor() {
-    super();
-    this.state = {
-        feeds: []
+
+
+export class Navigation extends Component {
+    constructor() {
+        super();
+        this.state = {
+            feeds: [],
+            query: "",
+            filteredData: []
+        };
+    }
+
+
+    componentDidMount() {
+        fetch('/home')
+            .then(res => res.json())
+            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+    }
+
+    handleInputChange = event => {
+        const query = event.target.value;
+
+        this.setState(prevState => {
+            const filteredData = prevState.feeds.filter(element => {
+                return element.post.toLowerCase().includes(query.toLowerCase());
+            });
+
+            return {
+                query,
+                filteredData
+            };
+        });
     };
-}
-componentDidMount() {
-    fetch('/home')
-        .then(res => res.json())
-        .then(res => this.setState({feeds: res.data}, () => console.log('Data fetched', res)))
-}
+
+    getData = () => {
+        fetch('/home')
+            .then(response => response.json())
+            .then(feeds => {
+                const { query } = this.state;
+                const filteredData = feeds.filter(element => {
+                    return element.post.toLowerCase().includes(query.toLowerCase());
+                });
+
+                this.setState({
+                    feeds,
+                    filteredData
+                });
+            });
+    };
+
+    componentDidMount() {
+        fetch('/home')
+            .then(res => res.json())
+            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+    }
+
     scrollToTop = () => {
         scroll.scrollToTop();
     };
@@ -41,11 +86,28 @@ componentDidMount() {
 
                         </ul>
                         <form class="form-inline my-2 my-lg-0 ml-auto">
-                            <div class="form-group has-search">
+
+                            <div class="form-group has-search autocomplete">
                                 <span class="fa fa-search form-control-feedback  d-none d-xl-block"></span>
-                                <input class="form-control mr-sm-2" type="search" id="myInput" placeholder="Search" aria-label="Search" />
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search"
+                                    value={this.state.query}
+                                    onChange={this.handleInputChange}
+                                />
+                    
+                                <div class="suggestion-box">
+                                {this.state.filteredData.map(feeds =>
+                                    <li class="dropdown-item">
+                                        <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
+                                    </li>
+                                )}
+                                </div>
                             </div>
                         </form>
+
 
                         {/* modal button */}
                         <button class="btn btn-orange my-2 my-sm-0" type="button" data-toggle="modal" data-target="#askModal">Add Question</button>
@@ -118,7 +180,7 @@ componentDidMount() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }

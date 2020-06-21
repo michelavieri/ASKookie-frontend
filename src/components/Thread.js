@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navigation } from './Navigation'
-import {axios} from 'axios';
+import axios from 'axios';
 import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 
 export class Thread extends Component {
@@ -14,7 +14,6 @@ export class Thread extends Component {
         };
     }
     componentDidMount() {
-        const { id } = this.props.match.params
 
         fetch('/home')
             .then(res => res.json())
@@ -29,8 +28,12 @@ export class Thread extends Component {
     };
 
     handleSubmit = e => {
+        const { id } = this.props.match.params;
+
         e.preventDefault();
+        
         const data = {
+            postID: id,
             answer: this.state.answer,
             answerer: this.state.answerer
         };
@@ -69,7 +72,7 @@ export class Thread extends Component {
                                             <hr class="mt-0 mb-4" />
                                         </li>
                                         <li>
-                                            <form  className="post" onSubmit={this.handleSubmit}>
+                                            <form noValidate className="post" onSubmit={this.handleSubmit}>
                                             <div class="form-row align-items-left mb-3 ml-3">
                                                 <textarea 
                                                 rows="5" 

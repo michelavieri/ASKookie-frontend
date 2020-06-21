@@ -13,8 +13,10 @@ export class Temp_Register extends Component {
             password: ""
         };
 
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
+         this.handleUserChange = this.handleUserChange.bind(this);
+         this.handleEmailChange = this.handleEmailChange.bind(this);
+         this.handlePassChange = this.handlePassChange.bind(this);
+         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     handleUserChange = e => {
@@ -52,12 +54,6 @@ export class Temp_Register extends Component {
             .catch(err => {
                 console.log(err);
             });
-
-        /*register(user).then(res => {
-            if(res) {
-                this.props.history.push(`\signin`)
-            }
-        })*/
     }
 
     render() {
@@ -107,7 +103,7 @@ export class Temp_Register extends Component {
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-sm" placeholder="Enter Password" 
+                                <input type="password" class="form-control form-control-sm" placeholder="Enter Password" 
                                  value={this.state.password} onChange={this.handlePassChange}/>
                             </div>
                         </div>

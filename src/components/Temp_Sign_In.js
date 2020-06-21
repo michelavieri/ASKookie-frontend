@@ -12,13 +12,18 @@ export class Temp_Sign_In extends Component {
             password: ''
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+         this.handleUserChange = this.handleUserChange.bind(this);
+         this.handlePassChange = this.handlePassChange.bind(this);
+         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
-    handleInputChange(e) {
-        this.setState({[e.target.name]: e.target.value});
-    };
+    handleUserChange = e => {
+        this.setState({ username: e.target.value })
+    }
+
+    handlePassChange = e => {
+        this.setState({ password: e.target.value })
+    }
 
     handleSubmit(e) {
 
@@ -32,7 +37,8 @@ export class Temp_Sign_In extends Component {
         axios
             .post('/login', user)
             .then(res => {
-                if(res.token != null) {
+                console.log(user);
+                if(res.data.token) {
                     console.log(res.token);
                     localStorage.setItem('usertoken', res.data.token);
                     this.props.history.push(``);
@@ -42,11 +48,6 @@ export class Temp_Sign_In extends Component {
             .catch(err => {
                 console.log(err);
             });
-        /*login(user).then(res => {
-            if(res) {
-                this.props.history.push(`\home`)
-            }
-        })*/
     };
 
     render() {
@@ -83,21 +84,21 @@ export class Temp_Sign_In extends Component {
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Enter Username"
-                                 value={this.state.username} onChange={this.handleInputChange}/>
+                                 value={this.state.username} onChange={this.handleUserChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-sm" placeholder="Enter Password"
-                                 value={this.state.password} onChange={this.handleInputChange}/>
+                                <input type="password" class="form-control form-control-sm" placeholder="Enter Password"
+                                 value={this.state.password} onChange={this.handlePassChange}/>
                             </div>
                         </div>
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">
-                                    <button class="btn sign-in-btn bg-black">
-                                        <NavLink class="sign-in-link" to="">Sign in</NavLink>
+                                    <button type="submit" class="btn sign-in-btn bg-black">
+                                        Sign in
                                     </button>
                                 </li>
                                 <li class="row mt-3">

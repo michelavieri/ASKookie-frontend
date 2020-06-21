@@ -31,8 +31,8 @@ export class Navigation extends Component {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
         this.setState({
-            answer: e.target.value,
-            answerer: decoded.result.username
+            category: e.target.value,
+            asker: decoded.result.username
         });
     };
 

@@ -48,7 +48,7 @@ export class Home extends Component {
                                 <div class="card-footer">
                                     <NavLink class="text-dark small" to="/about_us">About us</NavLink>
                                     <br />
-                                    <a class="text-dark small" href="mailto:askookie@gmail.com" target="_blank">Email us</a>
+                                    <a class="text-dark small" href="mailto:askookie@gmail.com">Email us</a>
                                 </div>
                             </div>
                         </div>
@@ -97,12 +97,14 @@ export class Home extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).map((feeds, index) => (
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0,6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">
-                                <button class="btn refresh-button pull-right"><i class="fa fa-fw fa-refresh mx-lg-1 fa-lg"></i>Refresh</button>
+                                <button class="btn refresh-button pull-right">
+                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" /> */}
+                                    <NavLink class="listku" to="/answer">See More</NavLink></button>
                             </div>
                         </div>
                     </div>

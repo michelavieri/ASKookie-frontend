@@ -218,7 +218,7 @@ li {
 .bottom-right-fixed {
   position: fixed;
   bottom: 40px;
-  right: 70px;
+  right: 30px;
 }
 
 .container-sign-in {
@@ -335,6 +335,7 @@ li {
   right: 0px;
   background-color: white;
   text-align: left;
+  /* overflow: scroll; */
 }
 
 .suggestion-link {

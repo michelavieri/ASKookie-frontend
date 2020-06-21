@@ -128,7 +128,7 @@ export class Temp_Register extends Component {
                     <div class="row">
                         <div class="container">
                             <div class="row">
-                                <a href="#" class="intro-banner-vdo-play-btn pinkBg" target="_blank">
+                                <a href="#" class="intro-banner-vdo-play-btn pinkBg">
                                     <i class="glyphicon glyphicon-play whiteText" aria-hidden="true"></i>
                                     <span class="ripple pinkBg"></span>
                                     <span class="ripple pinkBg"></span>

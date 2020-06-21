@@ -31,7 +31,7 @@ export class Thread extends Component {
         const { id } = this.props.match.params;
 
         e.preventDefault();
-        
+
         const data = {
             postID: id,
             answer: this.state.answer,
@@ -39,9 +39,16 @@ export class Thread extends Component {
         };
         axios
             .post('/answer', data)
-            .then(res => console.log(res))
+            .then(
+                res => {
+                    console.log(res);
+                })
             .catch(err => console.log(err));
     };
+
+    refreshPage() {
+        window.location.reload(false);
+    }
 
     render() {
         var urlArray = [];
@@ -72,33 +79,37 @@ export class Thread extends Component {
                                             <hr class="mt-0 mb-4" />
                                         </li>
                                         <li>
-                                            <form noValidate className="post" onSubmit={this.handleSubmit}>
-                                            <div class="form-row align-items-left mb-3 ml-3">
-                                                <textarea 
-                                                rows="5" 
-                                                class="form-control col-sm-9" 
-                                                placeholder="What are your thoughts? "
-                                                value = {this.state.answer}
-                                                onChange ={this.onAnswerChange}
-                                                required />
-                                                <small class="form-text text-muted col-sm-11">
-                                                    Inappropriate or irrelevant answers will be filtered accordingly.
+                                            <form className="post" onSubmit={this.handleSubmit}>
+                                                <div class="form-row align-items-left mb-3 ml-3">
+                                                    <textarea
+                                                        rows="5"
+                                                        class="form-control col-sm-9"
+                                                        placeholder="What are your thoughts? "
+                                                        value={this.state.answer}
+                                                        onChange={this.onAnswerChange}
+                                                        required />
+                                                    <small class="form-text text-muted col-sm-11">
+                                                        Inappropriate or irrelevant answers will be filtered accordingly.
                                                 </small>
-                                            </div>
-                                            {/* <div class="form-check row pull-left ml-3">
+                                                </div>
+                                                {/* <div class="form-check row pull-left ml-3">
                                                 <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
                                                 <label class="form-check-label" for="anonymousCheck">
                                                     Appear Anonymous to others
                                                 </label>
                                             </div> */}
-                                            <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right" >Answer</button>
+                                            <br />
+                                                <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right" 
+                                                onClick={this.refreshPage}>
+                                                    Answer
+                                                </button>
                                             </form>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         ))}
-                        <h2> <b>Answers: </b></h2>
+                        <h2> <b>Answer: </b></h2>
 
                         {/* start answer */}
                         {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (

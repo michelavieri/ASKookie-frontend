@@ -45,7 +45,7 @@ export class Answer extends Component {
                                 <div class="card-footer">
                                     <NavLink class="text-dark small" to="/about_us">About us</NavLink>
                                     <br />
-                                    <a class="text-dark small" href="mailto:askookie@gmail.com" target="_blank">Email us</a>
+                                    <a class="text-dark small" href="mailto:askookie@gmail.com">Email us</a>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@ export class Answer extends Component {
                     <div class="col-sm-7 text-left mt-3">
                         {/* feeds to be replaced */}
                         <div class="card mb-3">
-                            <div class="card d-none d-xl-block text-left" >
+                            <div class="card text-left" >
                                 <div class="card-header">
                                     Questions for You
                             </div>

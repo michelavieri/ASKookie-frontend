@@ -167,10 +167,10 @@ export class Navigation extends Component {
                                     onChange={this.handleInputChange}
                                     autocomplete="off"
                                 />
-                                <button class="btn" onclick={this.closeBox} data-toggle="collapse" target="_blank"></button>
+                                <button class="btn" onclick={this.closeBox} data-toggle="collapse"></button>
 
-                                <div class="suggestion-box" id="suggestion" ref={node => { this.node = node; }}>
-                                    {this.state.filteredData.map(feeds =>
+                                <div class="suggestion-box" id="suggestion" >
+                                    {this.state.filteredData.slice(0, 5).map(feeds =>
                                         <li class="dropdown-item" >
                                             <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
                                         </li>
@@ -207,7 +207,7 @@ export class Navigation extends Component {
                                     <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
                                     <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
                                     <div class="dropdown-divider"></div> */}
-                                    <a class="dropdown-item" href="mailto:askookie@gmail.com" target="_blank">Help</a>
+                                    <a class="dropdown-item" href="mailto:askookie@gmail.com">Help</a>
                                     <NavLink class="dropdown-item" to="#">Logout</NavLink>
                                 </div>
                             </li>

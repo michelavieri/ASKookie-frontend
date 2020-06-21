@@ -12,7 +12,7 @@ export class Student_Life extends Component {
         };
     }
     componentDidMount() {
-        fetch('/home')
+        fetch('/feeds/student_life')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
@@ -29,20 +29,20 @@ export class Student_Life extends Component {
                 <Navigation />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge d-none d-xl-block" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 mr-4">
                         <div class="position-fixed">
-                            <div class="card d-none d-xl-block text-left" style={{ width: '10rem' }}>
+                            <div class="card d-none d-xl-block text-left" style={{ width: '11rem' }}>
                                 <div class="card-header">
                                     Categories
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush large-space">
-                                        <NavLink class="listku card-link" to="/feeds/faculties"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="/feeds/accomodation"><li>Accomodation</li></NavLink>
-                                        <NavLink class="listku" to="/feeds/studentlife"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="/feeds/jobs"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/feeds/exchange"><li>Exchange/NOC</li></NavLink>
-                                        <NavLink class="listku" to="/feeds/others"><li>Others</li></NavLink>
+                                        <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
+                                        <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
+                                        <NavLink class="listku font-weight-bold" to="/student_life"><li>Student Life</li></NavLink>
+                                        <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
+                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink class="listku" to="/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>
                                 <div class="card-footer">
@@ -53,7 +53,12 @@ export class Student_Life extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-7 text-left">
+                    <div class="col-sm-7 text-left ml-1">
+                        <div class="card mb-3">
+                            <div class="card-header orange-color">
+                                <b>Category: Student Life</b>
+                            </div>
+                        </div>
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h7 class="card-title" style={{ opacity: '50%' }}>Name,</h7>

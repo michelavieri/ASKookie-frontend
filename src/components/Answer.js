@@ -34,12 +34,12 @@ export class Answer extends Component {
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush large-space">
-                                        <NavLink class="listku card-link" to="#"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="#"><li>Accomodation</li></NavLink>
-                                        <NavLink class="listku" to="#"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="#"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="#"><li>Exchange/NOC</li></NavLink>
-                                        <NavLink class="listku" to="#"><li>Others</li></NavLink>
+                                        <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
+                                        <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
+                                        <NavLink class="listku" to="/student_life"><li>Student Life</li></NavLink>
+                                        <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
+                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink class="listku" to="/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>
                                 <div class="card-footer">

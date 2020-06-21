@@ -29,19 +29,19 @@ export class Home extends Component {
                 <Navigation />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge d-none d-xl-block" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 mr-4">
                         <div class="position-fixed">
-                            <div class="card d-none d-xl-block text-left" style={{ width: '10rem' }}>
+                            <div class="card d-none d-xl-block text-left" style={{ width: '11rem' }}>
                                 <div class="card-header">
                                     Categories
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush large-space">
                                         <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="/accomodation"><li>Accomodation</li></NavLink>
-                                        <NavLink class="listku" to="/studentlife"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="/jobs"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/exchange"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
+                                        <NavLink class="listku" to="/student_life"><li>Student Life</li></NavLink>
+                                        <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
+                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
                                         <NavLink class="listku" to="/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>

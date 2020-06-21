@@ -1,33 +1,57 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navigation } from './Navigation'
+import {axios} from 'axios';
 import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 
 export class Thread extends Component {
     constructor() {
         super();
         this.state = {
-            feeds: []
+            feeds: [],
+            answer: "",
+            answerer: "",
         };
     }
     componentDidMount() {
-        const {id} = this.props.match.params
+        const { id } = this.props.match.params
 
         fetch('/home')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
+
+    onAnswerChange = e => {
+        this.setState({
+            answer: e.target.value,
+            answerer: 'user0' //HARDCODE NEED TO CHANGE
+        });
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+        const data = {
+            answer: this.state.answer,
+            answerer: this.state.answerer
+        };
+        axios
+            .post('/answer', data)
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+    };
+
     render() {
         var urlArray = [];
-        var myURL= window.location.href;
+        var myURL = window.location.href;
         urlArray = myURL.split('/');
+        const { answer } = this.state;
 
         return (
             <div className="container-fluid margin-top">
                 <Navigation />
                 <div class="row content">
                     <div class="col-sm-9 text-left">
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length-1] ).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
                             <div class="card mb-3 border border-secondary">
                                 <div class="card-body">
                                     <ul class="list-group">
@@ -38,26 +62,34 @@ export class Thread extends Component {
                                             </div>
                                         </li>
                                         <li>
-                                        
+
                                             <p class="font-weight-bold lead" to="">{feeds.post}</p>
                                         </li>
                                         <li>
                                             <hr class="mt-0 mb-4" />
                                         </li>
                                         <li>
+                                            <form  className="post" onSubmit={this.handleSubmit}>
                                             <div class="form-row align-items-left mb-3 ml-3">
-                                                <textarea type="text" rows="5" class="form-control col-sm-9" id="inputAnswer" aria-describedby="answerHere" placeholder="What are your thoughts? " />
-                                                <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                                <textarea 
+                                                rows="5" 
+                                                class="form-control col-sm-9" 
+                                                placeholder="What are your thoughts? "
+                                                value = {this.state.answer}
+                                                onChange ={this.onAnswerChange}
+                                                required />
+                                                <small class="form-text text-muted col-sm-11">
                                                     Inappropriate or irrelevant answers will be filtered accordingly.
-                                    </small>
+                                                </small>
                                             </div>
-                                            <div class="form-check row pull-left ml-3">
+                                            {/* <div class="form-check row pull-left ml-3">
                                                 <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
                                                 <label class="form-check-label" for="anonymousCheck">
                                                     Appear Anonymous to others
-                                        </label>
-                                            </div>
+                                                </label>
+                                            </div> */}
                                             <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right" >Answer</button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </div>
@@ -66,7 +98,7 @@ export class Thread extends Component {
                         <h2> <b>Answers: </b></h2>
 
                         {/* start answer */}
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds =>feeds.postID == urlArray[urlArray.length-1]).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body mr-4">
                                     <ul>

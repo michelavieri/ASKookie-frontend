@@ -114,8 +114,8 @@ export class Temp_Register extends Component {
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">
-                                    <button class="btn sign-in-btn bg-black">
-                                        <NavLink class="sign-in-link" to='/signinform'>Register</NavLink>
+                                    <button type="submit" class="btn sign-in-btn bg-black">
+                                        Register
                                     </button>
                                 </li>
                                 <li class="row mt-3">

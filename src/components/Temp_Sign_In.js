@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../logo.png'
 import { login } from './UserFunction';
+import axios from 'axios';
 
 export class Temp_Sign_In extends Component {
     constructor() {
@@ -10,27 +11,43 @@ export class Temp_Sign_In extends Component {
             username: '',
             password: ''
         };
-        
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
-    }
+    handleInputChange(e) {
+        this.setState({[e.target.name]: e.target.value});
+    };
 
-    onSubmit(e) {
+    handleSubmit(e) {
+
         e.preventDefault()
+
         const user = {
             username: this.state.username,
             password: this.state.password
         }
-        login(user).then(res => {
+
+        axios
+            .post('/login', user)
+            .then(res => {
+                if(res.token != null) {
+                    console.log(res.token);
+                    localStorage.setItem('usertoken', res.data.token);
+                    this.props.history.push(``);
+                }
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        /*login(user).then(res => {
             if(res) {
                 this.props.history.push(`\home`)
             }
-        })
-    }
+        })*/
+    };
 
     render() {
         return (
@@ -61,27 +78,26 @@ export class Temp_Sign_In extends Component {
                         <h1 class="text-animation">
                             <span>Sign In</span>
                         </h1>
-                        <form noValidate onSubmit={this.onSubmit}>
+                        <form noValidate onSubmit={this.handleSubmit}>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Username"
-                                 value={this.state.username} onChange={this.onChange}/>
+                                <input class="form-control form-control-sm" placeholder="Enter Username"
+                                 value={this.state.username} onChange={this.handleInputChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Password"
-                                 value={this.state.password} onChange={this.onChange}/>
+                                <input class="form-control form-control-sm" placeholder="Enter Password"
+                                 value={this.state.password} onChange={this.handleInputChange}/>
                             </div>
                         </div>
-                        </form>
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">
                                     <button class="btn sign-in-btn bg-black">
-                                        <NavLink class="sign-in-link" to="#">Sign in</NavLink>
+                                        <NavLink class="sign-in-link" to="">Sign in</NavLink>
                                     </button>
                                 </li>
                                 <li class="row mt-3">
@@ -89,6 +105,7 @@ export class Temp_Sign_In extends Component {
                                 </li>
                             </ul>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

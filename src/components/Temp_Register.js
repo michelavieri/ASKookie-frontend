@@ -2,36 +2,54 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../logo.png';
 import { register } from './UserFunction';
+import axios from 'axios';
 
 export class Temp_Register extends Component {
     constructor() {
         super();
         this.state = {
-            username: '',
-            email: '',
-            password: ''
+            username: "",
+            email: "",
+            password: ""
         };
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
+    handleInputChange(e) {
+        this.setState({ [e.target.name]: e.target.value })
     }
 
-    onSubmit(e) {
-        e.preventDefault()
-        const user = {
+    handleSubmit(e) {
+
+        e.preventDefault();
+
+        const newUser = {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password
         }
-        register(user).then(res => {
+
+        axios
+            .post('/register', newUser)
+            .then(res => {
+                if(res.data != null) {
+                    console.log(res.data);
+                    console.log("Registered");
+                    this.props.history.push(`\signin`);
+                }
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+        /*register(user).then(res => {
             if(res) {
                 this.props.history.push(`\signin`)
             }
-        })
+        })*/
     }
 
     render() {
@@ -63,34 +81,33 @@ export class Temp_Register extends Component {
                         <h1 class="text-animation">
                             <span>Register Now</span>
                         </h1>
-                        <form onSubmit={this.onSubmit}>
+                        <form noValidate onSubmit={this.handleSubmit}>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Email" 
-                                 defaultValue={this.state.email} onChange={this.onChange}/>
+                                <input class="form-control form-control-sm" placeholder="Enter Email" 
+                                 value={this.state.email} onChange={this.handleInputChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Username" 
-                                 defaultValue={this.state.username} onChange={this.onChange}/>
+                                <input class="form-control form-control-sm" placeholder="Enter Username" 
+                                 value={this.state.username} onChange={this.handleInputChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter Password" 
-                                 defaultValue={this.state.password} onChange={this.onChange}/>
+                                <input class="form-control form-control-sm" placeholder="Enter Password" 
+                                 value={this.state.password} onChange={this.onChange}/>
                             </div>
                         </div>
-                        </form>
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">
                                     <button class="btn sign-in-btn bg-black">
-                                        <NavLink class="sign-in-link" to="#">Register</NavLink>
+                                        <NavLink class="sign-in-link" to='/signinform'>Register</NavLink>
                                     </button>
                                 </li>
                                 <li class="row mt-3">
@@ -98,6 +115,7 @@ export class Temp_Register extends Component {
                                 </li>
                             </ul>
                         </div>
+                        </form>
                     </div>
                 </div>
 

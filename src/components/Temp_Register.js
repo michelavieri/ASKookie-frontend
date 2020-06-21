@@ -13,12 +13,20 @@ export class Temp_Register extends Component {
             password: ""
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
     }
     
-    handleInputChange(e) {
-        this.setState({ [e.target.name]: e.target.value })
+    handleUserChange = e => {
+        this.setState({ username: e.target.value })
+    }
+
+    handleEmailChange = e => {
+        this.setState({ email: e.target.value })
+    }
+
+    handlePassChange = e => {
+        this.setState({ password: e.target.value })
     }
 
     handleSubmit(e) {
@@ -86,21 +94,21 @@ export class Temp_Register extends Component {
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Enter Email" 
-                                 value={this.state.email} onChange={this.handleInputChange}/>
+                                 value={this.state.email} onChange={this.handleEmailChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Enter Username" 
-                                 value={this.state.username} onChange={this.handleInputChange}/>
+                                 value={this.state.username} onChange={this.handleUserChange}/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Enter Password" 
-                                 value={this.state.password} onChange={this.onChange}/>
+                                 value={this.state.password} onChange={this.handlePassChange}/>
                             </div>
                         </div>
                         <div class="container-sign-in-btn position-fixed row ml-0">

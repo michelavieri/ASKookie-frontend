@@ -26,9 +26,9 @@ export class Answer extends Component {
                 <Navigation />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 mr-4">
                         <div class="position-fixed">
-                            <div class="card d-none d-xl-block text-left mt-3" style={{ width: '10rem' }}>
+                            <div class="card d-none d-xl-block text-left mt-3" style={{ width: '11rem' }}>
                                 <div class="card-header bg-dark">
                                     FILTER
                                 </div>

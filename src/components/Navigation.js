@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/AutoComplete';
+import axios from 'axios';
+
+// import TextField from '@material-ui/core/TextField';
+// import Autocomplete from '@material-ui/lab/AutoComplete';
 
 export class Navigation extends Component {
     constructor() {
@@ -11,15 +13,43 @@ export class Navigation extends Component {
         this.state = {
             feeds: [],
             query: "",
-            filteredData: []
+            filteredData: [],
+            post: "",
+            category: "",
+            asker: "",
         };
     }
 
+    onPostChange = e => {
+        this.setState({
+            post: e.target.value
+        });
+    };
 
+    onCategoryChange = e => {
+        this.setState({
+            category: e.target.value,
+            asker: 'user0' //hardcode need to change!!
+        });
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+        const data = {
+            post: this.state.post,
+            category: this.state.category,
+            asker: this.state.asker
+        };
+        axios
+            .post('/ask', data)
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+    };
 
     // closeBox() {
     //     document.getElementById("suggestion").style.visibility = "hidden";
     // }
+
 
 
     componentDidMount() {
@@ -43,6 +73,8 @@ export class Navigation extends Component {
         });
     };
 
+
+
     getData = () => {
         fetch('/home')
             .then(response => response.json())
@@ -65,6 +97,7 @@ export class Navigation extends Component {
     };
 
     render() {
+        const { post, category } = this.state;
         return (
             <div class="container-fluid">
                 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-yellow">
@@ -185,38 +218,52 @@ export class Navigation extends Component {
                 <div id="askModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <div class="modal-header pinkBg">
-                                <h4 class="modal-title text-white">Ask a Question!</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-row align-items-left mb-3">
-                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
-                                    <textarea type="text" rows="2" class="form-control col-sm-9" id="inputQuestion" aria-describedby="questionHere" placeholder="Start your question with 'What', 'Why', 'How', etc. " />
-                                    <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                        Make sure your question has not been asked already and keep your question short.
-                                    </small>
+                            <form className="post" onSubmit={this.handleSubmit}>
+                                <div class="modal-header pinkBg">
+                                    <h4 class="modal-title text-white">Ask a Question!</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
-                                <div class="form-row align-items-left mb-3">
-                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
-                                    <select id="inputState" class="form-control col-sm-9">
-                                        <option selected>Choose one...</option>
-                                        <option>Faculties</option>
-                                        <option>Accomodation</option>
-                                        <option>Student Life</option>
-                                        <option>Job/Internship</option>
-                                        <option>Exchange Program/NOC</option>
-                                        <option>Others</option>
-                                    </select>
-                                    <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                        Your question will be posted anonymously but any inapporpriate content will be filtered.
+                                <div class="modal-body">
+
+                                    <div class="form-row align-items-left mb-3">
+                                        <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
+                                        <textarea
+                                            rows="2"
+                                            class="form-control col-sm-9"
+                                            value={this.state.post}
+                                            onChange={this.onPostChange}
+                                            aria-describedby="questionHere"
+                                            placeholder="Start your question with 'What', 'Why', 'How', etc. "
+                                        />
+                                        <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                            Make sure your question has not been asked already and keep your question short.
                                     </small>
+                                    </div>
+                                    <div class="form-row align-items-left mb-3">
+                                        <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                        <select
+                                            onChange={this.onCategoryChange}
+                                            value={this.state.category}
+                                            class="form-control col-sm-9">
+                                            <option selected>Choose one...</option>
+                                            <option>Faculties</option>
+                                            <option>Accomodation</option>
+                                            <option>Student Life</option>
+                                            <option>Job/Internship</option>
+                                            <option>Exchange Program/NOC</option>
+                                            <option>Others</option>
+                                        </select>
+                                        <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                            Your question will be posted anonymously but any inapporpriate content will be filtered.
+                                    </small>
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2" >Add Question</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2" >Add Question</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

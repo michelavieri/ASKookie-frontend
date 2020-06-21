@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navigation } from './Navigation'
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 
 export class Thread extends Component {
@@ -21,9 +22,11 @@ export class Thread extends Component {
     }
 
     onAnswerChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
         this.setState({
             answer: e.target.value,
-            answerer: 'user0' //HARDCODE NEED TO CHANGE
+            answerer: decoded.result.username
         });
     };
 

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
-import logo from '../logo.png'
+import logo from '../logo.png';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/AutoComplete';
@@ -27,9 +28,11 @@ export class Navigation extends Component {
     };
 
     onCategoryChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
         this.setState({
-            category: e.target.value,
-            asker: 'user0' //hardcode need to change!!
+            answer: e.target.value,
+            answerer: decoded.result.username
         });
     };
 
@@ -42,7 +45,10 @@ export class Navigation extends Component {
         };
         axios
             .post('/ask', data)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res);
+                this.history.push(``);
+            })
             .catch(err => console.log(err));
     };
 

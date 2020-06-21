@@ -234,6 +234,7 @@ export class Navigation extends Component {
                                             onChange={this.onPostChange}
                                             aria-describedby="questionHere"
                                             placeholder="Start your question with 'What', 'Why', 'How', etc. "
+                                            required
                                         />
                                         <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
                                             Make sure your question has not been asked already and keep your question short.
@@ -244,14 +245,15 @@ export class Navigation extends Component {
                                         <select
                                             onChange={this.onCategoryChange}
                                             value={this.state.category}
-                                            class="form-control col-sm-9">
-                                            <option selected>Choose one...</option>
-                                            <option>Faculties</option>
-                                            <option>Accomodation</option>
-                                            <option>Student Life</option>
-                                            <option>Job/Internship</option>
-                                            <option>Exchange Program/NOC</option>
-                                            <option>Others</option>
+                                            class="form-control col-sm-9"
+                                            required>
+                                            <option value="" selected>Choose one...</option>
+                                            <option value="faculties">Faculties</option>
+                                            <option value="accommodation">Accomodation</option>
+                                            <option value="student_life">Student Life</option>
+                                            <option value="job_intern">Job/Internship</option>
+                                            <option value="exchange_noc">Exchange Program/NOC</option>
+                                            <option value="others">Others</option>
                                         </select>
                                         <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
                                             Your question will be posted anonymously but any inapporpriate content will be filtered.

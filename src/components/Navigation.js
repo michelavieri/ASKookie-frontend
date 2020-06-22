@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png';
 import axios from 'axios';
@@ -9,6 +9,11 @@ import jwt_decode from 'jwt-decode';
 // import Autocomplete from '@material-ui/lab/AutoComplete';
 
 export class Navigation extends Component {
+    logOut (e) {
+        e.preventDefault();
+        localStorage.removeItem('usertoken');
+        this.props.history.push(``);
+    }
     constructor() {
         super();
         this.state = {
@@ -19,6 +24,10 @@ export class Navigation extends Component {
             category: "",
             asker: "",
         };
+
+        this.onPostChange = this.onPostChange.bind(this);
+        this.onCategoryChange = this.onCategoryChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     onPostChange = e => {
@@ -47,7 +56,8 @@ export class Navigation extends Component {
             .post('/ask', data)
             .then(res => {
                 console.log(res);
-                this.history.push(``);
+                console.log(this.props);
+                this.props.history.push(``);
             })
             .catch(err => console.log(err));
     };
@@ -214,7 +224,7 @@ export class Navigation extends Component {
                                     <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
                                     <div class="dropdown-divider"></div> */}
                                     <a class="dropdown-item" href="mailto:askookie@gmail.com">Help</a>
-                                    <NavLink class="dropdown-item" to="#">Logout</NavLink>
+                                    <NavLink class="dropdown-item" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
                                 </div>
                             </li>
                         </ul>

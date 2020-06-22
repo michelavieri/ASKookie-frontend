@@ -316,52 +316,10 @@ li {
   color: #FC5D42;
 }
 
-.autocomplete {
-  /*the container must be positioned relative:*/
-  position: relative;
-  display: inline-block;
-}
-
-.suggestion-box {
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  position: absolute;
-  /* display: inline-block; */
-  top: 100%;
-  width: 400px;
-  left: 0px;
-  right: 0px;
-  background-color: white;
-  text-align: left;
-  /* overflow: scroll; */
-}
-
-.suggestion-link {
-  width: 400px;
-  color: black;
-  text-decoration: none;
-}
-
-.suggestion-link:hover {
-  width: 400px;
-  color: black;
-  text-decoration: none;
-}
-
 .orange-color {
   background-color: #FC5D42 !important;
 }
 
-/* input[type="search"]::-webkit-search-cancel-button {
- 
-  -webkit-appearance: none;
-  
-  height: 15px;
-  width: 15px;
-  background-color: black;
-} */
 
 input[type="search"]::-webkit-search-cancel-button {
   cursor:pointer;

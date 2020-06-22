@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/AutoComplete';
 
 class Navigation extends Component {
-    logOut (e) {
+    logOut(e) {
         e.preventDefault();
         localStorage.removeItem('usertoken');
         this.props.history.push(``);
@@ -127,14 +127,6 @@ class Navigation extends Component {
                                 autoSelect={true}
                                 id="searchSelect"
                                 onChange={this.handleInputChange}
-                                // value = {value}
-                                // value={this.state.query}
-                                // options={this.state.filteredData && this.state.filteredData.map(
-                                //     feeds =>
-                                //         <li class="dropdown-item" >
-                                //             <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
-                                //         </li>
-                                // )}
                                 options={this.state.feeds}
                                 getOptionLabel={(data) => {
                                     if (typeof data === "string") {
@@ -144,50 +136,20 @@ class Navigation extends Component {
                                 }}
 
                                 renderInput={params => (
-
-                                    <TextField
-                                        {...params}
-                                        label="Type In Content"
-                                        id="searchBar"
-                                        value=''
-                                        autoSelect={true}
-                                        margin="normal"
-                                        variant="outlined"
-                                        fullWidth
-                                        InputProps={{ ...params.InputProps, type: 'search' }}
-                                    />
+                                        <TextField
+                                            {...params}
+                                            label="Search"
+                                            id="searchBar"
+                                            value=''
+                                            autoSelect={true}
+                                            margin="normal"
+                                            variant="outlined"
+                                            fullWidth
+                                            InputProps={{ ...params.InputProps, type: 'search' }}
+                                        />
                                 )}
                             />
-                        </div> */}
-                    
-                        {/* FORM BERFUNGSI INI */}
-                        {/* <form class="form-inline my-2 my-lg-0 ml-auto">
-                            <div class="form-group has-search autocomplete">
-                                <span class="fa fa-search form-control-feedback  d-none d-xl-block"></span>
-
-                                <input
-                                    id="searchBar"
-                                    type="search"
-                                    class="form-control"
-                                    placeholder="Search"
-                                    value={this.state.query}
-                                    onChange={this.handleInputChange}
-                                    autocomplete="off"
-                                    onBlur={this.clearQuery}
-                                /> */}
-                        {/* <button class="btn" onclick={this.closeBox} data-toggle="collapse"></button> */}
-
-                        {/* <div class="suggestion-box" id="suggestion" >
-                                    {this.state.filteredData.slice(0, 5).map(feeds =>
-                                        <li class="dropdown-item" >
-                                            <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
-                                        </li>
-                                    )}
-                                </div>
-                            </div>
-                        </form> */}
-
-
+                        </div>
 
                         {/* modal button */}
                         <button class="btn btn-orange my-2 my-sm-0" type="button" data-toggle="modal" data-target="#askModal">Add Question</button>

@@ -8,7 +8,10 @@ export class Answer extends Component {
     constructor() {
         super();
         this.state = {
-            feeds: []
+            feeds: [],
+            query: "",
+            filteredQuestions: [],
+            checkedCategories: [],
         };
     }
     componentDidMount() {
@@ -20,28 +23,112 @@ export class Answer extends Component {
         scroll.scrollToTop();
     };
 
+    onCategoryChange = e => {
+        const category = e.target.value;
+        var isChecked = e.target.checked;
+        
+
+        this.setState(prevState => {
+            var checkedCategories = prevState.checkedCategories;
+            if (isChecked) {
+                checkedCategories.push(category);
+            } else {
+                checkedCategories.splice(checkedCategories.indexOf(category), 1);
+            }
+
+            const filteredQuestions = prevState.feeds.filter(element => {
+                var found = false;
+                for (var i in checkedCategories) {
+                    if (element.category.includes(checkedCategories[i])) {
+                        found = true;
+                    }
+                }
+                return found;
+            });
+
+            console.log(checkedCategories)
+            console.log(prevState.feeds)
+
+            return {
+                filteredQuestions,
+                checkedCategories
+            };
+        });
+    };
+
+    getData = () => {
+        fetch('/home')
+            .then(response => response.json())
+            .then(feeds => {
+                const { category } = this.state;
+                const filteredQuestions = feeds.filter(element => {
+                    return element.category.toLowerCase().includes(category.toLowerCase());
+                });
+
+                this.setState({
+                    feeds,
+                    filteredQuestions
+                });
+            });
+    };
+
     render() {
+        const { category } = this.state;
         return (
             <div className="mt-5 justify-content-left">
                 <NavigationRouter2 />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
-                    <div class="col-sm-2 mr-4">
+                    <div class="col-sm-3 mr-4">
                         <div class="position-fixed">
-                            <div class="card d-none d-xl-block text-left mt-3" style={{ width: '11rem' }}>
-                                <div class="card-header bg-dark">
-                                    FILTER
+                            <div class="card d-none d-xl-block text-left mt-3" style={{ width: '15rem' }}>
+                                <form>
+                                    <div class="card-header bg-dark">
+                                        FILTER
                                 </div>
-                                <div class="card-body">
-                                    <ul class="list-group list-group-flush large-space">
-                                        <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
-                                        <NavLink class="listku" to="/student_life"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
-                                        <NavLink class="listku" to="/others"><li>Others</li></NavLink>
-                                    </ul>
-                                </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush large-space">
+                                            <div class="form-check row pull-left ml-0">
+                                                <div>
+                                                    <input type="checkbox" value="faculties" id="faculties" onChange={this.onCategoryChange} />
+                                                    <label class="ml-3 font-weight-bold" for="faculties">
+                                                        Faculties
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="accommodation" onChange={this.onCategoryChange} id="accommodation" />
+                                                    <label class="ml-3 font-weight-bold" for="accommodation">
+                                                        Accommodation
+                                                     </label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="student_life" onChange={this.onCategoryChange} id="student_life" />
+                                                    <label class="ml-3 font-weight-bold" for="student_life">
+                                                        Student Life
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="job_intern" onChange={this.onCategoryChange} id="job_intern" />
+                                                    <label class="ml-3 font-weight-bold" for="job_intern">
+                                                        Job/Internship
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="exchange_noc" onChange={this.onCategoryChange} id="exchange_noc" />
+                                                    <label class="ml-3 font-weight-bold" for="exchange_noc">
+                                                        Exchange/NOC
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="others" onChange={this.onCategoryChange} id="others" />
+                                                    <label class="ml-3 font-weight-bold" for="others">
+                                                        Others
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </form>
                                 <div class="card-footer">
                                     <NavLink class="text-dark small" to="/about_us">About us</NavLink>
                                     <br />
@@ -51,14 +138,14 @@ export class Answer extends Component {
                         </div>
                     </div>
                     <div class="col-sm-7 text-left mt-3">
-                        {/* feeds to be replaced */}
+                        {/* unanswered Questions */}
                         <div class="card mb-3">
                             <div class="card text-left" >
                                 <div class="card-header">
                                     Questions for You
-                            </div>
+                                </div>
                                 <ul class="list-group list-group-flush">
-                                    {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).map((feeds, index) => (
+                                    {this.state.filteredQuestions.filter(feeds => feeds.answer == null).map((feeds, index) => (
                                         <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                     ))}
                                 </ul>

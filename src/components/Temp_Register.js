@@ -10,7 +10,7 @@ export class Temp_Register extends Component {
         this.state = {
             username: "",
             email: "",
-            password: ""
+            password: "",
         };
 
          this.handleUserChange = this.handleUserChange.bind(this);

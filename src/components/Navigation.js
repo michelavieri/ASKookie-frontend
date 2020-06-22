@@ -5,8 +5,9 @@ import logo from '../logo.png';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-// import TextField from '@material-ui/core/TextField';
-// import Autocomplete from '@material-ui/lab/AutoComplete';
+
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/AutoComplete';
 
 class Navigation extends Component {
     logOut (e) {
@@ -62,32 +63,41 @@ class Navigation extends Component {
             .catch(err => console.log(err));
     };
 
-    // closeBox() {
-    //     document.getElementById("suggestion").style.visibility = "hidden";
-    // }
-
-
-
     componentDidMount() {
         fetch('/home')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
 
-    handleInputChange = event => {
+    handleInputChange = (event, value, reason) => {
         const query = event.target.value;
+        console.log(event, value, reason);
 
-        this.setState(prevState => {
-            const filteredData = prevState.feeds.filter(element => {
-                return element.post.toLowerCase().includes(query.toLowerCase());
-            });
+        if (reason === 'select-option') {
+            
+        }
 
-            return {
-                query,
-                filteredData
-            };
-        });
+        // this.setState(prevState => {
+        //     var filteredData = [];
+        //     if (query !== "") {
+        //         filteredData = prevState.feeds.filter(element => {
+        //             return element.post.toLowerCase().includes(query.toLowerCase());
+        //         });
+        //     }
+        //     return {
+        //         query,
+        //         filteredData
+        //     };
+        // });
     };
+
+    // clearQuery = e => {
+    //     this.setState(prevState => {
+    //         return {
+    //             filteredData: [],
+    //         };
+    //     });
+    // }
 
 
 
@@ -136,21 +146,29 @@ class Navigation extends Component {
                         </ul>
 
 
-                        {/* <div style={{ width: 300 }}>
+                        <div style={{ width: 300 }}>
                             <Autocomplete
-                                // freeSolo
+                                freeSolo
                                 disableClearable
                                 autoSelect={true}
                                 id="searchSelect"
                                 onChange={this.handleInputChange}
-                                value={this.state.query}
+                                // value = {value}
+                                // value={this.state.query}
                                 // options={this.state.filteredData && this.state.filteredData.map(
                                 //     feeds =>
                                 //         <li class="dropdown-item" >
                                 //             <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
                                 //         </li>
                                 // )}
-                                options={['Hello']}
+                                options={this.state.feeds}
+                                getOptionLabel={(data) => {
+                                    if (typeof data === "string") {
+                                        return data;
+                                    }
+                                    return data.post;
+                                }}
+
                                 renderInput={params => (
 
                                     <TextField
@@ -166,11 +184,11 @@ class Navigation extends Component {
                                     />
                                 )}
                             />
-                        </div> */}
+                        </div>
 
 
                         {/* FORM BERFUNGSI INI */}
-                        <form class="form-inline my-2 my-lg-0 ml-auto">
+                        {/* <form class="form-inline my-2 my-lg-0 ml-auto">
                             <div class="form-group has-search autocomplete">
                                 <span class="fa fa-search form-control-feedback  d-none d-xl-block"></span>
 
@@ -182,10 +200,11 @@ class Navigation extends Component {
                                     value={this.state.query}
                                     onChange={this.handleInputChange}
                                     autocomplete="off"
-                                />
-                                <button class="btn" onclick={this.closeBox} data-toggle="collapse"></button>
+                                    onBlur={this.clearQuery}
+                                /> */}
+                        {/* <button class="btn" onclick={this.closeBox} data-toggle="collapse"></button> */}
 
-                                <div class="suggestion-box" id="suggestion" >
+                        {/* <div class="suggestion-box" id="suggestion" >
                                     {this.state.filteredData.slice(0, 5).map(feeds =>
                                         <li class="dropdown-item" >
                                             <NavLink class="suggestion-link" to={`/thread/${feeds.postID}`} >{feeds.post}</NavLink>
@@ -193,7 +212,7 @@ class Navigation extends Component {
                                     )}
                                 </div>
                             </div>
-                        </form>
+                        </form> */}
 
 
 

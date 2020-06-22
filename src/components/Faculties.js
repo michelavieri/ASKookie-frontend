@@ -41,7 +41,7 @@ export class Faculties extends Component {
                                         <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
                                         <NavLink class="listku" to="student_life"><li>Student Life</li></NavLink>
                                         <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/exchange"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
                                         <NavLink class="listku" to="/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>
@@ -102,12 +102,14 @@ export class Faculties extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).map((feeds, index) => (
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0,6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">
-                                <button class="btn refresh-button pull-right"><i class="fa fa-fw fa-refresh mx-lg-1 fa-lg"></i>Refresh</button>
+                                <button class="btn refresh-button pull-right">
+                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" /> */}
+                                    <NavLink class="listku" to="/answer">See More</NavLink></button>
                             </div>
                         </div>
                     </div>

@@ -124,7 +124,7 @@ class Navigation extends Component {
                             <Autocomplete
                                 freeSolo
                                 disableClearable
-                                autoSelect={true}
+                                // autoSelect={true}
                                 id="searchSelect"
                                 onChange={this.handleInputChange}
                                 options={this.state.feeds}
@@ -136,10 +136,12 @@ class Navigation extends Component {
                                 }}
 
                                 renderInput={params => (
+                                    <div class="pt-0 pb-2">
                                         <TextField
                                             {...params}
                                             label="Search"
                                             id="searchBar"
+                                            size="small"
                                             value=''
                                             autoSelect={true}
                                             margin="normal"
@@ -147,6 +149,7 @@ class Navigation extends Component {
                                             fullWidth
                                             InputProps={{ ...params.InputProps, type: 'search' }}
                                         />
+                                    </div>
                                 )}
                             />
                         </div>

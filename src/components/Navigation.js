@@ -167,8 +167,7 @@ class Navigation extends Component {
                                 )}
                             />
                         </div> */}
-
-
+                    
                         {/* FORM BERFUNGSI INI */}
                         <form class="form-inline my-2 my-lg-0 ml-auto">
                             <div class="form-group has-search autocomplete">
@@ -212,21 +211,22 @@ class Navigation extends Component {
                                     <div class="dropdown-divider"></div>
                                     <NavLink class="dropdown-item" to="#">Someone commented on your answer!</NavLink>
                                 </div>
-                            </li> */}
-
-                            <li class="nav-item dropdown nav-icon">
-                                <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" class="rounded-circle" /></NavLink>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    {/* <NavLink class="dropdown-item" to="#">Followed Categories/Threads</NavLink>
-                                    <NavLink class="dropdown-item" to="#">Your Asked/Answered Questions</NavLink>
-                                    <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
-                                    <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
-                                    <div class="dropdown-divider"></div> */}
-                                    <a class="dropdown-item" href="mailto:askookie@gmail.com">Help</a>
-                                    <NavLink class="dropdown-item" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
-                                </div>
-                            </li>
+                                    </li> */}
+                            {localStorage.usertoken &&
+                                <li class="nav-item dropdown nav-icon">
+                                    <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" class="rounded-circle" /></NavLink>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
+                                        {/* <NavLink class="dropdown-item" to="#">Followed Categories/Threads</NavLink>
+                                        <NavLink class="dropdown-item" to="#">Your Asked/Answered Questions</NavLink>
+                                        <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
+                                        <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
+                                        <div class="dropdown-divider"></div> */}
+                                        <a class="dropdown-item" href="mailto:askookie@gmail.com">Help</a>
+                                        <NavLink class="dropdown-item" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                    </div>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </nav>

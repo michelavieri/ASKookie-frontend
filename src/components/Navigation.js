@@ -70,36 +70,10 @@ class Navigation extends Component {
     }
 
     handleInputChange = (event, value, reason) => {
-        const query = event.target.value;
-        console.log(event, value, reason);
-
         if (reason === 'select-option') {
-            
+            this.props.history.push(`/thread/${value.postID}`);
         }
-
-        // this.setState(prevState => {
-        //     var filteredData = [];
-        //     if (query !== "") {
-        //         filteredData = prevState.feeds.filter(element => {
-        //             return element.post.toLowerCase().includes(query.toLowerCase());
-        //         });
-        //     }
-        //     return {
-        //         query,
-        //         filteredData
-        //     };
-        // });
     };
-
-    // clearQuery = e => {
-    //     this.setState(prevState => {
-    //         return {
-    //             filteredData: [],
-    //         };
-    //     });
-    // }
-
-
 
     getData = () => {
         fetch('/home')

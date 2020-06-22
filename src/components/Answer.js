@@ -9,9 +9,9 @@ export class Answer extends Component {
         super();
         this.state = {
             feeds: [],
-            category:'',
             query: "",
             filteredQuestions: [],
+            checkedCategories: [],
         };
     }
     componentDidMount() {
@@ -25,15 +25,33 @@ export class Answer extends Component {
 
     onCategoryChange = e => {
         const category = e.target.value;
+        var isChecked = e.target.checked;
+        
 
         this.setState(prevState => {
+            var checkedCategories = prevState.checkedCategories;
+            if (isChecked) {
+                checkedCategories.push(category);
+            } else {
+                checkedCategories.splice(checkedCategories.indexOf(category), 1);
+            }
+
             const filteredQuestions = prevState.feeds.filter(element => {
-                return element.category.toLowerCase().includes(category.toLowerCase());
+                var found = false;
+                for (var i in checkedCategories) {
+                    if (element.category.includes(checkedCategories[i])) {
+                        found = true;
+                    }
+                }
+                return found;
             });
 
+            console.log(checkedCategories)
+            console.log(prevState.feeds)
+
             return {
-                category,
-                filteredQuestions
+                filteredQuestions,
+                checkedCategories
             };
         });
     };

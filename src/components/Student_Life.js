@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Navigation } from './Navigation'
+import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
 
@@ -26,7 +26,7 @@ export class Student_Life extends Component {
         // console.log(first);
         return (
             <div class="container-fluid text-center margin-top">
-                <Navigation />
+                <NavigationRouter2 />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge d-none d-xl-block" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
                     <div class="col-sm-2 mr-4">

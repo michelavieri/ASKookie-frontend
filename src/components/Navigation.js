@@ -8,7 +8,7 @@ import jwt_decode from 'jwt-decode';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/AutoComplete';
 
-export class Navigation extends Component {
+class Navigation extends Component {
     logOut (e) {
         e.preventDefault();
         localStorage.removeItem('usertoken');
@@ -279,7 +279,7 @@ export class Navigation extends Component {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2" >Add Question</button>
+                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2" data-dismiss="modal">Add Question</button>
                                 </div>
                             </form>
                         </div>
@@ -289,3 +289,6 @@ export class Navigation extends Component {
         )
     }
 }
+
+const NavigationRouter = withRouter(Navigation);
+export default NavigationRouter;

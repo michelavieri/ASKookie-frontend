@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navigation } from './Navigation'
+import NavigationRouter2 from './Navigation'
 import { NavLink, Link } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png'
@@ -11,7 +11,7 @@ export class Categories extends Component {
     render() {
         return (
             <div className="mt-5 justify-content-left">
-                <Navigation />
+                <NavigationRouter2 />
                 <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
                 <div class="row content">
                     <div class="col-sm-2">

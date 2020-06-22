@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Navigation } from './Navigation'
+import NavigationRouter2 from './Navigation'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
@@ -61,7 +61,7 @@ export class Thread extends Component {
 
         return (
             <div className="container-fluid margin-top">
-                <Navigation />
+                <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-9 text-left">
                         {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (

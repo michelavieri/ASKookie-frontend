@@ -41,6 +41,7 @@ export class Temp_Sign_In extends Component {
                 if(res.data.token) {
                     console.log(res.token);
                     localStorage.setItem('usertoken', res.data.token);
+                    console.log(this.props);
                     this.props.history.push(``);
                 }
                 console.log(res.data);

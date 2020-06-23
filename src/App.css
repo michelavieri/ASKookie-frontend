@@ -342,6 +342,14 @@ li {
   }
 }
 
+/* .nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs:hover {
+  border-bottom: 3px solid #4D60A5;
+} */
+
 .far-right {
   right: 0;
   margin-left: auto;
@@ -368,6 +376,17 @@ li {
   background-color: #FC5D42 !important;
 }
 
+.tab-link {
+  font-weight: bold;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.tab-link:hover {
+  color: black !important;
+}
+
+.btn-outline-dark
 
 input[type="search"]::-webkit-search-cancel-button {
   cursor:pointer;

@@ -23,6 +23,7 @@ export class Thread extends Component {
     onAnswerChange = e => {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
+
         this.setState({
             answer: e.target.value,
             answerer: decoded.result.username
@@ -34,6 +35,8 @@ export class Thread extends Component {
 
         e.preventDefault();
 
+
+        
         const data = {
             postID: id,
             answer: this.state.answer,

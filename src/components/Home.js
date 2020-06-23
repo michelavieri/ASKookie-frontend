@@ -18,7 +18,7 @@ export class Home extends Component {
             .then(res => res.json())
             .then(res => {
                 this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                if(localStorage.usertoken) {
+                if (localStorage.usertoken) {
                     const token = localStorage.usertoken;
                     const decoded = jwt_decode(token);
                     this.setState({ name: decoded.result.username });
@@ -83,7 +83,7 @@ export class Home extends Component {
                                             <div class="sub-text">
                                                 <NavLink class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                         &middot; posted by
-                                        <NavLink class="sub-link" to=""><h8> {feeds.asker} </h8></NavLink>
+                                        <NavLink class="sub-link" to=""><h8> {feeds.answerer} </h8></NavLink>
                                             </div>
                                         </li>
                                         <li>
@@ -108,7 +108,7 @@ export class Home extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0,6).map((feeds, index) => (
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

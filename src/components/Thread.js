@@ -82,35 +82,56 @@ export class Thread extends Component {
                                             <hr class="mt-0 mb-4" />
                                         </li>
                                         <li>
-                                            <form className="post" onSubmit={this.handleSubmit}>
-                                                <div class="form-row align-items-left mb-3 ml-3">
-                                                    <textarea
-                                                        rows="5"
-                                                        class="form-control col-sm-9"
-                                                        placeholder="What are your thoughts? "
-                                                        value={this.state.answer}
-                                                        onChange={this.onAnswerChange}
-                                                        required />
-                                                    <small class="form-text text-muted col-sm-11">
-                                                        Inappropriate or irrelevant answers will be filtered accordingly.
+                                            {localStorage.usertoken &&
+                                                <form className="post" onSubmit={this.handleSubmit}>
+                                                    <div class="form-row align-items-left mb-3 ml-3">
+                                                        <textarea
+                                                            rows="5"
+                                                            class="form-control col-sm-9"
+                                                            placeholder="What are your thoughts? "
+                                                            value={this.state.answer}
+                                                            onChange={this.onAnswerChange}
+                                                            required />
+                                                        <small class="form-text text-muted col-sm-11">
+                                                            Inappropriate or irrelevant answers will be filtered accordingly.
                                                 </small>
-                                                </div>
-                                                {!localStorage.usertoken &&
-                                                <div className="alert alert-danger" role="alert">
-                                                Please sign in to answer this question
-                                                </div>}
-                                                {/* <div class="form-check row pull-left ml-3">
+                                                    </div>
+
+
+                                                    {/* <div class="form-check row pull-left ml-3">
                                                 <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
                                                 <label class="form-check-label" for="anonymousCheck">
                                                     Appear Anonymous to others
                                                 </label>
                                             </div> */}
-                                            <br />
-                                                <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right" 
-                                                onClick={this.refreshPage}>
-                                                    Answer
+                                                    <br />
+                                                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right"
+                                                        onClick={this.refreshPage}>
+                                                        Answer
                                                 </button>
-                                            </form>
+                                                </form>
+                                            }
+
+                                            {!localStorage.usertoken &&
+                                                <form>
+                                                    <div class="form-row align-items-left mb-3 ml-3">
+                                                        <textarea
+                                                            disabled
+                                                            rows="5"
+                                                            class="form-control col-sm-9"
+                                                            placeholder="What are your thoughts? "
+                                                            value={this.state.answer}
+                                                            onChange={this.onAnswerChange}
+                                                            required />
+                                                        <small class="form-text text-muted col-sm-11">
+                                                            Inappropriate or irrelevant answers will be filtered accordingly.
+                                                    </small>
+                                                    </div>
+                                                    <div className="alert alert-danger" role="alert">
+                                                        Please <NavLink class="underline-link alert-danger" to="/signinform">sign in</NavLink> to answer this question
+                                                    </div>
+                                                </form>
+                                            }
                                         </li>
                                     </ul>
                                 </div>
@@ -147,7 +168,7 @@ export class Thread extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0,6).map((feeds, index) => (
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

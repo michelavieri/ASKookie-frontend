@@ -168,6 +168,10 @@ body {
   text-decoration: none;
 }
 
+.underline-link {
+  text-decoration: underline;
+  /* color: darkred; */
+}
 
 .unanswered:hover {
   text-decoration: underline;

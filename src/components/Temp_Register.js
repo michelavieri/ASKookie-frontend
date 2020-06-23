@@ -48,7 +48,7 @@ export class Temp_Register extends Component {
                 if(res.data != null) {
                     console.log(res.data);
                     console.log("Registered");
-                    this.props.history.push(`\signin`);
+                    this.props.history.push(`\signinform`);
                 }
                 console.log(res);
             })

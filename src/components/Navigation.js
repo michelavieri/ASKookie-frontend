@@ -171,7 +171,7 @@ class Navigation extends Component {
                                     </div>
                                 )}
                             />
-                        
+
                         </div>
 
                         {/* modal button */}
@@ -214,60 +214,80 @@ class Navigation extends Component {
                     </div>
                 </nav>
                 {/* modal ask  */}
-                <div id="askModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <form className="post" onSubmit={this.handleSubmit}>
-                                <div class="modal-header pinkBg">
-                                    <h4 class="modal-title text-white">Ask a Question!</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-row align-items-left mb-3">
-                                        <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
-                                        <textarea
-                                            rows="2"
-                                            class="form-control col-sm-9"
-                                            value={this.state.post}
-                                            onChange={this.onPostChange}
-                                            aria-describedby="questionHere"
-                                            placeholder="Start your question with 'What', 'Why', 'How', etc. "
-                                            required
-                                        />
-                                        <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                            Make sure your question has not been asked already and keep your question short.
-                                    </small>
+                {localStorage.usertoken &&
+                    <div id="askModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <form className="post" onSubmit={this.handleSubmit}>
+                                    <div class="modal-header pinkBg">
+                                        <h4 class="modal-title text-white">Ask a Question!</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <div class="form-row align-items-left mb-3">
-                                        <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
-                                        <select
-                                            onChange={this.onCategoryChange}
-                                            value={this.state.category}
-                                            class="form-control col-sm-9"
-                                            required>
-                                            <option value="" selected>Choose one...</option>
-                                            <option value="faculties">Faculties</option>
-                                            <option value="accommodation">Accomodation</option>
-                                            <option value="student_life">Student Life</option>
-                                            <option value="job_intern">Job/Internship</option>
-                                            <option value="exchange_noc">Exchange Program/NOC</option>
-                                            <option value="others">Others</option>
-                                        </select>
-                                        <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                            Your question will be posted anonymously but any inapporpriate content will be filtered.
-                                    </small>
-                                    </div>
+                                    <div class="modal-body">
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
-                                </div>
-                            </form>
+                                        <div class="form-row align-items-left mb-3">
+                                            <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
+                                            <textarea
+                                                rows="2"
+                                                class="form-control col-sm-9"
+                                                value={this.state.post}
+                                                onChange={this.onPostChange}
+                                                aria-describedby="questionHere"
+                                                placeholder="Start your question with 'What', 'Why', 'How', etc. "
+                                                required
+                                            />
+                                            <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                                Make sure your question has not been asked already and keep your question short.
+                                    </small>
+                                        </div>
+                                        <div class="form-row align-items-left mb-3">
+                                            <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                            <select
+                                                onChange={this.onCategoryChange}
+                                                value={this.state.category}
+                                                class="form-control col-sm-9"
+                                                required>
+                                                <option value="" selected>Choose one...</option>
+                                                <option value="faculties">Faculties</option>
+                                                <option value="accommodation">Accomodation</option>
+                                                <option value="student_life">Student Life</option>
+                                                <option value="job_intern">Job/Internship</option>
+                                                <option value="exchange_noc">Exchange Program/NOC</option>
+                                                <option value="others">Others</option>
+                                            </select>
+                                            <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                                Your question will be posted anonymously but any inapporpriate content will be filtered.
+                                    </small>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                {!localStorage.usertoken &&
+                    <div id="askModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header pinkBg">
+                                    <h4 class="modal-title text-white">Please Sign In to Ask a Question</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body text-left">
+                                    <p class="font-weight-bold ml-3 mr-3">Only Registered Users are allowed to post or answer a question.</p>
+                                    <div className="alert alert-danger mt-5 ml-2 mr-2" role="alert">
+                                        Please sign in to ask a question
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div >
         )
     }

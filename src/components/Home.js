@@ -3,14 +3,13 @@ import { NavLink, Link } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
-import logo from '../logo.png'
 
 export class Home extends Component {
     constructor() {
         super();
         this.state = {
             feeds: [],
-            name: ''
+            name: '',
         };
     }
     componentDidMount() {
@@ -30,10 +29,20 @@ export class Home extends Component {
         scroll.scrollToTop();
     };
 
+    shuffleArray = () => {
+        let i = this.state.feeds.length - 1;
+        var array = this.state.feeds;
+        for (; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+
     render() {
-        // const first = this.state.feeds[0];
-        // var id = first;
-        // console.log(first);
+        const shuffledPosts = this.shuffleArray();
         return (
             <div class="container-fluid text-center margin-top">
                 <NavigationRouter2 />
@@ -75,7 +84,7 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).map((feeds, index) => (
+                        {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != null).map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <ul class="list-group">
@@ -108,14 +117,16 @@ export class Home extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
+                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">
                                 <button class="btn refresh-button pull-right">
-                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" /> */}
-                                    <NavLink class="listku" to="/answer">See More</NavLink></button>
+                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" />
+                                    Refresh */}
+                                    <NavLink class="listku" to="/answer">See More</NavLink>
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 
 export class Thread extends Component {
     constructor() {

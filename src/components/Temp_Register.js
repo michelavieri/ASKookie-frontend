@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../logo.png';
-import { register } from './UserFunction';
 import axios from 'axios';
 
 export class Temp_Register extends Component {

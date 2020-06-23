@@ -90,6 +90,7 @@ body {
   border-radius: 50px;
   box-shadow: 0 0px 1px 0 grey, 0 2px 2px 0 grey;
   margin-left: auto;
+  white-space: nowrap;
 }
 
 
@@ -260,13 +261,16 @@ li {
   .btn-navbar {
     margin-top: 15px;
     margin-bottom: 10px;
+    white-space: nowrap;
   }
 
   .btn-outline-dark {
-    margin-top: 15px;
-    margin-bottom: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     margin-left: 30px;
   }
+
+ 
 }
 
 .link-register {

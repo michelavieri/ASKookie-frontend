@@ -129,11 +129,11 @@ class Navigation extends Component {
                     <div class="collapse navbar-collapse" id="navbarText">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <Link class="nav-link px-lg-5" to="/"><i class="fa fa-fw fa-home fa-lg"></i> Home <span class="sr-only">(current)</span></Link>
+                                <Link class="nav-link px-lg-5" to="/"><i class="fa fa-fw fa-home fa-lg d-none d-xl-inline"></i> Home <span class="sr-only">(current)</span></Link>
                             </li>
                             <li class="nav-item">
                                 <Link class="nav-link px-lg-5" to="/answer">
-                                    <i class="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg"></i>Answer</Link>
+                                    <i class="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg d-none d-xl-inline"></i>Answer</Link>
                             </li>
 
                         </ul>
@@ -174,7 +174,7 @@ class Navigation extends Component {
                         </div>
 
                         {/* modal button */}
-                        <button class="btn btn-orange my-2 my-sm-0" type="button" data-toggle="modal" data-target="#askModal">Add Question</button>
+                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Add Question</button>
 
 
                         <ul class="navbar-nav">
@@ -204,9 +204,9 @@ class Navigation extends Component {
                                 </li>
                             }
                             {!localStorage.usertoken &&
-                            <li class ="mr-3">
+                            <li class ="mr-3 btn-group">
                                 <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
-                                <button class="btn btn-outline-dark"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                                <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
                             </li>
                             }
                         </ul>

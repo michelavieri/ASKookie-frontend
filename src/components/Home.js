@@ -63,7 +63,7 @@ export class Home extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-7 text-left">
+                    <div class="col-xl-7 col-sm-push-10 text-left">
                         <div class="card mb-3">
                             <div class="card-body">
                                 {this.state.name != '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}

@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/AutoComplete';
+import { useIsFocusVisible } from '@material-ui/core';
 
 class Navigation extends Component {
     logOut(e) {
@@ -46,6 +47,7 @@ class Navigation extends Component {
         });
     };
 
+
     handleSubmit = e => {
         e.preventDefault();
         const data = {
@@ -58,7 +60,8 @@ class Navigation extends Component {
             .then(res => {
                 console.log(res);
                 console.log(this.props);
-                this.props.history.push(``);
+                this.props.history.push(`/thread/${this.state.post}`);
+                window.location.reload(false);
             })
             .catch(err => console.log(err));
     };
@@ -237,7 +240,7 @@ class Navigation extends Component {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2" data-dismiss="modal">Add Question</button>
+                                    <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
                                 </div>
                             </form>
                         </div>

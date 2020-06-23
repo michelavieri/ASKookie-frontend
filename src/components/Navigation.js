@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { animateScroll as scroll } from "react-scroll";
 import logo from '../logo.png';
+import profilePicture from '../default_pp.png';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
@@ -176,17 +177,22 @@ class Navigation extends Component {
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" class="rounded-circle" /></NavLink>
+                                        <img src={profilePicture} width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                        {/* <NavLink class="dropdown-item" to="#">Followed Categories/Threads</NavLink>
-                                        <NavLink class="dropdown-item" to="#">Your Asked/Answered Questions</NavLink>
-                                        <NavLink class="dropdown-item" to="#">Saved Posts</NavLink>
-                                        <NavLink class="dropdown-item" to="#">Liked Posts</NavLink>
-                                        <div class="dropdown-divider"></div> */}
-                                        <a class="dropdown-item" href="mailto:askookie@gmail.com">Help</a>
-                                        <NavLink class="dropdown-item" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                    <NavLink class="dropdown-item" to="#" >
+                                        Signed in as <br /> <b>michela</b>
+                                    </NavLink>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item content-dropdown" href="mailto:askookie@gmail.com">Help</a>
+                                        <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
                                     </div>
                                 </li>
+                            }
+                            {!localStorage.usertoken &&
+                            <li class ="mr-3">
+                                <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
+                                <button class="btn btn-outline-dark"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                            </li>
                             }
                         </ul>
                     </div>

@@ -190,14 +190,17 @@ li {
 
 .dropdown-menu {
   padding: 0px;
+  width: 200px;
 }
 
 .dropdown-item {
   white-space: normal;
-  border: 0.5px solid #d4d4d4;
+  font-size: 15px;
+  padding-left: 20px;
+  /* border: 0.5px solid #d4d4d4; */
 }
 
-.dropdown-item:hover {
+.content-dropdown:hover {
   background-color: #EFEFEF;
 }
 
@@ -252,6 +255,36 @@ li {
   top: 30%;
 }
 
+@media screen and (max-width: 1200px) {
+  .btn-navbar {
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+
+  .btn-outline-dark {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+  }
+}
+
+.link-register {
+  color:black;
+}
+
+.link-register:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.link-navbar {
+  color: black;
+}
+
+.link-navbar:hover {
+  color: #4D60A5;
+  text-decoration: none;
+}
 
 .sign-in-btn {
   padding: 10px;

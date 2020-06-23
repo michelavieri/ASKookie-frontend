@@ -91,7 +91,7 @@ export class Home extends Component {
                                         </li>
                                         <li>
                                             <div class="show-more" data-type="text" data-number="80">
-                                                <p>{feeds.answer} </p>
+                                                <p>{feeds.answer}</p>
                                             </div>
                                         </li>
                                     </ul>

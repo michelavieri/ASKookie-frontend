@@ -11,6 +11,7 @@ export class Temp_Register extends Component {
             username: "",
             email: "",
             password: "",
+            success: ""
         };
 
          this.handleUserChange = this.handleUserChange.bind(this);
@@ -53,6 +54,7 @@ export class Temp_Register extends Component {
             })
             .catch(err => {
                 console.log(err);
+                this.setState({ success: 1 });
             });
     }
 
@@ -107,6 +109,10 @@ export class Temp_Register extends Component {
                                  value={this.state.password} onChange={this.handlePassChange}/>
                             </div>
                         </div>
+                        {this.state.success == 1 &&
+                        <div className="alert alert-danger" role="alert">
+                            Username already exists
+                        </div>}
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">

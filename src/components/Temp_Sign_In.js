@@ -9,7 +9,8 @@ export class Temp_Sign_In extends Component {
         super();
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            success: '0'
         };
 
          this.handleUserChange = this.handleUserChange.bind(this);
@@ -43,6 +44,8 @@ export class Temp_Sign_In extends Component {
                     localStorage.setItem('usertoken', res.data.token);
                     console.log(this.props);
                     this.props.history.push(``);
+                } else {
+                    this.setState({ success: res.success });
                 }
                 console.log(res.data);
             })
@@ -95,6 +98,14 @@ export class Temp_Sign_In extends Component {
                                  value={this.state.password} onChange={this.handlePassChange}/>
                             </div>
                         </div>
+                        {/*this.state.success === 0 &&
+                        <div className="alert alert-danger" role="alert">
+                            Invalid username
+                        </div>*/}  
+                        {this.state.success != 0 &&
+                        <div className="alert alert-danger" role="alert">
+                            Invalid username or password
+                        </div>}
                         <div class="container-sign-in-btn position-fixed row ml-0">
                             <ul class="pl-2">
                                 <li class="row">

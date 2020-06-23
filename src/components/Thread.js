@@ -95,6 +95,10 @@ export class Thread extends Component {
                                                         Inappropriate or irrelevant answers will be filtered accordingly.
                                                 </small>
                                                 </div>
+                                                {!localStorage.usertoken &&
+                                                <div className="alert alert-danger" role="alert">
+                                                Please sign in to answer this question
+                                                </div>}
                                                 {/* <div class="form-check row pull-left ml-3">
                                                 <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
                                                 <label class="form-check-label" for="anonymousCheck">

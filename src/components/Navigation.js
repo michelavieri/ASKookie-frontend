@@ -95,6 +95,20 @@ class Navigation extends Component {
             });
     };
 
+    getUsername() {
+        const token = localStorage.usertoken
+        if(token) {
+            const decoded = jwt_decode(token);
+            return (
+                 <b> {decoded.result.username} </b>
+            );
+        }
+    };
+
+    refreshPage() {
+        window.location.reload(false);
+    };
+    
 
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -180,7 +194,7 @@ class Navigation extends Component {
                                         <img src={profilePicture} width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
                                     <NavLink class="dropdown-item" to="#" >
-                                        Signed in as <br /> <b>michela</b>
+                                        Signed in as <br /> {this.getUsername()}
                                     </NavLink>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item content-dropdown" href="mailto:askookie@gmail.com">Help</a>

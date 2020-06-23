@@ -2,20 +2,30 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
+import jwt_decode from 'jwt-decode';
 import logo from '../logo.png'
 
 export class Home extends Component {
     constructor() {
         super();
         this.state = {
-            feeds: []
+            feeds: [],
+            name: ''
         };
     }
     componentDidMount() {
         fetch('/home')
             .then(res => res.json())
-            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-    }
+            .then(res => {
+                this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
+                if(localStorage.usertoken) {
+                    const token = localStorage.usertoken;
+                    const decoded = jwt_decode(token);
+                    this.setState({ name: decoded.result.username });
+                }
+            })
+    };
+
     scrollToTop = () => {
         scroll.scrollToTop();
     };
@@ -56,7 +66,8 @@ export class Home extends Component {
                     <div class="col-sm-7 text-left">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h7 class="card-title" style={{ opacity: '50%' }}>Name,</h7>
+                                {this.state.name != '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
+                                {this.state.name == '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
                                 <br />
                                 <button class="questionButton" type="button" data-toggle="modal" data-target="#askModal">
                                     <NavLink class="text-dark text-decoration-none stretched-link" to="#">What is your Question?</NavLink></button>

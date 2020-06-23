@@ -16,6 +16,7 @@ class Navigation extends Component {
         e.preventDefault();
         localStorage.removeItem('usertoken');
         this.props.history.push(``);
+        window.location.reload(false);
     }
     constructor() {
         super();

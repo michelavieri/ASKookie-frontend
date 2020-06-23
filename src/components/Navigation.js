@@ -60,7 +60,7 @@ class Navigation extends Component {
             .then(res => {
                 console.log(res);
                 console.log(this.props);
-                this.props.history.push(`/thread/${this.state.post}`);
+                this.props.history.push(`/thread/${res.data.data.insertId}`);
                 window.location.reload(false);
             })
             .catch(err => console.log(err));

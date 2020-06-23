@@ -98,10 +98,10 @@ class Navigation extends Component {
 
     getUsername() {
         const token = localStorage.usertoken
-        if(token) {
+        if (token) {
             const decoded = jwt_decode(token);
             return (
-                 <b> {decoded.result.username} </b>
+                <b> {decoded.result.username} </b>
             );
         }
     };
@@ -109,7 +109,7 @@ class Navigation extends Component {
     refreshPage() {
         window.location.reload(false);
     };
-    
+
 
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -171,6 +171,7 @@ class Navigation extends Component {
                                     </div>
                                 )}
                             />
+                        
                         </div>
 
                         {/* modal button */}
@@ -194,9 +195,9 @@ class Navigation extends Component {
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src={profilePicture} width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="#" >
-                                        Signed in as <br /> {this.getUsername()}
-                                    </NavLink>
+                                        <NavLink class="dropdown-item" to="#" >
+                                            Signed in as <br /> {this.getUsername()}
+                                        </NavLink>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item content-dropdown" href="mailto:askookie@gmail.com">Help</a>
                                         <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
@@ -204,10 +205,10 @@ class Navigation extends Component {
                                 </li>
                             }
                             {!localStorage.usertoken &&
-                            <li class ="mr-3 btn-group">
-                                <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
-                                <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
-                            </li>
+                                <li class="mr-3 btn-group">
+                                    <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
+                                    <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                                </li>
                             }
                         </ul>
                     </div>

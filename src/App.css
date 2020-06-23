@@ -173,6 +173,10 @@ body {
   text-decoration: underline;
 }
 
+a:visited .unanswered{
+  color: black;
+}
+
 .refresh-button {
   color: #4D60A5;
 }

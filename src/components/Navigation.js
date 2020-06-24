@@ -8,8 +8,7 @@ import jwt_decode from 'jwt-decode';
 
 
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/AutoComplete';
-import { useIsFocusVisible } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 class Navigation extends Component {
     logOut(e) {

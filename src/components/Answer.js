@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 
@@ -79,22 +79,8 @@ export class Answer extends Component {
             });
     };
 
-    shuffleArray = () => {
-        let i = this.state.filteredQuestions.length - 1;
-        var array = this.state.filteredQuestions;
-        for (; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
-        return array;
-    }
-
 
     render() {
-        const { category } = this.state;
-        const shuffledPosts = this.shuffleArray();
         return (
             <div className="mt-5 justify-content-left">
                 <NavigationRouter2 />

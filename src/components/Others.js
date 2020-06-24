@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
-import logo from '../logo.png'
 
 export class Others extends Component {
     constructor() {

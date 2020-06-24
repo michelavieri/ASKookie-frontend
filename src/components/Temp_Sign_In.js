@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../logo.png'
-import { login } from './UserFunction';
 import axios from 'axios';
 import PasswordMask from 'react-password-mask';
 
@@ -60,7 +59,7 @@ export class Temp_Sign_In extends Component {
             <div className="container-fluid">
                 <div class="container-sign-in margin-top-none d-none d-xl-block">
                     <div class="left-half bg-yellow">
-                        <img src={logo} class="logo-fluid" />
+                        <img src={logo} alt="" class="logo-fluid" />
                         <br />
                         <div class="textRevealContainer">
                             <div class="textReveal rotateY">
@@ -100,17 +99,17 @@ export class Temp_Sign_In extends Component {
                                         class="form-control form-control-sm"
                                         placeholder="Enter Password"
                                         value={this.state.password}
-                                        onChange={this.handlePassChange} 
-                                        buttonClassName= "pass"
+                                        onChange={this.handlePassChange}
+                                        buttonClassName="pass"
                                         inputClassName="passForm"
-                                        />
+                                    />
                                 </div>
                             </div>
                             {/*this.state.success === 0 &&
                         <div className="alert alert-danger" role="alert">
                             Invalid username
                         </div>*/}
-                            {this.state.success != 0 &&
+                            {this.state.success !=== 0 &&
                                 <div className="alert alert-danger" role="alert">
                                     Invalid username or password
                         </div>}

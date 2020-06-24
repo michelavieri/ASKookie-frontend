@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
+import Linkify from 'react-linkify';
 
 export class Home extends Component {
     constructor() {
@@ -25,6 +26,12 @@ export class Home extends Component {
             })
     };
 
+    componentDecorator = (href, text, key) => (
+        <a href={href} key={key} target="_blank">
+          {text}
+        </a>
+      );
+
     scrollToTop = () => {
         scroll.scrollToTop();
     };
@@ -42,7 +49,8 @@ export class Home extends Component {
     }
 
     render() {
-        const shuffledPosts = this.shuffleArray();
+        var shuffledPosts = this.shuffleArray();
+
         return (
             <div class="container-fluid text-center margin-top">
                 <NavigationRouter2 />
@@ -98,9 +106,11 @@ export class Home extends Component {
                                             <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
                                         </li>
                                         <li>
-                                            <div class="show-more" data-type="text" data-number="80">
-                                                <p class="whiteSpace">{feeds.answer}</p>
-                                            </div>
+                                            <Linkify componentDecorator={this.componentDecorator}>
+                                                <div class="show-more" data-type="text" data-number="80">
+                                                    <p class="whiteSpace">{feeds.answer}</p>
+                                                </div>
+                                            </Linkify>
                                         </li>
                                     </ul>
                                 </div>

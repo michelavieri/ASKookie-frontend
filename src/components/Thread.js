@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import Linkify from 'react-linkify';
 
 export class Thread extends Component {
     constructor() {
@@ -34,7 +35,7 @@ export class Thread extends Component {
         const { id } = this.props.match.params;
 
         e.preventDefault();
-        
+
         const data = {
             postID: id,
             answer: this.state.answer,
@@ -141,22 +142,24 @@ export class Thread extends Component {
 
                         {/* start answer */}
                         {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
-                            <div class="card mb-3">
-                                <div class="card-body mr-4">
-                                    <ul>
-                                        <li>
-                                            <div class="sub-text">
-                                                Posted by
+                            <Linkify>
+                                <div class="card mb-3">
+                                    <div class="card-body mr-4">
+                                        <ul>
+                                            <li>
+                                                <div class="sub-text">
+                                                    Posted by
                                         <NavLink class="sub-link" to=""><h8> {feeds.answerer} </h8></NavLink>
-                                                {/* &middot; Answered on 17/01/2020 */}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <p class="whiteSpace">{feeds.answer}</p>
-                                        </li>
-                                    </ul>
+                                                    {/* &middot; Answered on 17/01/2020 */}
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <p class="whiteSpace">{feeds.answer}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            </Linkify>
                         ))}
                         {/* end of answer */}
                     </div>

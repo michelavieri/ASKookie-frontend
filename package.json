@@ -19,6 +19,7 @@
     "react-bootstrap-typeahead": "^5.0.0-rc.3",
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^16.13.1",
+    "react-linkify": "^1.0.0-alpha",
     "react-native-elements": "^2.0.2",
     "react-router": "^5.2.0",
     "react-router-bootstrap": "^0.25.0",

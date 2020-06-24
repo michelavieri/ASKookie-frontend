@@ -59,6 +59,6 @@
     "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
     "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
     "node_modules/animate.css/animate.css",
-    "src/styles.scss"
+    "src/styles.scss" 
   ]
 }

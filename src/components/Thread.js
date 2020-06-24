@@ -34,8 +34,6 @@ export class Thread extends Component {
         const { id } = this.props.match.params;
 
         e.preventDefault();
-
-
         
         const data = {
             postID: id,
@@ -154,7 +152,7 @@ export class Thread extends Component {
                                             </div>
                                         </li>
                                         <li>
-                                            <p>{feeds.answer}</p>
+                                            <p class="whiteSpace">{feeds.answer}</p>
                                         </li>
                                     </ul>
                                 </div>

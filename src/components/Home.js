@@ -90,17 +90,16 @@ export class Home extends Component {
                                     <ul class="list-group">
                                         <li>
                                             <div class="sub-text">
-                                                <NavLink class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
-                                        &middot; posted by
-                                        <NavLink class="sub-link" to=""><h8> {feeds.answerer} </h8></NavLink>
+                                                <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                &middot; posted by {feeds.answerer}
                                             </div>
                                         </li>
                                         <li>
-                                            <NavLink class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
+                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
                                         </li>
                                         <li>
                                             <div class="show-more" data-type="text" data-number="80">
-                                                <p>{feeds.answer}</p>
+                                                <p class="whiteSpace">{feeds.answer}</p>
                                             </div>
                                         </li>
                                     </ul>

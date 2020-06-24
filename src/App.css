@@ -58,6 +58,7 @@ body {
 .sub-text {
   color: rgb(129, 129, 129);
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .sub-link {
@@ -386,7 +387,9 @@ li {
   color: black !important;
 }
 
-.btn-outline-dark
+.whiteSpace {
+  white-space: pre-wrap;
+}
 
 input[type="search"]::-webkit-search-cancel-button {
   cursor:pointer;

@@ -109,7 +109,7 @@ export class Temp_Sign_In extends Component {
                         <div className="alert alert-danger" role="alert">
                             Invalid username
                         </div>*/}
-                            {this.state.success !=== 0 &&
+                            {this.state.success !== 0 &&
                                 <div className="alert alert-danger" role="alert">
                                     Invalid username or password
                         </div>}

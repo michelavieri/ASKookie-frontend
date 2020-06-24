@@ -114,7 +114,7 @@ export class Temp_Sign_In extends Component {
                                 <div className="alert alert-danger" role="alert">
                                     Invalid username or password
                         </div>}
-                            <div class="container-sign-in-btn position-fixed row ml-0">
+                            <div class="position-fixed row ml-0">
                                 <ul class="pl-2">
                                     <li class="row">
                                         <button type="submit" class="btn sign-in-btn bg-black">

@@ -271,7 +271,7 @@ class Navigation extends Component {
                                         </form>
                                     </div>
                                     <div class="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
-                                    <form className="post" onSubmit={this.handleSubmit}>
+                                        <form className="post" onSubmit={this.handleSubmit}>
                                             <div class="form-row align-items-left mb-3 text-left">
                                                 <div class="form-row align-items-left mb-3">
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
@@ -321,7 +321,7 @@ class Navigation extends Component {
                                                 <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
                                             </div>
                                         </form>
-					                </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -338,6 +338,7 @@ class Navigation extends Component {
                                 <div class="modal-body text-left">
                                     <p class="font-weight-bold ml-3 mr-3">Only Registered Users are allowed to post or answer a question.</p>
                                     <div className="alert alert-danger mt-5 ml-2 mr-2" role="alert">
+                                        <span class="fa fa-exclamation-triangle mr-2" />
                                         Please sign in to ask a question
                                     </div>
                                 </div>

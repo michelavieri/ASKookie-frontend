@@ -129,6 +129,7 @@ export class Thread extends Component {
                                                     </small>
                                                     </div>
                                                     <div className="alert alert-danger" role="alert">
+                                                        <span class="fa fa-exclamation-triangle mr-2" />
                                                         Please <NavLink class="underline-link alert-danger" to="/signinform">sign in</NavLink> to answer this question
                                                     </div>
                                                 </form>

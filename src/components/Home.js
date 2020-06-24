@@ -83,8 +83,8 @@ export class Home extends Component {
                     <div class="col-xl-7 col-sm-push-10 text-left">
                         <div class="card mb-3">
                             <div class="card-body">
-                                {this.state.name !== '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
-                                {this.state.name === '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
+                                {this.state.name != '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
+                                {this.state.name == '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
                                 <br />
                                 <button class="questionButton" type="button" data-toggle="modal" data-target="#askModal">
                                     <NavLink class="text-dark text-decoration-none stretched-link" to="#">What is your Question?</NavLink></button>

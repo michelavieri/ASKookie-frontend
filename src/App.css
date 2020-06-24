@@ -169,7 +169,7 @@ body {
   border: none;
   background-color: white;
   font-family: "Arial Black", Gadget, sans-serif;
-  opacity: 40%;
+  /* opacity: 40%; */
   padding: 0px;
   border-bottom: 5px solid #FC5D42;
 }

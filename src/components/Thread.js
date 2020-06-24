@@ -64,7 +64,7 @@ export class Thread extends Component {
                 <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-9 text-left">
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID === urlArray[urlArray.length - 1]).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
                             <div class="card mb-3 border border-secondary">
                                 <div class="card-body">
                                     <ul class="list-group">
@@ -141,7 +141,7 @@ export class Thread extends Component {
                         <h2> <b>Answer: </b></h2>
 
                         {/* start answer */}
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds => feeds.postID === urlArray[urlArray.length - 1]).map((feeds, index) => (
+                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer != null).filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
                             <Linkify>
                                 <div class="card mb-3">
                                     <div class="card-body mr-4">

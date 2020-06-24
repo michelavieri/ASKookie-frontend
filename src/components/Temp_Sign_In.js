@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import logo from '../logo.png'
 import { login } from './UserFunction';
 import axios from 'axios';
+import PasswordMask from 'react-password-mask';
 
 export class Temp_Sign_In extends Component {
     constructor() {
@@ -13,11 +14,11 @@ export class Temp_Sign_In extends Component {
             success: '0'
         };
 
-         this.handleUserChange = this.handleUserChange.bind(this);
-         this.handlePassChange = this.handlePassChange.bind(this);
-         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleUserChange = this.handleUserChange.bind(this);
+        this.handlePassChange = this.handlePassChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
+
     handleUserChange = e => {
         this.setState({ username: e.target.value })
     }
@@ -39,7 +40,7 @@ export class Temp_Sign_In extends Component {
             .post('/login', user)
             .then(res => {
                 console.log(user);
-                if(res.data.token) {
+                if (res.data.token) {
                     console.log(res.token);
                     localStorage.setItem('usertoken', res.data.token);
                     console.log(this.props);
@@ -84,40 +85,47 @@ export class Temp_Sign_In extends Component {
                             <span>Sign In</span>
                         </h1>
                         <form noValidate onSubmit={this.handleSubmit}>
-                        <div class="form-group row">
-                            <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
-                            <div class="col-sm-8">
-                                <input class="form-control form-control-sm" placeholder="Enter Username"
-                                 value={this.state.username} onChange={this.handleUserChange}/>
+                            <div class="form-group row">
+                                <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" placeholder="Enter Username"
+                                        value={this.state.username} onChange={this.handleUserChange} />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
-                            <div class="col-sm-8">
-                                <input type="password" class="form-control form-control-sm" placeholder="Enter Password"
-                                 value={this.state.password} onChange={this.handlePassChange}/>
+                            <div class="form-group row">
+                                <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
+                                <div class="col-sm-8">
+                                    <PasswordMask
+                                        type="password"
+                                        class="form-control form-control-sm"
+                                        placeholder="Enter Password"
+                                        value={this.state.password}
+                                        onChange={this.handlePassChange} 
+                                        buttonClassName= "pass"
+                                        inputClassName="passForm"
+                                        />
+                                </div>
                             </div>
-                        </div>
-                        {/*this.state.success === 0 &&
+                            {/*this.state.success === 0 &&
                         <div className="alert alert-danger" role="alert">
                             Invalid username
-                        </div>*/}  
-                        {this.state.success != 0 &&
-                        <div className="alert alert-danger" role="alert">
-                            Invalid username or password
+                        </div>*/}
+                            {this.state.success != 0 &&
+                                <div className="alert alert-danger" role="alert">
+                                    Invalid username or password
                         </div>}
-                        <div class="container-sign-in-btn position-fixed row ml-0">
-                            <ul class="pl-2">
-                                <li class="row">
-                                    <button type="submit" class="btn sign-in-btn bg-black">
-                                        Sign in
+                            <div class="container-sign-in-btn position-fixed row ml-0">
+                                <ul class="pl-2">
+                                    <li class="row">
+                                        <button type="submit" class="btn sign-in-btn bg-black">
+                                            Sign in
                                     </button>
-                                </li>
-                                <li class="row mt-3">
-                                    <NavLink class="btn unanswered pl-0" to='/register'>Don't have an account? Register Here</NavLink>
-                                </li>
-                            </ul>
-                        </div>
+                                    </li>
+                                    <li class="row mt-3">
+                                        <NavLink class="btn unanswered pl-0" to='/register'>Don't have an account? Register Here</NavLink>
+                                    </li>
+                                </ul>
+                            </div>
                         </form>
                     </div>
                 </div>

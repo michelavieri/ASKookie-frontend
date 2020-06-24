@@ -143,7 +143,6 @@ class Navigation extends Component {
                             <Autocomplete
                                 freeSolo
                                 disableClearable
-                                // autoSelect={true}
                                 id="searchSelect"
                                 onChange={this.handleInputChange}
                                 options={this.state.feeds}
@@ -175,7 +174,7 @@ class Navigation extends Component {
                         </div>
 
                         {/* modal button */}
-                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Add Question</button>
+                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
 
 
                         <ul class="navbar-nav">
@@ -218,54 +217,112 @@ class Navigation extends Component {
                     <div id="askModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
-                                <form className="post" onSubmit={this.handleSubmit}>
-                                    <div class="modal-header pinkBg">
-                                        <h4 class="modal-title text-white">Ask a Question!</h4>
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <div class="form-row align-items-left mb-3">
-                                            <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
-                                            <textarea
-                                                rows="2"
-                                                class="form-control col-sm-9"
-                                                value={this.state.post}
-                                                onChange={this.onPostChange}
-                                                aria-describedby="questionHere"
-                                                placeholder="Start your question with 'What', 'Why', 'How', etc. "
-                                                required
-                                            />
-                                            <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                                Make sure your question has not been asked already and keep your question short.
-                                    </small>
-                                        </div>
-                                        <div class="form-row align-items-left mb-3">
-                                            <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
-                                            <select
-                                                onChange={this.onCategoryChange}
-                                                value={this.state.category}
-                                                class="form-control col-sm-9"
-                                                required>
-                                                <option value="" selected>Choose one...</option>
-                                                <option value="faculties">Faculties</option>
-                                                <option value="accommodation">Accomodation</option>
-                                                <option value="student_life">Student Life</option>
-                                                <option value="job_intern">Job/Internship</option>
-                                                <option value="exchange_noc">Exchange Program/NOC</option>
-                                                <option value="others">Others</option>
-                                            </select>
-                                            <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
-                                                Your question will be posted anonymously but any inapporpriate content will be filtered.
-                                    </small>
-                                        </div>
+                                <div class="modal-header pinkBg pb-0">
+                                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <a class="nav-link tab-link active" id="nav-ask-tab" data-toggle="tab" href="#nav-ask" role="tab" aria-controls="nav-ask" aria-selected="true">Ask a Question</a>
+                                        <a class="nav-link tab-link" id="nav-post-tab" data-toggle="tab" href="#nav-post" role="tab" aria-controls="nav-post" aria-selected="false">Make a New Post</a>
 
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                    <div class="tab-pane fade show active ml-5 text-left mr-5" id="nav-ask" role="tabpanel" aria-labelledby="nav-ask-tab">
+                                        <form className="ask" onSubmit={this.handleSubmit}>
+                                            <div class="form-row mb-3">
+                                                <div class="form-row mb-3">
+                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
+                                                    <textarea
+                                                        rows="2"
+                                                        class="form-control col-sm-9"
+                                                        value={this.state.post}
+                                                        onChange={this.onPostChange}
+                                                        aria-describedby="questionHere"
+                                                        placeholder="Start your question with 'What', 'Why', 'How', etc. "
+                                                        required
+                                                    />
+                                                    <small id="questionTips" class="form-text text-muted col-sm-11">
+                                                        Make sure your question has not been asked already and keep your question short.
+                                                        </small>
+                                                </div>
+
+                                                <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                                <select
+                                                    onChange={this.onCategoryChange}
+                                                    value={this.state.category}
+                                                    class="form-control col-sm-9"
+                                                    required>
+                                                    <option value="" selected>Choose one...</option>
+                                                    <option value="faculties">Faculties</option>
+                                                    <option value="accommodation">Accomodation</option>
+                                                    <option value="student_life">Student Life</option>
+                                                    <option value="job_intern">Job/Internship</option>
+                                                    <option value="exchange_noc">Exchange Program/NOC</option>
+                                                    <option value="others">Others</option>
+                                                </select>
+                                                <small id="questionWarning" class="form-text text-muted col-sm-11">
+                                                    Your question will be posted anonymously but any inapporpriate content will be filtered.
+                                                    </small>
+                                            </div>
+                                            <div class="modal-footer mb-0 pb-0">
+                                                <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
+                                    <div class="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
+                                        <form className="post" onSubmit={this.handleSubmit}>
+                                            <div class="form-row align-items-left mb-3 text-left">
+                                                <div class="form-row align-items-left mb-3">
+                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
+                                                    <input
+                                                        class="form-control col-sm-9 font-weight-bold"
+                                                        value={this.state.post}
+                                                        onChange={this.onPostChange}
+                                                        aria-describedby="titleHere"
+                                                        placeholder="Give a Meaningful Title to Your Post..."
+                                                        required
+                                                    />
+                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Post</label>
+                                                    <textarea
+                                                        rows="5"
+                                                        class="form-control col-sm-9 mt-3"
+                                                        value={this.state.post}
+                                                        onChange={this.onPostChange}
+                                                        aria-describedby="postHere"
+                                                        placeholder="Write your post here..."
+                                                        required
+                                                    />
+                                                    <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                                        Try to keep your post clear and short to engage readers to read your message.
+                                                        </small>
+                                                </div>
+
+                                                <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                                <select
+                                                    onChange={this.onCategoryChange}
+                                                    value={this.state.category}
+                                                    class="form-control col-sm-9"
+                                                    required>
+                                                    <option value="" selected>Choose one...</option>
+                                                    <option value="faculties">Faculties</option>
+                                                    <option value="accommodation">Accomodation</option>
+                                                    <option value="student_life">Student Life</option>
+                                                    <option value="job_intern">Job/Internship</option>
+                                                    <option value="exchange_noc">Exchange Program/NOC</option>
+                                                    <option value="others">Others</option>
+                                                </select>
+                                                <small id="postWarning" class="form-text text-muted col-sm-11">
+                                                    Your post will be anonymous but any inapporpriate content will be filtered by us.
+                                                    </small>
+                                            </div>
+                                            <div class="modal-footer mb-0 pb-0">
+                                                <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -281,6 +338,7 @@ class Navigation extends Component {
                                 <div class="modal-body text-left">
                                     <p class="font-weight-bold ml-3 mr-3">Only Registered Users are allowed to post or answer a question.</p>
                                     <div className="alert alert-danger mt-5 ml-2 mr-2" role="alert">
+                                        <span class="fa fa-exclamation-triangle mr-2" />
                                         Please sign in to ask a question
                                     </div>
                                 </div>

@@ -53,11 +53,28 @@ body {
   width:100%;
 }
 
+.pass {
+  height: 25px;
+  font-size: 12px;
+  font-weight: bold;
+  padding-top: 5px;
+}
 
+.passForm {
+  font-size: 14px !important;
+  padding-left: 8px;
+  height: 30px !important;
+}
+
+.pass:hover {
+  background-color: #EFEFEF !important;
+  color: grey !important;
+}
 
 .sub-text {
   color: rgb(129, 129, 129);
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .sub-link {
@@ -342,6 +359,14 @@ li {
   }
 }
 
+/* .nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs:hover {
+  border-bottom: 3px solid #4D60A5;
+} */
+
 .far-right {
   right: 0;
   margin-left: auto;
@@ -368,6 +393,19 @@ li {
   background-color: #FC5D42 !important;
 }
 
+.tab-link {
+  font-weight: bold;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.tab-link:hover {
+  color: black !important;
+}
+
+.whiteSpace {
+  white-space: pre-wrap;
+}
 
 input[type="search"]::-webkit-search-cancel-button {
   cursor:pointer;

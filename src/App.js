@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.png'
 import './App.css'
 
 import { Home } from './components/Home'
@@ -23,7 +22,7 @@ function App() {
     <BrowserRouter>
       <div className="container">
         <Switch>
-          <Route exact path='/' component={Home} exact />
+          <Route exact path='/' component={Home} />
           <Route path='/answer' component={Answer} />
           <Route path='/signin' component={Sign_in} />
           <Route path='/thread/:id' component={Thread} />

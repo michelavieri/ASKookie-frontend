@@ -14,7 +14,6 @@
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
-    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-bootstrap-typeahead": "^5.0.0-rc.3",
@@ -61,6 +60,6 @@
     "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
     "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
     "node_modules/animate.css/animate.css",
-    "src/styles.scss"
+    "src/styles.scss" 
   ]
 }

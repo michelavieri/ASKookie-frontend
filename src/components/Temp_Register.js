@@ -48,7 +48,7 @@ export class Temp_Register extends Component {
                 if (res.data != null) {
                     console.log(res.data);
                     console.log("Registered");
-                    this.props.history.push(`\signinform`);
+                    this.props.history.push(`/signinform`);
                 }
                 console.log(res);
             })
@@ -63,7 +63,7 @@ export class Temp_Register extends Component {
             <div className="container-fluid">
                 <div class="container-sign-in margin-top-none d-none d-xl-block">
                     <div class="left-half bg-yellow">
-                        <img src={logo} class="logo-fluid" />
+                        <img src={logo} alt="" class="logo-fluid" />
                         <br />
                         <div class="textRevealContainer">
                             <div class="textReveal rotateY">
@@ -115,7 +115,7 @@ export class Temp_Register extends Component {
                                     />
                                 </div>
                             </div>
-                            {this.state.success == 1 &&
+                            {this.state.success === 1 &&
                                 <div className="alert alert-danger" role="alert">
                                     Username already exists
                         </div>}
@@ -140,12 +140,12 @@ export class Temp_Register extends Component {
                     <div class="row">
                         <div class="container">
                             <div class="row">
-                                <a href="#" class="intro-banner-vdo-play-btn pinkBg">
+                                <button class="intro-banner-vdo-play-btn pinkBg">
                                     <i class="glyphicon glyphicon-play whiteText" aria-hidden="true"></i>
                                     <span class="ripple pinkBg"></span>
                                     <span class="ripple pinkBg"></span>
                                     <span class="ripple pinkBg"></span>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

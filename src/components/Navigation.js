@@ -8,8 +8,7 @@ import jwt_decode from 'jwt-decode';
 
 
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/AutoComplete';
-import { useIsFocusVisible } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 class Navigation extends Component {
     logOut(e) {
@@ -127,7 +126,6 @@ class Navigation extends Component {
     };
 
     render() {
-        const { post, category } = this.state;
         return (
             <div class="container-fluid">
                 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-yellow">
@@ -203,7 +201,7 @@ class Navigation extends Component {
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src={profilePicture} width="38" class="rounded-circle" /></NavLink>
+                                        <img src={profilePicture} alt ="" width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <NavLink class="dropdown-item" to="#" >
                                             Signed in as <br /> {this.getUsername()}

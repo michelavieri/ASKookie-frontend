@@ -58,7 +58,6 @@ export class Thread extends Component {
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
-        const { answer } = this.state;
 
         return (
             <div className="container-fluid margin-top">

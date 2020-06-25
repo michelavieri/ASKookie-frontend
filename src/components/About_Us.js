@@ -9,7 +9,7 @@ export class About_Us extends Component {
             <div className="container-fluid">
                 <div class="container-sign-in margin-top-none d-none d-xl-block">
                     <div class="left-half bg-yellow">
-                        <img src={logo} class="logo-fluid" />
+                        <img src={logo} alt="" class="logo-fluid" />
                         <br />
                         <div class="textRevealContainer">
                             <div class="textReveal rotateY">

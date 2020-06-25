@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
@@ -27,7 +27,7 @@ export class Home extends Component {
     };
 
     componentDecorator = (href, text, key) => (
-        <a href={href} key={key} target="_blank">
+        <a href={href} key={key} target="_blank"  rel="noopener noreferrer">
           {text}
         </a>
       );

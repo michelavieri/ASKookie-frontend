@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
@@ -54,12 +55,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy":"https://whispering-hamlet-08619.herokuapp.com/",
-
+  "proxy": "https://whispering-hamlet-08619.herokuapp.com/",
   "styles": [
     "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
     "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
     "node_modules/animate.css/animate.css",
-    "src/styles.scss" 
+    "src/styles.scss"
   ]
 }

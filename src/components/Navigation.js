@@ -27,16 +27,26 @@ class Navigation extends Component {
             post: "",
             category: "",
             asker: "",
+            type: "question",
+            title: ""
         };
 
         this.onPostChange = this.onPostChange.bind(this);
         this.onCategoryChange = this.onCategoryChange.bind(this);
+        this.onTitleChange = this.onTitleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     onPostChange = e => {
         this.setState({
-            post: e.target.value
+            post: e.target.value,
+        });
+    };
+
+    onTitleChange = e => {
+        this.setState({
+            post: e.target.value,
+            type: "post"
         });
     };
 
@@ -49,13 +59,14 @@ class Navigation extends Component {
         });
     };
 
-
     handleSubmit = e => {
         e.preventDefault();
         const data = {
             post: this.state.post,
             category: this.state.category,
-            asker: this.state.asker
+            asker: this.state.asker,
+            type: this.state.type,
+            title: this.state.title
         };
         axios
             .post('/ask', data)
@@ -277,8 +288,8 @@ class Navigation extends Component {
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
                                                     <input
                                                         class="form-control col-sm-9 font-weight-bold"
-                                                        value={this.state.post}
-                                                        onChange={this.onPostChange}
+                                                        value={this.state.title}
+                                                        onChange={this.onTitleChange}
                                                         aria-describedby="titleHere"
                                                         placeholder="Give a Meaningful Title to Your Post..."
                                                         required

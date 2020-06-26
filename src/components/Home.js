@@ -92,7 +92,7 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != null).map((feeds, index) => (
+                        {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != '').map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <ul class="list-group">
@@ -126,7 +126,7 @@ export class Home extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
+                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == '').slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

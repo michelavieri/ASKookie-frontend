@@ -87,7 +87,7 @@ export class Home extends Component {
                                 {this.state.name == '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
                                 <br />
                                 <button class="questionButton" type="button" data-toggle="modal" data-target="#askModal">
-                                    <NavLink class="text-dark text-decoration-none stretched-link" to="#">What is your Question?</NavLink></button>
+                                    <p class="text-dark text-decoration-none stretched-link">What is your Question?</p></button>
                             </div>
                         </div>
 

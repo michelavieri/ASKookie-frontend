@@ -81,59 +81,61 @@ export class Thread extends Component {
                                         <li>
                                             <hr class="mt-0 mb-4" />
                                         </li>
-                                        <li>
-                                            {localStorage.usertoken &&
-                                                <form className="post" onSubmit={this.handleSubmit}>
-                                                    <div class="form-row align-items-left mb-3 ml-3">
-                                                        <textarea
-                                                            rows="5"
-                                                            class="form-control col-sm-9"
-                                                            placeholder="What are your thoughts? "
-                                                            value={this.state.answer}
-                                                            onChange={this.onAnswerChange}
-                                                            required />
-                                                        <small class="form-text text-muted col-sm-11">
-                                                            Inappropriate or irrelevant answers will be filtered accordingly.
+                                        {feeds.answer == null &&
+                                            <li>
+                                                {localStorage.usertoken &&
+                                                    <form className="post" onSubmit={this.handleSubmit}>
+                                                        <div class="form-row align-items-left mb-3 ml-3">
+                                                            <textarea
+                                                                rows="5"
+                                                                class="form-control col-sm-9"
+                                                                placeholder="What are your thoughts? "
+                                                                value={this.state.answer}
+                                                                onChange={this.onAnswerChange}
+                                                                required />
+                                                            <small class="form-text text-muted col-sm-11">
+                                                                Inappropriate or irrelevant answers will be filtered accordingly.
                                                 </small>
-                                                    </div>
+                                                        </div>
 
 
-                                                    {/* <div class="form-check row pull-left ml-3">
+                                                        {/* <div class="form-check row pull-left ml-3">
                                                 <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
                                                 <label class="form-check-label" for="anonymousCheck">
                                                     Appear Anonymous to others
                                                 </label>
                                             </div> */}
-                                                    <br />
-                                                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right"
-                                                        onClick={this.refreshPage}>
-                                                        Answer
+                                                        <br />
+                                                        <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right"
+                                                            onClick={this.refreshPage}>
+                                                            Answer
                                                 </button>
-                                                </form>
-                                            }
+                                                    </form>
+                                                }
 
-                                            {!localStorage.usertoken &&
-                                                <form>
-                                                    <div class="form-row align-items-left mb-3 ml-3">
-                                                        <textarea
-                                                            disabled
-                                                            rows="5"
-                                                            class="form-control col-sm-9"
-                                                            placeholder="What are your thoughts? "
-                                                            value={this.state.answer}
-                                                            onChange={this.onAnswerChange}
-                                                            required />
-                                                        <small class="form-text text-muted col-sm-11">
-                                                            Inappropriate or irrelevant answers will be filtered accordingly.
+                                                {!localStorage.usertoken &&
+                                                    <form>
+                                                        <div class="form-row align-items-left mb-3 ml-3">
+                                                            <textarea
+                                                                disabled
+                                                                rows="5"
+                                                                class="form-control col-sm-9"
+                                                                placeholder="What are your thoughts? "
+                                                                value={this.state.answer}
+                                                                onChange={this.onAnswerChange}
+                                                                required />
+                                                            <small class="form-text text-muted col-sm-11">
+                                                                Inappropriate or irrelevant answers will be filtered accordingly.
                                                     </small>
-                                                    </div>
-                                                    <div className="alert alert-danger" role="alert">
-                                                        <span class="fa fa-exclamation-triangle mr-2" />
+                                                        </div>
+                                                        <div className="alert alert-danger" role="alert">
+                                                            <span class="fa fa-exclamation-triangle mr-2" />
                                                         Please <NavLink class="underline-link alert-danger" to="/signinform">sign in</NavLink> to answer this question
                                                     </div>
-                                                </form>
-                                            }
-                                        </li>
+                                                    </form>
+                                                }
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                             </div>

@@ -26,8 +26,10 @@ class Navigation extends Component {
             post: "",
             category: "",
             asker: "",
+            answerer: "",
             type: "question",
-            title: ""
+            title: "",
+            answer: ""
         };
 
         this.onPostChange = this.onPostChange.bind(this);
@@ -37,24 +39,37 @@ class Navigation extends Component {
     }
 
     onPostChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+        this.setState({
+            answer: e.target.value,
+            asker: decoded.result.username,
+        });
+    };
+
+    onQuestionChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
         this.setState({
             post: e.target.value,
+            type: "post",
+            asker: decoded.result.username
         });
     };
 
     onTitleChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
         this.setState({
             post: e.target.value,
-            type: "post"
+            type: "post",
+            answerer: decoded.result.username
         });
     };
 
     onCategoryChange = e => {
-        const token = localStorage.usertoken;
-        const decoded = jwt_decode(token);
         this.setState({
             category: e.target.value,
-            asker: decoded.result.username
         });
     };
 
@@ -65,7 +80,9 @@ class Navigation extends Component {
             category: this.state.category,
             asker: this.state.asker,
             type: this.state.type,
-            title: this.state.title
+            title: this.state.title,
+            answerer: this.state.answerer,
+            answer: this.state.answer
         };
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
@@ -245,7 +262,7 @@ class Navigation extends Component {
                                                         rows="2"
                                                         class="form-control col-sm-9"
                                                         value={this.state.post}
-                                                        onChange={this.onPostChange}
+                                                        onChange={this.onQuestionChange}
                                                         aria-describedby="questionHere"
                                                         placeholder="Start your question with 'What', 'Why', 'How', etc. "
                                                         required
@@ -286,7 +303,7 @@ class Navigation extends Component {
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
                                                     <input
                                                         class="form-control col-sm-9 font-weight-bold"
-                                                        value={this.state.title}
+                                                        value={this.state.post}
                                                         onChange={this.onTitleChange}
                                                         aria-describedby="titleHere"
                                                         placeholder="Give a Meaningful Title to Your Post..."
@@ -296,7 +313,7 @@ class Navigation extends Component {
                                                     <textarea
                                                         rows="5"
                                                         class="form-control col-sm-9 mt-3"
-                                                        value={this.state.post}
+                                                        value={this.state.answer}
                                                         onChange={this.onPostChange}
                                                         aria-describedby="postHere"
                                                         placeholder="Write your post here..."
@@ -322,7 +339,7 @@ class Navigation extends Component {
                                                     <option value="others">Others</option>
                                                 </select>
                                                 <small id="postWarning" class="form-text text-muted col-sm-11">
-                                                    Your post will be anonymous but any inapporpriate content will be filtered by us.
+                                                    Your post will not be anonymous and any inapporpriate content will be filtered by us.
                                                     </small>
                                             </div>
                                             <div class="modal-footer mb-0 pb-0">

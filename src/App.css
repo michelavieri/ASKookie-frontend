@@ -82,6 +82,10 @@ body {
   font-size: 12px;
 }
 
+.muted-text {
+  color: rgb(129, 129, 129);
+}
+
 .sub-link:hover {
   color:black;
   text-decoration: none;

@@ -11,7 +11,7 @@ export class Student_Life extends Component {
         };
     }
     componentDidMount() {
-        fetch('/feeds/student_life')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/student_life')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }

@@ -15,7 +15,7 @@ export class Answer extends Component {
         };
     }
     componentDidMount() {
-        fetch('/home')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => this.setState({
                 feeds: res.data,
@@ -64,7 +64,7 @@ export class Answer extends Component {
     };
 
     getData = () => {
-        fetch('/home')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(response => response.json())
             .then(feeds => {
                 const { category } = this.state;

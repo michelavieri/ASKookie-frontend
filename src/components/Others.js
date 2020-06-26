@@ -11,7 +11,7 @@ export class Others extends Component {
         };
     }
     componentDidMount() {
-        fetch('/feeds/others')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/others')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }

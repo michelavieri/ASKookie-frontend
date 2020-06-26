@@ -11,7 +11,7 @@ export class Faculties extends Component {
         };
     }
     componentDidMount() {
-        fetch('/feeds/faculties')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/faculties')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }

@@ -11,7 +11,7 @@ export class Accommodation extends Component {
         };
     }
     componentDidMount() {
-        fetch('/feeds/accommodation')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/accommodation')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }

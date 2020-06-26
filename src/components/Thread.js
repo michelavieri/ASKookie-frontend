@@ -16,7 +16,7 @@ export class Thread extends Component {
     }
     componentDidMount() {
 
-        fetch('/home')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }
@@ -42,7 +42,7 @@ export class Thread extends Component {
             answerer: this.state.answerer
         };
         axios
-            .post('/answer', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/answer', data)
             .then(
                 res => {
                     console.log(res);

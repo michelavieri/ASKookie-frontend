@@ -11,7 +11,7 @@ export class Exchange_Noc extends Component {
         };
     }
     componentDidMount() {
-        fetch('/feeds/exchange_noc')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/exchange_noc')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
     }

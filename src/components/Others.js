@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
+import Linkify from 'react-linkify';
 
 export class Others extends Component {
     constructor() {
@@ -79,29 +80,31 @@ export class Others extends Component {
                         </div>
 
                         {/* feeds */}
-                        {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != "").map((feeds, index) => (
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul class="list-group">
-                                        <li>
-                                            <div class="sub-text">
-                                                <NavLink class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                        <Linkify>
+                            {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != "").map((feeds, index) => (
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            <li>
+                                                <div class="sub-text">
+                                                    <NavLink class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                         &middot; posted by
                                         <NavLink class="sub-link" to=""><h8> {feeds.asker} </h8></NavLink>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <NavLink class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
-                                        </li>
-                                        <li>
-                                            <div class="show-more" data-type="text" data-number="80">
-                                                <p>{feeds.answer} </p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <NavLink class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
+                                            </li>
+                                            <li>
+                                                <div class="show-more" data-type="text" data-number="80">
+                                                    <p class="whiteSpace">{feeds.answer} </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </Linkify>
                         {/* end of feeds */}
                     </div>
 
@@ -112,7 +115,7 @@ export class Others extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == "").slice(0,6).map((feeds, index) => (
+                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == "").slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

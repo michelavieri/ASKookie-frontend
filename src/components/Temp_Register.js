@@ -91,7 +91,7 @@ export class Temp_Register extends Component {
                             <div class="form-group row">
                                 <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control form-control-sm" placeholder="Enter Email"
+                                    <input type="email" class="form-control form-control-sm" placeholder="Enter Email"
                                         value={this.state.email} onChange={this.handleEmailChange} />
                                 </div>
                             </div>

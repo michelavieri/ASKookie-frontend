@@ -27,7 +27,7 @@ class Navigation extends Component {
             category: "",
             asker: "",
             answerer: "",
-            type: "question",
+            type: "",
             answer: ""
         };
 
@@ -60,7 +60,6 @@ class Navigation extends Component {
         const decoded = jwt_decode(token);
         this.setState({
             post: e.target.value,
-            type: "post",
             answerer: decoded.result.username
         });
     };
@@ -71,13 +70,37 @@ class Navigation extends Component {
         });
     };
 
-    handleSubmit = e => {
+    handleSubmitAsk = e => {
         e.preventDefault();
         const data = {
             post: this.state.post,
             category: this.state.category,
             asker: this.state.asker,
-            type: this.state.type,
+            type: "question",
+            answerer: this.state.answerer,
+            answer: this.state.answer
+
+            
+        };
+        console.log(data);
+        axios
+            .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
+            .then(res => {
+                console.log(res);
+                console.log(this.props);
+                this.props.history.push(`/thread/${res.data.data.insertId}`);
+                window.location.reload(false);
+            })
+            .catch(err => console.log(err));
+    };
+
+    handleSubmitPost = e => {
+        e.preventDefault();
+        const data = {
+            post: this.state.post,
+            category: this.state.category,
+            asker: this.state.asker,
+            type: "post",
             answerer: this.state.answerer,
             answer: this.state.answer
 
@@ -254,7 +277,7 @@ class Navigation extends Component {
 
                                 <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
                                     <div class="tab-pane fade show active ml-5 text-left mr-5" id="nav-ask" role="tabpanel" aria-labelledby="nav-ask-tab">
-                                        <form className="ask" onSubmit={this.handleSubmit}>
+                                        <form className="ask" onSubmit={this.handleSubmitAsk}>
                                             <div class="form-row mb-3">
                                                 <div class="form-row mb-3">
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
@@ -297,7 +320,7 @@ class Navigation extends Component {
                                         </form>
                                     </div>
                                     <div class="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
-                                        <form className="post" onSubmit={this.handleSubmit}>
+                                        <form className="post" onSubmit={this.handleSubmitPost}>
                                             <div class="form-row align-items-left mb-3 text-left">
                                                 <div class="form-row align-items-left mb-3">
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>

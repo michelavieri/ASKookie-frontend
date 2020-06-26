@@ -28,7 +28,6 @@ class Navigation extends Component {
             asker: "",
             answerer: "",
             type: "question",
-            title: "",
             answer: ""
         };
 
@@ -52,8 +51,7 @@ class Navigation extends Component {
         const decoded = jwt_decode(token);
         this.setState({
             post: e.target.value,
-            type: "post",
-            asker: decoded.result.username
+            asker: decoded.result.username,
         });
     };
 
@@ -80,10 +78,12 @@ class Navigation extends Component {
             category: this.state.category,
             asker: this.state.asker,
             type: this.state.type,
-            title: this.state.title,
             answerer: this.state.answerer,
             answer: this.state.answer
+
+            
         };
+        console.log(data);
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
@@ -218,7 +218,7 @@ class Navigation extends Component {
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src={profilePicture} alt ="" width="38" class="rounded-circle" /></NavLink>
+                                        <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <NavLink class="dropdown-item" to="#" >
                                             Signed in as <br /> {this.getUsername()}

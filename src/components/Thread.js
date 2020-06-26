@@ -93,7 +93,7 @@ export class Thread extends Component {
                                                 </li>
                                             }
 
-                                            {feeds.answer == null &&
+                                            {feeds.answer == "" &&
                                                 <li>
                                                     {localStorage.usertoken &&
                                                         <form className="post" onSubmit={this.handleSubmit}>
@@ -107,7 +107,7 @@ export class Thread extends Component {
                                                                     required />
                                                                 <small class="form-text text-muted col-sm-11">
                                                                     Inappropriate or irrelevant answers will be filtered accordingly.
-                                                </small>
+                                                                </small>
                                                             </div>
 
 
@@ -156,7 +156,7 @@ export class Thread extends Component {
                                     <div>
                                         <h2> <b>Answer: </b></h2>
                                         < Linkify >
-                                            {feeds.answer != null &&
+                                            {feeds.answer != "" &&
                                                 <div class="card mb-3">
                                                     <div class="card-body mr-4">
                                                         <ul>
@@ -174,18 +174,18 @@ export class Thread extends Component {
                                                     </div>
                                                 </div>
                                             }
-                                            {feeds.answer == null &&
-                                            <div class="card mb-3">
-                                                <div class="card-body mr-4">
+                                            {feeds.answer == "" &&
+                                                <div class="card mb-3">
+                                                    <div class="card-body mr-4">
                                                         <ul>
                                                             <li>
                                                                 <div class="muted-text mt-3">
-                                                                No answer yet for this question! Your contribution would be appreciated!
+                                                                    No answer yet for this question! Your contribution would be appreciated!
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </div>
-                                            </div>
+                                                </div>
                                             }
                                         </Linkify>
                                     </div>
@@ -201,7 +201,7 @@ export class Thread extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == null).slice(0, 6).map((feeds, index) => (
+                                {this.state.feeds && this.state.feeds.filter(feeds => feeds.answer == "").slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

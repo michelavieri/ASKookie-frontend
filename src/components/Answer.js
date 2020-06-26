@@ -152,7 +152,7 @@ export class Answer extends Component {
                                     Questions for You
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    {this.state.filteredQuestions.filter(feeds => feeds.answer == null).map((feeds, index) => (
+                                    {this.state.filteredQuestions.filter(feeds => feeds.answer == "").map((feeds, index) => (
                                         <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                     ))}
                                 </ul>

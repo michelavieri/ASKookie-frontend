@@ -46,6 +46,7 @@ export class Thread extends Component {
             .then(
                 res => {
                     console.log(res);
+                    window.location.reload(false);
                 })
             .catch(err => console.log(err));
     };
@@ -118,8 +119,7 @@ export class Thread extends Component {
                                                 </label>
                                             </div> */}
                                                             <br />
-                                                            <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right"
-                                                                onClick={this.refreshPage}>
+                                                            <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right">
                                                                 Answer
                                                 </button>
                                                         </form>

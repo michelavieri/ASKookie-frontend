@@ -1,0 +1,14 @@
+#/answer 
+#/signin
+#/signinform
+#/register
+#/faculties
+#/accommodation
+#/student_life
+#/job_intern
+#/exchange_noc
+#/others
+#/about_us
+#/thread/:id
+
+/* https://whispering-hamlet-08619.herokuapp.com/:splat 200

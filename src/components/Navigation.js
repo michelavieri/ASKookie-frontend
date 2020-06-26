@@ -34,7 +34,8 @@ class Navigation extends Component {
         this.onPostChange = this.onPostChange.bind(this);
         this.onCategoryChange = this.onCategoryChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitAsk = this.handleSubmitAsk.bind(this);
+        this.handleSubmitPost = this.handleSubmitPost.bind(this);
     }
 
     onPostChange = e => {

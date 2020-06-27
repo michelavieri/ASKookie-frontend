@@ -137,7 +137,7 @@ body {
 }
 
 .btn-category {
-  color:black;
+  color:black !important;
 }
 
 .btn-category:hover {

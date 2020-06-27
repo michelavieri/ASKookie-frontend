@@ -45,11 +45,11 @@ export class Profile extends Component {
                     <div class="col-sm-3">
                         <img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />
                     </div>
-                    <div class="col-sm-6 profile-picture">
+                    <div class="col-sm-6 profile-content">
                         {this.state.name != '' &&
                             <ul class="list-group">
                                 <li>
-                                    <h2>{this.state.name}</h2>
+                                    <h2 class="name">{this.state.name}</h2>
                                 </li>
                                 <li>
                                         <button class="btn btn-logout">

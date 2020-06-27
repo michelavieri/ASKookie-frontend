@@ -28,7 +28,7 @@ class Navigation extends Component {
             asker: "",
             answerer: "",
             type: "",
-            answer: ""
+            answer: "",
         };
 
         this.onPostChange = this.onPostChange.bind(this);

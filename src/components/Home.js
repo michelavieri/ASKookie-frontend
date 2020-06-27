@@ -27,10 +27,10 @@ export class Home extends Component {
     };
 
     componentDecorator = (href, text, key) => (
-        <a href={href} key={key} target="_blank"  rel="noopener noreferrer">
-          {text}
+        <a href={href} key={key} target="_blank" rel="noopener noreferrer">
+            {text}
         </a>
-      );
+    );
 
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -38,7 +38,7 @@ export class Home extends Component {
 
     shuffleArray = () => {
         let i = this.state.feeds.length - 1;
-        var array = this.state.feeds;
+        var array = this.state.feeds.slice();
         for (; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             const temp = array[i];
@@ -48,8 +48,22 @@ export class Home extends Component {
         return array;
     }
 
+    mostRecent = () => {
+        let i = this.state.feeds.length - 1;
+        var array = this.state.feeds.slice();
+        var j = 0;
+        for (; i > j; i--) {
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+            j++;
+        }
+        return array;
+    }
+
     render() {
         var shuffledPosts = this.shuffleArray();
+        var mostRecentPosts = this.mostRecent();
 
         return (
             <div class="container-fluid text-center margin-top">
@@ -92,7 +106,7 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer != '').map((feeds, index) => (
+                        {mostRecentPosts && mostRecentPosts.filter(feeds => feeds.answer != '').map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <ul class="list-group">

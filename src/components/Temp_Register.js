@@ -87,19 +87,19 @@ export class Temp_Register extends Component {
                         <h1 class="text-animation">
                             <span>Register Now</span>
                         </h1>
-                        <form onSubmit={this.handleSubmit}>
+                        <form noValidate onSubmit={this.handleSubmit}>
                             <div class="form-group row">
-                                <label for="email" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
+                                <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                                 <div class="col-sm-8">
-                                    <input type="email" class="form-control form-control-sm" placeholder="Enter Email"
-                                        value={this.state.email} onChange={this.handleEmailChange} required />
+                                    <input class="form-control form-control-sm" placeholder="Enter Email"
+                                        value={this.state.email} onChange={this.handleEmailChange} />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                                 <div class="col-sm-8">
                                     <input class="form-control form-control-sm" placeholder="Enter Username"
-                                        value={this.state.username} onChange={this.handleUserChange} required />
+                                        value={this.state.username} onChange={this.handleUserChange} />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -112,13 +112,12 @@ export class Temp_Register extends Component {
                                         onChange={this.handlePassChange}
                                         buttonClassName= "pass"
                                         inputClassName="passForm"
-                                        required
                                     />
                                 </div>
                             </div>
                             {this.state.success === 1 &&
                                 <div className="alert alert-danger" role="alert">
-                                    Username already exists
+                                    Username/Email already exists
                         </div>}
                             <div class="container-sign-in-btn position-fixed row ml-0">
                                 <ul class="pl-2">

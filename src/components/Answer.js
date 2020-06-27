@@ -139,7 +139,7 @@ export class Answer extends Component {
                                 <div class="card-footer">
                                     <NavLink class="text-dark small" to="/about_us">About us</NavLink>
                                     <br />
-                                    <a class="text-dark small" href="mailto:askookie@gmail.com">Email us</a>
+                                    <a class="text-dark small" href="mailto:askookieforum@gmail.com">Email us</a>
                                 </div>
                             </div>
                         </div>

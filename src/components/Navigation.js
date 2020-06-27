@@ -248,7 +248,7 @@ class Navigation extends Component {
                                             Signed in as <br /> {this.getUsername()}
                                         </NavLink>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item content-dropdown" href="mailto:askookie@gmail.com">Help</a>
+                                        <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
                                         <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
                                     </div>
                                 </li>

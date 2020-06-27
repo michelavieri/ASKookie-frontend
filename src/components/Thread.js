@@ -89,7 +89,7 @@ export class Thread extends Component {
                                             {feeds.type == "post" &&
                                                 <li>
                                                     <div class="col-sm-9">
-                                                        {feeds.answer}
+                                                        <p class="whiteSpace">{feeds.answer}</p>
                                                     </div>
                                                 </li>
                                             }

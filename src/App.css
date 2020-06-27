@@ -169,6 +169,10 @@ body {
   color: #aaa;
 }
 
+.profile-picture {
+  margin-top: 100px;
+}
+
 .questionButton {
   border: none;
   background-color: white;
@@ -391,6 +395,28 @@ li {
   text-decoration: none;
   font-weight: bold;
   color: #FC5D42;
+}
+
+.btn-logout {
+  background-color: black;
+  padding-right: 10px;
+  width: 200px;
+  margin-top: 20px;
+  position:relative;
+}
+
+.btn-logout:hover {
+  background-color: white;
+}
+
+.link-logout {
+  color: #FC5D42;
+  font-weight: bold;
+}
+
+.link-logout:hover {
+  color: #FC5D42;
+  text-decoration: none;
 }
 
 .orange-color {

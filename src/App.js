@@ -14,6 +14,7 @@ import {Student_Life} from './components/Student_Life'
 import {Job_Intern} from './components/Job_Intern'
 import {Exchange_Noc} from './components/Exchange_Noc'
 import {Others} from './components/Others'
+import {Profile} from './components/Profile'
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
@@ -35,6 +36,7 @@ function App() {
           <Route path='/job_intern' component={Job_Intern} />
           <Route path='/exchange_noc' component={Exchange_Noc} />
           <Route path='/others' component={Others} />
+          <Route path='/profile' component={Profile} />
         </Switch>
       </div>
     </BrowserRouter>

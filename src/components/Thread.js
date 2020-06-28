@@ -15,6 +15,8 @@ export class Thread extends Component {
             user: "", //current user
             user_post: "" //user who post a certain question
         };
+
+        this.getUserPost = this.getUserPost.bind(this);
     }
     componentDidMount() {
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
@@ -24,8 +26,7 @@ export class Thread extends Component {
                     { feeds: res.data }, 
                     () => console.log('Data fetched', res),
                     this.getUserPost(),
-                    console.log("userpost", this.state.user_post),
-                    console.log(this.props.match.params.id)
+                    console.log("userpost" + this.state.user_post),
                     ))
     }
 
@@ -78,20 +79,21 @@ export class Thread extends Component {
     };
 
     getUserPost = () => { //get the user who post the question/post
-        const { postId } = this.props.match.params.id; //get post id
+        const postId = this.props.match.params.id; //get post id
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user
         console.log("thisisthe USERNAME", this.state.user);
         console.log("postID", postId);
-        // axios
-        //     .get('https://whispering-hamlet-08619.herokuapp.com/user/:' + postId) //search user who post the question
-        //     .then(res => {
-        //         console.log(res.data);
-        //         this.setState({ user_post: res.data.asker }); //set user_post 
-        //     })
-        //     .catch(err => console.log(err));
+         axios
+             .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
+             .then(res => {
+                 //console.log(res.data.data.asker);
+                 this.setState({ user_post: res.data.data.asker }); //set user_post 
+                 console.log(this.state.user_post);
+             })
+             .catch(err => console.log(err));
     };
 
     refreshPage() {
@@ -192,9 +194,9 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
-                                            {/* {this.state.user == this.state.user_post &&
+                                             {this.state.user == this.state.user_post &&
                                                 <button class="btn btn-outline-danger pull-right" onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>
-                                            } */}
+                                            } 
                                         </ul>
                                     </div>
                                 </div>

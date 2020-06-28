@@ -12,14 +12,16 @@ export class Thread extends Component {
             feeds: [],
             answer: "",
             answerer: "",
+            user: "",
+            user_post: ""
         };
     }
-    componentDidMount() {
+    /*componentDidMount() {
 
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-    }
+    }*/
 
     onAnswerChange = e => {
         const token = localStorage.usertoken;
@@ -49,6 +51,38 @@ export class Thread extends Component {
                     window.location.reload(false);
                 })
             .catch(err => console.log(err));
+    };
+
+    handleDelete = e => {
+        const { id_del } = this.props.match.params;
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+
+        this.setState({ user: decoded.result.username });
+
+        e.preventDefault();
+
+        const data_del = { postID: id_del };
+
+        axios
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete', data_del)
+            .then(res => {
+                console.log(res);
+                this.props.history.push(`/home`);
+                window.location.reload(false);
+                console.log("Post deleted");
+            })
+            .catch(err => console.log(err));
+    };
+
+    componentDidMount() {
+        const postId = this.state.postID;
+        fetch('https://whispering-hamlet-08619.herokuapp.com/user/:'+postId)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.data);
+                this.setState({ user_post: res.data });
+            })
     };
 
     refreshPage() {

@@ -78,7 +78,7 @@ export class Thread extends Component {
 
     getUserPost = () => { //get the user who post the question/post
         const { postId } = this.props.match.params.id; //get post id
-        const token = localStorage.usertoken;
+        const token = localStorage.usertoken; 
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user

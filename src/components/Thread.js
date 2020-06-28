@@ -191,7 +191,7 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
-                                             {this.state.user == this.state.user_post &&
+                                             {localStorage.usertoken && this.state.user == this.state.user_post &&
                                                 <button class="btn btn-outline-danger" style={{width: 100 }} onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>               
                                             } 
                                         </ul>

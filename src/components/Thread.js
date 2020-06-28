@@ -17,10 +17,15 @@ export class Thread extends Component {
         };
     }
     componentDidMount() {
-
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
-            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+            .then(res => 
+                this.setState(
+                    { feeds: res.data }, 
+                    () => console.log('Data fetched', res),
+                    this.getUserPost(),
+                    console.log("userpost", this.state.user_post)
+                    ))
     }
 
     onAnswerChange = e => {
@@ -55,10 +60,6 @@ export class Thread extends Component {
 
     handleDelete = e => { //deleting post
         const { id_del } = this.props.match.params; //get id from parameter
-        const token = localStorage.usertoken;
-        const decoded = jwt_decode(token); //get current cuser
-
-        this.setState({ user: decoded.result.username }); //set current user
 
         e.preventDefault();
 
@@ -75,15 +76,21 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     };
 
-    getUserPost() { //get the user who post the question/post
-        const { postId } = this.props.match.params; //get post id
-        axios
-            .get('https://whispering-hamlet-08619.herokuapp.com/user/:'+postId) //search user who post the question
-            .then(res => {
-                console.log(res.data);
-                this.setState({ user_post: res.data }); //set user_post 
-            })
-            .catch(err => console.log(err));
+    getUserPost = () => { //get the user who post the question/post
+        const { postId } = this.props.match.params.id; //get post id
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token); //get current cuser
+
+        this.setState({ user: decoded.result.username }); //set current user
+        console.log("thisisthe USERNAME", this.state.user);
+        console.log("postID", postId);
+        // axios
+        //     .get('https://whispering-hamlet-08619.herokuapp.com/user/:' + postId) //search user who post the question
+        //     .then(res => {
+        //         console.log(res.data);
+        //         this.setState({ user_post: res.data }); //set user_post 
+        //     })
+        //     .catch(err => console.log(err));
     };
 
     refreshPage() {
@@ -123,11 +130,11 @@ export class Thread extends Component {
                                                 <hr class="mt-0 mb-4" />
                                             </li>
                                             {feeds.type == "post" &&
-                                                <li>
-                                                    <div class="col-sm-9">
-                                                        <p class="whiteSpace">{feeds.answer}</p>
-                                                    </div>
-                                                </li>
+                                                    <li>
+                                                        <div class="col-sm-9">
+                                                            <p class="whiteSpace">{feeds.answer}</p>
+                                                        </div>
+                                                    </li>
                                             }
 
                                             {feeds.answer == "" &&
@@ -184,6 +191,9 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
+                                            {/* {this.state.user == this.state.user_post &&
+                                                <button class="btn btn-outline-danger pull-right" onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>
+                                            } */}
                                         </ul>
                                     </div>
                                 </div>

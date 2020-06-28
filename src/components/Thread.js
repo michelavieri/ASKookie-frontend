@@ -24,7 +24,8 @@ export class Thread extends Component {
                     { feeds: res.data }, 
                     () => console.log('Data fetched', res),
                     this.getUserPost(),
-                    console.log("userpost", this.state.user_post)
+                    console.log("userpost", this.state.user_post),
+                    console.log(this.props.match.params.id)
                     ))
     }
 
@@ -59,7 +60,7 @@ export class Thread extends Component {
     };
 
     handleDelete = e => { //deleting post
-        const { id_del } = this.props.match.params; //get id from parameter
+        const { id_del } = this.props.match.params.id; //get id from parameter
 
         e.preventDefault();
 
@@ -78,7 +79,7 @@ export class Thread extends Component {
 
     getUserPost = () => { //get the user who post the question/post
         const { postId } = this.props.match.params.id; //get post id
-        const token = localStorage.usertoken; 
+        const token = localStorage.usertoken;
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user
@@ -88,7 +89,7 @@ export class Thread extends Component {
         //     .get('https://whispering-hamlet-08619.herokuapp.com/user/:' + postId) //search user who post the question
         //     .then(res => {
         //         console.log(res.data);
-        //         this.setState({ user_post: res.data }); //set user_post 
+        //         this.setState({ user_post: res.data.asker }); //set user_post 
         //     })
         //     .catch(err => console.log(err));
     };

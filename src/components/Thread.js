@@ -12,16 +12,16 @@ export class Thread extends Component {
             feeds: [],
             answer: "",
             answerer: "",
-            user: "",
-            user_post: ""
+            user: "", //current user
+            user_post: "" //user who post a certain question
         };
     }
-    /*componentDidMount() {
+    componentDidMount() {
 
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-    }*/
+    }
 
     onAnswerChange = e => {
         const token = localStorage.usertoken;
@@ -53,36 +53,37 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     };
 
-    handleDelete = e => {
-        const { id_del } = this.props.match.params;
+    handleDelete = e => { //deleting post
+        const { id_del } = this.props.match.params; //get id from parameter
         const token = localStorage.usertoken;
-        const decoded = jwt_decode(token);
+        const decoded = jwt_decode(token); //get current cuser
 
-        this.setState({ user: decoded.result.username });
+        this.setState({ user: decoded.result.username }); //set current user
 
         e.preventDefault();
 
         const data_del = { postID: id_del };
 
         axios
-            .delete('https://whispering-hamlet-08619.herokuapp.com/delete', data_del)
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete', data_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
-                this.props.history.push(`/home`);
+                this.props.history.push(`/home`); //redirect to home
                 window.location.reload(false);
                 console.log("Post deleted");
             })
             .catch(err => console.log(err));
     };
 
-    componentDidMount() {
-        const postId = this.state.postID;
-        fetch('https://whispering-hamlet-08619.herokuapp.com/user/:'+postId)
-            .then(res => res.json())
+    getUserPost() { //get the user who post the question/post
+        const { postId } = this.props.match.params; //get post id
+        axios
+            .get('https://whispering-hamlet-08619.herokuapp.com/user/:'+postId) //search user who post the question
             .then(res => {
                 console.log(res.data);
-                this.setState({ user_post: res.data });
+                this.setState({ user_post: res.data }); //set user_post 
             })
+            .catch(err => console.log(err));
     };
 
     refreshPage() {

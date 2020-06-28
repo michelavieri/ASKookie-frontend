@@ -71,8 +71,7 @@ export class Thread extends Component {
             .delete('https://whispering-hamlet-08619.herokuapp.com/delete/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
-                // this.props.history.push(`/`); //redirect to home
-                // window.location.reload(false);
+                this.props.history.push(`/`); //redirect to home
                 console.log("Post deleted");
             })
             .catch(err => console.log(err));

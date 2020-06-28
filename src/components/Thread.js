@@ -25,8 +25,7 @@ export class Thread extends Component {
                 this.setState(
                     { feeds: res.data }, 
                     () => console.log('Data fetched', res),
-                    this.getUserPost(),
-                    console.log("userpost" + this.state.user_post),
+                    this.getUserPost()
                     ))
     }
 
@@ -61,18 +60,19 @@ export class Thread extends Component {
     };
 
     handleDelete = e => { //deleting post
-        const { id_del } = this.props.match.params.id; //get id from parameter
+        const id_del = this.props.match.params.id; //get id from parameter
 
         e.preventDefault();
 
         const data_del = { postID: id_del };
+        console.log("iddel", id_del);
 
         axios
             .delete('https://whispering-hamlet-08619.herokuapp.com/delete', data_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
-                this.props.history.push(`/home`); //redirect to home
-                window.location.reload(false);
+                // this.props.history.push(`/`); //redirect to home
+                // window.location.reload(false);
                 console.log("Post deleted");
             })
             .catch(err => console.log(err));
@@ -84,14 +84,11 @@ export class Thread extends Component {
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user
-        console.log("thisisthe USERNAME", this.state.user);
-        console.log("postID", postId);
          axios
              .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
              .then(res => {
                  //console.log(res.data.data.asker);
                  this.setState({ user_post: res.data.data.asker }); //set user_post 
-                 console.log(this.state.user_post);
              })
              .catch(err => console.log(err));
     };
@@ -195,7 +192,7 @@ export class Thread extends Component {
                                                 </li>
                                             }
                                              {this.state.user == this.state.user_post &&
-                                                <button class="btn btn-outline-danger pull-right" onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>
+                                                <button class="btn btn-outline-danger" style={{width: 100 }} onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>
                                             } 
                                         </ul>
                                     </div>

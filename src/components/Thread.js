@@ -24,10 +24,10 @@ export class Thread extends Component {
             .then(res => {
                 this.setState({ feeds: res.data });
                 console.log('Data fetched', res);
-                if(localStorage.usertoken !=null) {
+                if(localStorage.usertoken) {
                 this.getUserPost();
                 }
-            })
+            });
     }
 
     onAnswerChange = e => {

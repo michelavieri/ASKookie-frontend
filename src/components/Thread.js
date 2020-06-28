@@ -21,12 +21,13 @@ export class Thread extends Component {
     componentDidMount() {
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
-            .then(res => 
-                this.setState(
-                    { feeds: res.data }, 
-                    () => console.log('Data fetched', res),
-                    this.getUserPost()
-                    ))
+            .then(res => {
+                this.setState({ feeds: res.data });
+                console.log('Data fetched', res);
+                if(localStorage.usertoken !=null) {
+                this.getUserPost();
+                }
+            })
     }
 
     onAnswerChange = e => {
@@ -190,7 +191,7 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
-                                             {localStorage.usertoken && this.state.user == this.state.user_post &&
+                                             {this.state.user == this.state.user_post &&
                                                 <button class="btn btn-outline-danger" style={{width: 100 }} onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>               
                                             } 
                                         </ul>

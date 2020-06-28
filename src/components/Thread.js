@@ -64,11 +64,10 @@ export class Thread extends Component {
 
         e.preventDefault();
 
-        const data_del = { postID: id_del };
         console.log("iddel", id_del);
 
         axios
-            .delete('https://whispering-hamlet-08619.herokuapp.com/delete', data_del) //delete post with id id_del
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
                 // this.props.history.push(`/`); //redirect to home

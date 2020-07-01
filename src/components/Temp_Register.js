@@ -91,14 +91,14 @@ export class Temp_Register extends Component {
                             <div class="form-group row">
                                 <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Email</label>
                                 <div class="col-sm-8">
-                                    <input type="email" class="form-control form-control-sm" placeholder="Enter Email"
+                                    <input type="email" class="form-control form-control-sm" placeholder="Enter Email" maxlength="50"
                                         value={this.state.email} onChange={this.handleEmailChange} />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control form-control-sm" placeholder="Enter Username"
+                                    <input class="form-control form-control-sm" placeholder="Enter Username" maxlength="20"
                                         value={this.state.username} onChange={this.handleUserChange} />
                                 </div>
                             </div>
@@ -112,6 +112,7 @@ export class Temp_Register extends Component {
                                         onChange={this.handlePassChange}
                                         buttonClassName= "pass"
                                         inputClassName="passForm"
+                                        maxlength="50"
                                     />
                                 </div>
                             </div>

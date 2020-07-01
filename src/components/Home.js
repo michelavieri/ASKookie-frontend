@@ -108,7 +108,7 @@ export class Home extends Component {
                         {/* feeds */}
                         {mostRecentPosts && mostRecentPosts.filter(feeds => feeds.answer != '').map((feeds, index) => (
                             <div class="card mb-3">
-                                <div class="card-body">
+                                <div class="card-body pb-1">
                                     <ul class="list-group">
                                         <li>
                                             <div class="sub-text">
@@ -125,6 +125,13 @@ export class Home extends Component {
                                                     <p class="whiteSpace">{feeds.answer}</p>
                                                 </div>
                                             </Linkify>
+                                        </li>
+                                        <li class="p-0 feeds-footer">
+                                            <button class="btn btn-icon heart pr-1 pl-0"><i class="fa fa-heart-o" /></button>256
+                                            <button class="btn btn-icon pl-3 comment pr-1"><i class="fa fa-comment-o" /></button>10
+                                            <button class="btn btn-icon pl-3 pr-1 share"><i class="fa fa-paper-plane-o" /></button>
+                                            <button class="btn btn-icon pl-3 pr-1 save"><i class="fa fa-bookmark-o" /></button>
+                                            <button class="btn btn-icon pr-1 pl-3 report"><i class="fa fa-exclamation-circle" /></button>
                                         </li>
                                     </ul>
                                 </div>

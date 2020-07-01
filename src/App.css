@@ -149,6 +149,65 @@ body {
   color:black;
 }
 
+.btn-icon:focus, .btn-icon:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.heart {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 3px;
+}
+
+.heart:hover {
+  color: #FC5D42;
+}
+
+.comment {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 4px;
+}
+
+.comment:hover {
+  color: #4D60A5;
+}
+
+.share {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 2.5px;
+}
+
+.share:hover {
+  color: #4D60A5;
+}
+
+.save {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 2px;
+}
+
+.save:hover {
+  color: #4D60A5;
+}
+
+.report {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 2px;
+  /* padding-left: 7px; */
+}
+
+.report:hover {
+  color: #FC5D42;
+}
+
+.feeds-footer {
+  color: rgb(129, 129, 129);
+}
 
 @media screen and (min-width: 600px) {
 .has-search .form-control {

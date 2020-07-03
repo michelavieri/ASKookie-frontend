@@ -244,7 +244,7 @@ class Navigation extends Component {
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                        <NavLink class="dropdown-item" to="profile" >
+                                        <NavLink class="dropdown-item" to="/profile" >
                                             Signed in as <br /> {this.getUsername()}
                                         </NavLink>
                                         <div class="dropdown-divider"></div>

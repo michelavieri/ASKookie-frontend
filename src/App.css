@@ -154,23 +154,48 @@ body {
   box-shadow: none;
 }
 
-.heart {
+.like {
   color: rgb(129, 129, 129);
   position: relative;
   bottom: 3px;
 }
 
-.heart:hover {
+.like:hover {
   color: #FC5D42;
+}
+
+.dislike {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 3px;
+}
+
+.dislike:hover {
+  color: green;
+}
+
+.dislike-count {
+  padding-bottom: 0px; 
+  margin-bottom: 0px;
 }
 
 .comment {
   color: rgb(129, 129, 129);
   position: relative;
-  bottom: 4px;
+  bottom: 0px;
 }
 
 .comment:hover {
+  color: #4D60A5;
+}
+
+.comment-content:not(.comment) {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 3px;
+}
+
+.comment-content:hover {
   color: #4D60A5;
 }
 
@@ -197,7 +222,7 @@ body {
 .report {
   color: rgb(129, 129, 129);
   position: relative;
-  bottom: 2px;
+  bottom: 3px;
   /* padding-left: 7px; */
 }
 
@@ -205,16 +230,6 @@ body {
   color: #FC5D42;
 }
 
-.answer {
-  color: rgb(129, 129, 129);
-  position: relative;
-  bottom: 2px;
-  /* padding-left: 7px; */
-}
-
-.answer:hover {
-  color:  #4D60A5;
-}
 
 .btn-link {
   color:rgb(129, 129, 129);
@@ -669,6 +684,11 @@ input[type="search"]::-webkit-search-cancel-button {
   background-color: #ed184f!important;
   background-image: linear-gradient(90deg, #FC5D42, #fd8b55);
 }
+
+.greyBg {
+  background-color: #EFEFEF !important;
+}
+
 .intro-banner-vdo-play-btn{
   height:60px;
   width:60px;

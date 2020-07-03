@@ -130,13 +130,13 @@ export class Home extends Component {
                                                 </div>
                                             </Linkify>
                                         </li>
-                                        <li class="p-0 feeds-footer">
-                                            <button class="btn btn-icon heart pr-1 pl-0"><i class="fa fa-heart-o" /></button>256
-                                            <button class="btn btn-icon pl-3 comment pr-1"><NavLink to={`thread/${feeds.postID}`} class="btn-link"><i class="fa fa-comment-o" /></NavLink></button>10
-                                            <button class="btn btn-icon pr-1 pl-3 answer"><NavLink to={`thread/${feeds.postID}`} class="btn-link"><i class="fa fa-pencil" /></NavLink></button>
-                                            <button class="btn btn-icon pl-3 pr-1 share"><i class="fa fa-paper-plane-o" /></button>
-                                            <button class="btn btn-icon pl-3 pr-1 save"><i class="fa fa-bookmark-o" /></button>
-                                            <button class="btn btn-icon pr-1 pl-3 report"><i class="fa fa-exclamation-circle" /></button>
+                                        <li class="feeds-footer">
+                                            <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
+                                            <button class="btn btn-icon pl-3 pr-1 comment-content" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o comment pr-1" />10</button>
+                                            <button class="btn btn-icon pl-3 pr-1 share" title="Share"><i class="fa fa-share" /></button>
+                                            <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
+                                            <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -167,6 +167,28 @@ export class Home extends Component {
                     </div>
                     {/* end of unanswered questions */}
                 </div>
+
+
+                {/* modal for comments */}
+                <div id="commentsModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header greyBg">
+                                    <h4 class="modal-title">Comments (10)</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body text-left">
+                                    <p class="ml-3 mr-3">Comments Here</p>
+                                    <hr class="mt-0 mb-4" />
+                                    <p class="ml-3 mr-3">Comments Here</p>
+                                    <hr class="mt-0 mb-4" />
+                                    <p class="ml-3 mr-3">Comments Here</p>
+                                    <hr class="mt-0 mb-4" />
+                                    <p class="ml-3 mr-3">Comments Here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div >
         )
     }

@@ -21,15 +21,15 @@ export class Thread extends Component {
     }
     componentDidMount() {
         trackPromise(
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ feeds: res.data });
-                console.log('Data fetched', res);
-                if(localStorage.usertoken) {
-                this.getUserPost();
-                }
-            }));
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ feeds: res.data });
+                    console.log('Data fetched', res);
+                    if (localStorage.usertoken) {
+                        this.getUserPost();
+                    }
+                }));
     }
 
     onAnswerChange = e => {
@@ -85,13 +85,13 @@ export class Thread extends Component {
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user
-         axios
-             .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
-             .then(res => {
-                 //console.log(res.data.data.asker);
-                 this.setState({ user_post: res.data.data.asker }); //set user_post 
-             })
-             .catch(err => console.log(err));
+        axios
+            .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
+            .then(res => {
+                //console.log(res.data.data.asker);
+                this.setState({ user_post: res.data.data.asker }); //set user_post 
+            })
+            .catch(err => console.log(err));
     };
 
     refreshPage() {
@@ -131,14 +131,16 @@ export class Thread extends Component {
                                                 <hr class="mt-0 mb-4" />
                                             </li>
                                             {feeds.type == "post" &&
-                                                    <li>
-                                                        <div class="col-sm-9">
-                                                            <p class="whiteSpace">{feeds.answer}</p>
-                                                        </div>
-                                                    </li>
+                                                <li>
+                                                    <div class="col-sm-9">
+                                                        <p class="whiteSpace">{feeds.answer}</p>
+                                                    </div>
+                                                </li>
                                             }
 
-                                            {feeds.answer == "" &&
+
+                                            {feeds.type != "post" &&
+
                                                 <li>
                                                     {localStorage.usertoken &&
                                                         <form className="post" onSubmit={this.handleSubmit}>
@@ -156,12 +158,12 @@ export class Thread extends Component {
                                                             </div>
 
 
-                                                            {/* <div class="form-check row pull-left ml-3">
-                                                <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
-                                                <label class="form-check-label" for="anonymousCheck">
-                                                    Appear Anonymous to others
+                                                            <div class="form-check row pull-left ml-3">
+                                                                <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
+                                                                <label class="form-check-label" for="anonymousCheck">
+                                                                    Appear Anonymous to others
                                                 </label>
-                                            </div> */}
+                                                            </div>
                                                             <br />
                                                             <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right">
                                                                 Answer
@@ -192,20 +194,21 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
-                                             {localStorage.usertoken && this.state.user == this.state.user_post &&
-                                                <button class="btn btn-outline-danger" style={{width: 100 }} onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>               
-                                            } 
+
+                                            {localStorage.usertoken && this.state.user == this.state.user_post &&
+                                                <button class="btn btn-outline-danger" style={{ width: 100 }} onClick={this.handleDelete}><i class="fa fa-trash mr-2" />Delete</button>
+                                            }
                                         </ul>
                                     </div>
                                 </div>
 
                                 {feeds.type != "post" &&
                                     <div>
-                                        <h2> <b>Answer: </b></h2>
+                                        <h2> <b>Answers: </b></h2>
                                         < Linkify >
                                             {feeds.answer != "" &&
                                                 <div class="card mb-3">
-                                                    <div class="card-body mr-4">
+                                                    <div class="card-body mr-4 pb-0">
                                                         <ul>
                                                             <li>
                                                                 <div class="sub-text">
@@ -216,6 +219,10 @@ export class Thread extends Component {
                                                             </li>
                                                             <li>
                                                                 <p class="whiteSpace">{feeds.answer}</p>
+                                                            </li>
+                                                            <li class="feeds-footer">
+                                                                <button class="btn btn-icon heart pr-1 pl-0"><i class="fa fa-heart-o" /></button>25
+                                                                <button class="btn btn-icon pull-right report"><i class="fa fa-exclamation-circle" /> Report</button>
                                                             </li>
                                                         </ul>
                                                     </div>

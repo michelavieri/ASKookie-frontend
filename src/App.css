@@ -182,20 +182,10 @@ body {
 .comment {
   color: rgb(129, 129, 129);
   position: relative;
-  bottom: 0px;
-}
-
-.comment:hover {
-  color: #4D60A5;
-}
-
-.comment-content:not(.comment) {
-  color: rgb(129, 129, 129);
-  position: relative;
   bottom: 3px;
 }
 
-.comment-content:hover {
+.comment:hover {
   color: #4D60A5;
 }
 

@@ -132,7 +132,7 @@ export class Home extends Component {
                                         </li>
                                         <li class="feeds-footer">
                                             <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
-                                            <button class="btn btn-icon pl-3 pr-1 comment-content" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o comment pr-1" />10</button>
+                                            <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />10</button>
                                             <button class="btn btn-icon pl-3 pr-1 share" title="Share"><i class="fa fa-share" /></button>
                                             <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
                                             <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>

@@ -205,6 +205,21 @@ body {
   color: #FC5D42;
 }
 
+.answer {
+  color: rgb(129, 129, 129);
+  position: relative;
+  bottom: 2px;
+  /* padding-left: 7px; */
+}
+
+.answer:hover {
+  color:  #4D60A5;
+}
+
+.btn-link {
+  color:rgb(129, 129, 129);
+}
+
 .feeds-footer {
   color: rgb(129, 129, 129);
 }

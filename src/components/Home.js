@@ -132,7 +132,8 @@ export class Home extends Component {
                                         </li>
                                         <li class="p-0 feeds-footer">
                                             <button class="btn btn-icon heart pr-1 pl-0"><i class="fa fa-heart-o" /></button>256
-                                            <button class="btn btn-icon pl-3 comment pr-1"><i class="fa fa-comment-o" /></button>10
+                                            <button class="btn btn-icon pl-3 comment pr-1"><NavLink to={`thread/${feeds.postID}`} class="btn-link"><i class="fa fa-comment-o" /></NavLink></button>10
+                                            <button class="btn btn-icon pr-1 pl-3 answer"><NavLink to={`thread/${feeds.postID}`} class="btn-link"><i class="fa fa-pencil" /></NavLink></button>
                                             <button class="btn btn-icon pl-3 pr-1 share"><i class="fa fa-paper-plane-o" /></button>
                                             <button class="btn btn-icon pl-3 pr-1 save"><i class="fa fa-bookmark-o" /></button>
                                             <button class="btn btn-icon pr-1 pl-3 report"><i class="fa fa-exclamation-circle" /></button>

@@ -228,23 +228,23 @@ class Navigation extends Component {
 
 
                         <ul class="navbar-nav">
-                            {/* <li class="nav-item dropdown nav-icon">
+                            <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="#">Someone answered your question!</NavLink>
+                                <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
+                                    <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
                                     <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Your followed thread posted something new!</NavLink>
+                                    <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
                                     <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Someone commented on your answer!</NavLink>
+                                    <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
                                 </div>
-                                    </li> */}
+                                    </li>
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                        <NavLink class="dropdown-item" to="profile" >
+                                        <NavLink class="dropdown-item" to="/profile" >
                                             Signed in as <br /> {this.getUsername()}
                                         </NavLink>
                                         <div class="dropdown-divider"></div>

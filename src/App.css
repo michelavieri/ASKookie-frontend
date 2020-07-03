@@ -92,7 +92,7 @@ body {
 }
 
 .icon:hover {
-  opacity:50%;
+  opacity:0.5;
 }
 
 .bg-yellow {
@@ -323,6 +323,10 @@ li {
 .dropdown-menu {
   padding: 0px;
   width: 200px;
+}
+
+.notif {
+  width: 300px !important;
 }
 
 .dropdown-item {

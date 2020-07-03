@@ -4,6 +4,7 @@ import NavigationRouter2 from './Navigation'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
+import { trackPromise } from 'react-promise-tracker';
 
 export class Thread extends Component {
     constructor() {
@@ -19,6 +20,7 @@ export class Thread extends Component {
         this.getUserPost = this.getUserPost.bind(this);
     }
     componentDidMount() {
+        trackPromise(
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => {
@@ -27,7 +29,7 @@ export class Thread extends Component {
                 if(localStorage.usertoken) {
                 this.getUserPost();
                 }
-            });
+            }));
     }
 
     onAnswerChange = e => {

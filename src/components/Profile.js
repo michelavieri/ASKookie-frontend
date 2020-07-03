@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import NavigationRouter2 from './Navigation';
 import profilePicture from '../default_pp.png';
+import { trackPromise } from 'react-promise-tracker';
 
 export class Profile extends Component {
     constructor() {
@@ -12,6 +13,7 @@ export class Profile extends Component {
         };
     }
     componentDidMount() {
+        trackPromise(
         fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(res => res.json())
             .then(res => {
@@ -21,7 +23,7 @@ export class Profile extends Component {
                     const decoded = jwt_decode(token);
                     this.setState({ name: decoded.result.username });
                 }
-            })
+            }))
     };
 
     componentDecorator = (href, text, key) => (

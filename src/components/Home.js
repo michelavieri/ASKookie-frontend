@@ -5,6 +5,20 @@ import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
 import { trackPromise } from 'react-promise-tracker';
+import {
+    EmailShareButton,
+    EmailIcon,
+    FacebookShareButton,
+    FacebookIcon,
+    LineShareButton,
+    LineIcon,
+    TelegramShareButton,
+    TelegramIcon,
+    TwitterShareButton,
+    TwitterIcon,
+    WhatsappShareButton,
+    WhatsappIcon,
+} from "react-share";
 
 
 export class Home extends Component {
@@ -17,16 +31,16 @@ export class Home extends Component {
     }
     componentDidMount() {
         trackPromise(
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                if (localStorage.usertoken) {
-                    const token = localStorage.usertoken;
-                    const decoded = jwt_decode(token);
-                    this.setState({ name: decoded.result.username });
-                }
-        }));
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
+                    if (localStorage.usertoken) {
+                        const token = localStorage.usertoken;
+                        const decoded = jwt_decode(token);
+                        this.setState({ name: decoded.result.username });
+                    }
+                }));
     };
 
     componentDecorator = (href, text, key) => (
@@ -133,7 +147,25 @@ export class Home extends Component {
                                         <li class="feeds-footer">
                                             <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
                                             <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />10</button>
-                                            <button class="btn btn-icon pl-3 pr-1 share" title="Share"><i class="fa fa-share" /></button>
+                                            <div class="btn-group dropright">
+                                                <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
+                                                <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
+                                                    <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
+                                                    <div class="dropdown-divider mt-0"></div>
+                                                    <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                    ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
+                                                    <div class="dropdown-divider"></div>
+                                                    <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                    <div class="dropdown-divider"></div>
+                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                    <div class="dropdown-divider"></div>
+                                                    <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                    <div class="dropdown-divider"></div>
+                                                    <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                    <div class="dropdown-divider"></div>
+                                                    <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                </div>
+                                            </div>
                                             <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
                                             <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
                                             <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
@@ -171,24 +203,24 @@ export class Home extends Component {
 
                 {/* modal for comments */}
                 <div id="commentsModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header greyBg">
-                                    <h4 class="modal-title">Comments (10)</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body text-left">
-                                    <p class="ml-3 mr-3">Comments Here</p>
-                                    <hr class="mt-0 mb-4" />
-                                    <p class="ml-3 mr-3">Comments Here</p>
-                                    <hr class="mt-0 mb-4" />
-                                    <p class="ml-3 mr-3">Comments Here</p>
-                                    <hr class="mt-0 mb-4" />
-                                    <p class="ml-3 mr-3">Comments Here</p>
-                                </div>
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header greyBg">
+                                <h4 class="modal-title">Comments (10)</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body text-left">
+                                <p class="ml-3 mr-3">Comments Here</p>
+                                <hr class="mt-0 mb-4" />
+                                <p class="ml-3 mr-3">Comments Here</p>
+                                <hr class="mt-0 mb-4" />
+                                <p class="ml-3 mr-3">Comments Here</p>
+                                <hr class="mt-0 mb-4" />
+                                <p class="ml-3 mr-3">Comments Here</p>
                             </div>
                         </div>
                     </div>
+                </div>
             </div >
         )
     }

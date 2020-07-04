@@ -155,15 +155,17 @@ export class Home extends Component {
                                                     <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
                                                     ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
                                                     <div class="dropdown-divider"></div>
-                                                    <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                    <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
                                                     <div class="dropdown-divider"></div>
-                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}  title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
                                                     <div class="dropdown-divider"></div>
-                                                    <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                    <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
                                                     <div class="dropdown-divider"></div>
-                                                    <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                    <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
                                                     <div class="dropdown-divider"></div>
-                                                    <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                    <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                    <div class="dropdown-divider"></div>
+                                                    <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                 </div>
                                             </div>
                                             <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>

@@ -81,7 +81,7 @@ class Navigation extends Component {
             answerer: this.state.answerer,
             answer: this.state.answer
 
-            
+
         };
         console.log(data);
         axios
@@ -105,7 +105,7 @@ class Navigation extends Component {
             answerer: this.state.answerer,
             answer: this.state.answer
 
-            
+
         };
         console.log(data);
         axios
@@ -191,10 +191,10 @@ class Navigation extends Component {
 
                         <div style={{ width: 300 }}>
                             <Autocomplete
-                                freeSolo
+                                // freeSolo
                                 disableClearable
                                 id="searchSelect"
-                                onChange={this.handleInputChange}
+                                // onChange={this.handleInputChange}
                                 options={this.state.feeds}
                                 getOptionLabel={(data) => {
                                     if (typeof data === "string") {
@@ -202,6 +202,7 @@ class Navigation extends Component {
                                     }
                                     return data.post;
                                 }}
+                                noOptionsText={'No Posts Match the Keyword'}
 
                                 renderInput={params => (
                                     <div class="pt-0 pb-2">
@@ -210,8 +211,8 @@ class Navigation extends Component {
                                             label="Search"
                                             id="searchBar"
                                             size="small"
-                                            value=''
-                                            autoSelect={true}
+                                            // value=''
+                                            // autoSelect={true}
                                             margin="normal"
                                             variant="outlined"
                                             fullWidth
@@ -238,7 +239,7 @@ class Navigation extends Component {
                                     <div class="dropdown-divider"></div>
                                     <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
                                 </div>
-                                    </li>
+                            </li>
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

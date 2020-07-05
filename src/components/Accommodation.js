@@ -4,6 +4,7 @@ import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
+import { trackPromise } from 'react-promise-tracker';
 
 export class Accommodation extends Component {
     constructor() {
@@ -14,16 +15,17 @@ export class Accommodation extends Component {
         };
     }
     componentDidMount() {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/accommodation')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                if (localStorage.usertoken) {
-                    const token = localStorage.usertoken;
-                    const decoded = jwt_decode(token);
-                    this.setState({ name: decoded.result.username });
-                }
-            })
+        trackPromise(
+            fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/accommodation')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
+                    if (localStorage.usertoken) {
+                        const token = localStorage.usertoken;
+                        const decoded = jwt_decode(token);
+                        this.setState({ name: decoded.result.username });
+                    }
+                }))
     }
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -97,8 +99,8 @@ export class Accommodation extends Component {
                                 {this.state.name != '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
                                 {this.state.name == '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
                                 <br />
-                                <button class="questionButton"  style={{ opacity: '50%' }} type="button" data-toggle="modal" data-target="#askModal">
-                                <p class="text-decoration-none stretched-link text-dark pb-0" >What is your Question?</p></button>
+                                <button class="questionButton" style={{ opacity: '50%' }} type="button" data-toggle="modal" data-target="#askModal">
+                                    <p class="text-decoration-none stretched-link text-dark pb-0" >What is your Question?</p></button>
                             </div>
                         </div>
 

@@ -4,6 +4,7 @@ import NavigationRouter2 from './Navigation'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
+import { trackPromise } from 'react-promise-tracker';
 
 export class Thread extends Component {
     constructor() {
@@ -19,15 +20,16 @@ export class Thread extends Component {
         this.getUserPost = this.getUserPost.bind(this);
     }
     componentDidMount() {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ feeds: res.data });
-                console.log('Data fetched', res);
-                if(localStorage.usertoken) {
-                this.getUserPost();
-                }
-            });
+        trackPromise(
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ feeds: res.data });
+                    console.log('Data fetched', res);
+                    if (localStorage.usertoken) {
+                        this.getUserPost();
+                    }
+                }));
     }
 
     onAnswerChange = e => {
@@ -83,13 +85,13 @@ export class Thread extends Component {
         const decoded = jwt_decode(token); //get current cuser
 
         this.setState({ user: decoded.result.username }); //set current user
-         axios
-             .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
-             .then(res => {
-                 //console.log(res.data.data.asker);
-                 this.setState({ user_post: res.data.data.asker }); //set user_post 
-             })
-             .catch(err => console.log(err));
+        axios
+            .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
+            .then(res => {
+                //console.log(res.data.data.asker);
+                this.setState({ user_post: res.data.data.asker }); //set user_post 
+            })
+            .catch(err => console.log(err));
     };
 
     refreshPage() {
@@ -129,11 +131,11 @@ export class Thread extends Component {
                                                 <hr class="mt-0 mb-4" />
                                             </li>
                                             {feeds.type == "post" &&
-                                                    <li>
-                                                        <div class="col-sm-9">
-                                                            <p class="whiteSpace">{feeds.answer}</p>
-                                                        </div>
-                                                    </li>
+                                                <li>
+                                                    <div class="col-sm-9">
+                                                        <p class="whiteSpace">{feeds.answer}</p>
+                                                    </div>
+                                                </li>
                                             }
 
                                             {feeds.answer == "" &&
@@ -190,9 +192,9 @@ export class Thread extends Component {
                                                     }
                                                 </li>
                                             }
-                                             {localStorage.usertoken && this.state.user == this.state.user_post &&
-                                                <button class="btn btn-outline-danger" style={{width: 100 }} onClick={this.handleDelete}><i class = "fa fa-trash mr-2" />Delete</button>               
-                                            } 
+                                            {localStorage.usertoken && this.state.user == this.state.user_post &&
+                                                <button class="btn btn-outline-danger" style={{ width: 100 }} onClick={this.handleDelete}><i class="fa fa-trash mr-2" />Delete</button>
+                                            }
                                         </ul>
                                     </div>
                                 </div>

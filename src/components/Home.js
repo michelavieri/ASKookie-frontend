@@ -4,6 +4,7 @@ import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
+import { trackPromise } from 'react-promise-tracker';
 
 export class Home extends Component {
     constructor() {
@@ -14,16 +15,17 @@ export class Home extends Component {
         };
     }
     componentDidMount() {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                if (localStorage.usertoken) {
-                    const token = localStorage.usertoken;
-                    const decoded = jwt_decode(token);
-                    this.setState({ name: decoded.result.username });
-                }
-            })
+        trackPromise(
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
+                    if (localStorage.usertoken) {
+                        const token = localStorage.usertoken;
+                        const decoded = jwt_decode(token);
+                        this.setState({ name: decoded.result.username });
+                    }
+                }))
     };
 
     componentDecorator = (href, text, key) => (

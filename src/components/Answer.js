@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
+import { trackPromise } from 'react-promise-tracker';
 
 export class Answer extends Component {
     constructor() {
@@ -15,12 +16,14 @@ export class Answer extends Component {
         };
     }
     componentDidMount() {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => this.setState({
-                feeds: res.data,
-                filteredQuestions: res.data,
-            }, () => console.log('Data fetched', res)))
+        trackPromise(
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => this.setState({
+                    feeds: res.data,
+                    filteredQuestions: res.data,
+                }, () => console.log('Data fetched', res)))
+        )
     }
     scrollToTop = () => {
         scroll.scrollToTop();

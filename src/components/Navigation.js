@@ -128,6 +128,7 @@ class Navigation extends Component {
     handleInputChange = (event, value, reason) => {
         if (reason === 'select-option') {
             this.props.history.push(`/thread/${value.postID}`);
+            window.location.reload(false);
         }
     };
 

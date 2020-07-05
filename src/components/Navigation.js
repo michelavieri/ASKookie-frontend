@@ -5,6 +5,7 @@ import logo from '../logo.png';
 import profilePicture from '../default_pp.png';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import { trackPromise } from 'react-promise-tracker';
 
 
 import TextField from '@material-ui/core/TextField';
@@ -84,6 +85,7 @@ class Navigation extends Component {
 
         };
         console.log(data);
+
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
@@ -120,14 +122,17 @@ class Navigation extends Component {
     };
 
     componentDidMount() {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
-            .then(res => res.json())
-            .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+        trackPromise(
+            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+                .then(res => res.json())
+                .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+        )
     }
 
     handleInputChange = (event, value, reason) => {
         if (reason === 'select-option') {
             this.props.history.push(`/thread/${value.postID}`);
+            window.location.reload(false);
         }
     };
 
@@ -194,7 +199,7 @@ class Navigation extends Component {
                                 // freeSolo
                                 disableClearable
                                 id="searchSelect"
-                                // onChange={this.handleInputChange}
+                                onChange={this.handleInputChange}
                                 options={this.state.feeds}
                                 getOptionLabel={(data) => {
                                     if (typeof data === "string") {

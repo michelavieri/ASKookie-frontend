@@ -90,6 +90,7 @@ export class Thread extends Component {
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/`); //redirect to home
+                window.location.reload(false);
                 console.log("Post deleted");
             })
             .catch(err => console.log(err));
@@ -182,7 +183,7 @@ export class Thread extends Component {
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
-                                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                                    <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                                     <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
                                                 </li>
                                             }
@@ -264,7 +265,7 @@ export class Thread extends Component {
                                                                     required />
                                                                 <small class="form-text text-muted col-sm-11">
                                                                     Inappropriate or irrelevant answers will be filtered accordingly.
-                                                    </small>
+                                                                </small>
                                                             </div>
                                                             <div className="alert alert-danger" role="alert">
                                                                 <span class="fa fa-exclamation-triangle mr-2" />
@@ -276,7 +277,10 @@ export class Thread extends Component {
                                             }
 
                                             {localStorage.usertoken && this.state.user == this.state.user_post &&
-                                                <button class="btn btn-outline-danger" style={{ width: 100 }} onClick={this.handleDelete}><i class="fa fa-trash mr-2" />Delete</button>
+                                                <div>
+                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                    <button class="btn btn-outline-danger mb-2 ml-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash mr-2" />Delete</button>
+                                                </div>
                                             }
                                         </ul>
                                     </div>
@@ -305,7 +309,7 @@ export class Thread extends Component {
                                                                 <li class="feeds-footer">
                                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
-                                                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                                                    <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                                                     <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 0</button>
                                                                 </li>
                                                             }
@@ -403,7 +407,7 @@ export class Thread extends Component {
                                     </div>
                                     <li class="feeds-footer">
                                         <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                         <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                     </li>
                                     <hr class="mt-0 mb-4" />
@@ -419,7 +423,7 @@ export class Thread extends Component {
                                     </div>
                                     <li class="feeds-footer">
                                         <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                         <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                     </li>
                                     <hr class="mt-0 mb-4" />
@@ -435,7 +439,7 @@ export class Thread extends Component {
                                     </div>
                                     <li class="feeds-footer">
                                         <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                         <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                     </li>
                                     <hr class="mt-0 mb-4" />
@@ -451,7 +455,7 @@ export class Thread extends Component {
                                     </div>
                                     <li class="feeds-footer">
                                         <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                         <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                     </li>
                                 </div>
@@ -459,7 +463,26 @@ export class Thread extends Component {
                         </div>
                     </div>
                     {/* end of modal comments */}
-                </div >
+
+                    {/* delete modal */}
+                    <div id="deleteModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Delete Post/Question</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <div class="modal-body text-left pt-3 pb-3">
+                                    Are you sure you want to delete your post/question?
+                                    <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
+                                        <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDelete}>Delete</button>
+                                        <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

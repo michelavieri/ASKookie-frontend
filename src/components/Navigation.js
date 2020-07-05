@@ -402,6 +402,68 @@ class Navigation extends Component {
                         </div>
                     </div>
                 }
+
+                {/* modal for report */}
+                <div id="reportModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Report <i class="fa fa-exclamation-circle pl-2" /></h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body text-left pt-2">
+                                <form>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" required />
+                                        <label class="custom-control-label" for="customRadio1">Spam</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio2">Harrassment</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio3">Joke/Troll</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio4">Poorly Written</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio5">Plagiarism</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio6" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio6">Doesn't Answer the Question</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio7" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio7">Disturbing Content</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio8">Spreading False Information/Inaccurate</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio9">Spreading Hate</label>
+                                    </div>
+                                    <div class="custom-control custom-radio pb-2 pt-2">
+                                        <input type="radio" id="customRadio10" name="customRadio" class="custom-control-input" />
+                                        <label class="custom-control-label" for="customRadio10">Adult Content</label>
+                                    </div>
+
+                                    <div class="modal-footer mb-0 pb-0">
+                                        <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-orange my-2 my-sm-0 ml-2">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* end of report modal */}
             </div >
         )
     }

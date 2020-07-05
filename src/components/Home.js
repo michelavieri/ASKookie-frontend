@@ -171,7 +171,7 @@ export class Home extends Component {
                                                 </div>
                                             </div>
                                             <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
-                                            <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                            <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                             <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
                                         </li>
                                     </ul>

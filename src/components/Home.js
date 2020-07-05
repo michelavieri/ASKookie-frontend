@@ -5,6 +5,8 @@ import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
 import { trackPromise } from 'react-promise-tracker';
+import profilePicture from '../default_pp.png';
+import TextareaAutosize from 'react-textarea-autosize';
 import {
     EmailShareButton,
     EmailIcon,
@@ -157,7 +159,7 @@ export class Home extends Component {
                                                     <div class="dropdown-divider"></div>
                                                     <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
                                                     <div class="dropdown-divider"></div>
-                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`}  title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
                                                     <div class="dropdown-divider"></div>
                                                     <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
                                                     <div class="dropdown-divider"></div>
@@ -207,22 +209,101 @@ export class Home extends Component {
                 <div id="commentsModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <div class="modal-header greyBg">
-                                <h4 class="modal-title">Comments (10)</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <div class="modal-header blueBg">
+                                <h4 class="modal-title text-white">Comments (4)</h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
-                            <div class="modal-body text-left">
-                                <p class="ml-3 mr-3">Comments Here</p>
+                            <div class="modal-body text-left pt-0">
+                                <div class="row content mb-0 greyBg pt-4 pb-3">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    </div>
+                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as Michela Vieri</p>
+                                        <form>
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                placeholder="Add a comment..."
+                                                maxRows="5"
+                                                minRows="1"
+                                                required
+                                            ></TextareaAutosize>
+                                            <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+
                                 <hr class="mt-0 mb-4" />
-                                <p class="ml-3 mr-3">Comments Here</p>
+
+                                <div class="row content">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    </div>
+                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
+                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
+                                    </div>
+                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
+                                </div>
+                                <li class="feeds-footer">
+                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                </li>
                                 <hr class="mt-0 mb-4" />
-                                <p class="ml-3 mr-3">Comments Here</p>
+                                <div class="row content">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    </div>
+                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
+                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
+                                    </div>
+                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
+                                </div>
+                                <li class="feeds-footer">
+                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                </li>
                                 <hr class="mt-0 mb-4" />
-                                <p class="ml-3 mr-3">Comments Here</p>
+                                <div class="row content">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    </div>
+                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
+                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
+                                    </div>
+                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
+                                </div>
+                                <li class="feeds-footer">
+                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                </li>
+                                <hr class="mt-0 mb-4" />
+                                <div class="row content">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    </div>
+                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
+                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
+                                    </div>
+                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
+                                </div>
+                                <li class="feeds-footer">
+                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                    <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button>
+                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                </li>
                             </div>
                         </div>
                     </div>
                 </div>
+                {/* end of modal comments */}
             </div >
         )
     }

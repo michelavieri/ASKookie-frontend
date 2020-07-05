@@ -126,6 +126,23 @@ body {
   color: white;
 }
 
+.btn-comment {
+  background-color: #4D60A5;
+  color: white;
+  font-size: 12px;
+  border-radius: 50px;
+  box-shadow: 0 0px 1px 0 grey, 0 2px 2px 0 grey;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.comment-input {
+  border: 1px solid #b7bbbd !important;
+  -webkit-border-radius: 35px;
+  -moz-border-radius: 35px;
+  border-radius: 35px;
+}
+
 .navbar-brand {
   position: relative;
 }
@@ -682,6 +699,10 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .greyBg {
   background-color: #EFEFEF !important;
+}
+
+.blueBg {
+  background-color: #4D60A5 !important;
 }
 
 .intro-banner-vdo-play-btn{

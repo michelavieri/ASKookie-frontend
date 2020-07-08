@@ -17,7 +17,7 @@ export class Answer extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+            fetch('https://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => this.setState({
                     feeds: res.data,
@@ -67,7 +67,7 @@ export class Answer extends Component {
     };
 
     getData = () => {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+        fetch('https://localhost:5000/home')
             .then(response => response.json())
             .then(feeds => {
                 const { category } = this.state;
@@ -155,8 +155,8 @@ export class Answer extends Component {
                                     Questions for You
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    {this.state.filteredQuestions.filter(feeds => feeds.answer == "").map((feeds, index) => (
-                                        <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                    {this.state.filteredQuestions.filter(feeds => feeds.post_content == "").map((feeds, index) => (
+                                        <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.question}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                     ))}
                                 </ul>
                             </div>

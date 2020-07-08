@@ -33,7 +33,7 @@ export class Home extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+            fetch('https://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
@@ -126,7 +126,7 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {mostRecentPosts && mostRecentPosts.filter(feeds => feeds.answer != '').map((feeds, index) => (
+                        {mostRecentPosts && mostRecentPosts.filter(feeds => feeds.post_content != '').map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
@@ -137,12 +137,12 @@ export class Home extends Component {
                                             </div>
                                         </li>
                                         <li>
-                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.post}</NavLink>
+                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}</NavLink>
                                         </li>
                                         <li>
                                             <Linkify componentDecorator={this.componentDecorator}>
                                                 <div class="show-more" data-type="text" data-number="80">
-                                                    <p class="whiteSpace">{feeds.answer}</p>
+                                                    <p class="whiteSpace">{feeds.post_content}</p>
                                                 </div>
                                             </Linkify>
                                         </li>

@@ -37,7 +37,7 @@ export class Thread extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+            fetch('https://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data });
@@ -58,7 +58,7 @@ export class Thread extends Component {
         });
     };
 
-    handleSubmit = e => {
+    handleSubmitPost = e => {
         const { id } = this.props.match.params;
 
         e.preventDefault();
@@ -69,7 +69,27 @@ export class Thread extends Component {
             answerer: this.state.answerer
         };
         axios
-            .post('https://whispering-hamlet-08619.herokuapp.com/answer', data)
+            .post('https://localhost:5000/answer', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    };
+
+    handleSubmitComment = e => {
+        const { id } = this.props.match.params;
+
+        e.preventDefault();
+
+        const data = {
+            postID: id,
+            answer: this.state.answer,
+            answerer: this.state.answerer
+        };
+        axios
+            .post('https://localhost:5000/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -86,7 +106,7 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('https://whispering-hamlet-08619.herokuapp.com/delete/' + id_del) //delete post with id id_del
+            .delete('https://localhost:5000/delete/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/`); //redirect to home
@@ -103,7 +123,7 @@ export class Thread extends Component {
 
         this.setState({ user: decoded.result.username }); //set current user
         axios
-            .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
+            .get('https://localhost:5000/user/' + postId) //search user who post the question
             .then(res => {
                 //console.log(res.data.data.asker);
                 this.setState({ user_post: res.data.data.asker }); //set user_post 
@@ -224,7 +244,7 @@ export class Thread extends Component {
 
                                                 <li>
                                                     {localStorage.usertoken &&
-                                                        <form className="post pb-4" onSubmit={this.handleSubmit}>
+                                                        <form className="post pb-4" onSubmit={this.handleSubmitPost}>
                                                             <div class="form-row align-items-left mb-3 ml-3">
                                                                 <textarea
                                                                     rows="5"
@@ -379,7 +399,7 @@ export class Thread extends Component {
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
                                             <p class="font-italic pb-1 mb-0 pl-2">Commenting as Michela Vieri</p>
-                                            <form>
+                                            <form onSubmit={this.handleSubmitComment}>
                                                 <TextareaAutosize
                                                     class="col-sm-10 comment-input p-2 pl-4 pr-4"
                                                     placeholder="Add a comment..."
@@ -411,53 +431,6 @@ export class Thread extends Component {
                                         <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                     </li>
                                     <hr class="mt-0 mb-4" />
-                                    <div class="row content">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                        </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                            <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                        </div>
-                                        <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                    </div>
-                                    <li class="feeds-footer">
-                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                        <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                    </li>
-                                    <hr class="mt-0 mb-4" />
-                                    <div class="row content">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                        </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                            <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                        </div>
-                                        <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                    </div>
-                                    <li class="feeds-footer">
-                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                        <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                    </li>
-                                    <hr class="mt-0 mb-4" />
-                                    <div class="row content">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                        </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                            <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                        </div>
-                                        <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                    </div>
-                                    <li class="feeds-footer">
-                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                        <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                    </li>
                                 </div>
                             </div>
                         </div>

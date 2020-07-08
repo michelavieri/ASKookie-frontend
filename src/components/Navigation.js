@@ -87,7 +87,7 @@ class Navigation extends Component {
         console.log(data);
 
         axios
-            .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
+            .post('https://localhost:5000/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -111,7 +111,7 @@ class Navigation extends Component {
         };
         console.log(data);
         axios
-            .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
+            .post('https://localhost:5000/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -123,7 +123,7 @@ class Navigation extends Component {
 
     componentDidMount() {
         trackPromise(
-            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+            fetch('https://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
         )
@@ -137,7 +137,7 @@ class Navigation extends Component {
     };
 
     getData = () => {
-        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+        fetch('https://localhost:5000/home')
             .then(response => response.json())
             .then(feeds => {
                 const { query } = this.state;

@@ -14,7 +14,7 @@ export class Profile extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://whispering-hamlet-08619.herokuapp.com/home')
+            fetch('https://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data }, () => console.log('Data fetched', res));

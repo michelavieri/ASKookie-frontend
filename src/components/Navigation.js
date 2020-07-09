@@ -32,11 +32,12 @@ class Navigation extends Component {
             type: "",
             answer: "",
             anonymous: false,
-            time: new Date().toLocaleString(),
-            post_content: ""
+            time: new Date().toLocaleString().substring(0, new Date().toLocaleString().indexOf(",")),
+            post_content: "",
         };
 
         this.onPostChange = this.onPostChange.bind(this);
+        this.onQuestionChange = this.onQuestionChange.bind(this);
         this.onCategoryChange = this.onCategoryChange.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
         this.handleSubmitAsk = this.handleSubmitAsk.bind(this);
@@ -78,18 +79,15 @@ class Navigation extends Component {
 
     handleSubmitAsk = e => {
         e.preventDefault();
-
-        this.setState({
-            post_content: "",
-            title: "",
-        })
+        
+        console.log("post", this.state.post_content);
         const data = {
             question: this.state.question,
             category: this.state.category,
             asker: this.state.asker,
             type: "question",
             anonymous: true,
-            post_content:this.state.post_content,
+            post_content: this.state.post_content,
             title: this.state.title,
             time: this.state.time,
         };
@@ -342,7 +340,7 @@ class Navigation extends Component {
                                                     <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
                                                     <input
                                                         class="form-control col-sm-9 font-weight-bold"
-                                                        value={this.state.post}
+                                                        value={this.state.title}
                                                         onChange={this.onTitleChange}
                                                         aria-describedby="titleHere"
                                                         placeholder="Give a Meaningful Title to Your Post..."
@@ -352,7 +350,7 @@ class Navigation extends Component {
                                                     <textarea
                                                         rows="5"
                                                         class="form-control col-sm-9 mt-3"
-                                                        value={this.state.answer}
+                                                        value={this.state.post_contents}
                                                         onChange={this.onPostChange}
                                                         aria-describedby="postHere"
                                                         placeholder="Write your post here..."
@@ -370,12 +368,12 @@ class Navigation extends Component {
                                                     class="form-control col-sm-9"
                                                     required>
                                                     <option value="" selected>Choose one...</option>
-                                                    <option value="faculties">Faculties</option>
-                                                    <option value="accommodation">Accomodation</option>
-                                                    <option value="student_life">Student Life</option>
-                                                    <option value="job_intern">Job/Internship</option>
-                                                    <option value="exchange_noc">Exchange Program/NOC</option>
-                                                    <option value="others">Others</option>
+                                                    <option value="1">Faculties</option>
+                                                    <option value="2">Accomodation</option>
+                                                    <option value="3">Student Life</option>
+                                                    <option value="4">Job/Internship</option>
+                                                    <option value="5">Exchange Program/NOC</option>
+                                                    <option value="6">Others</option>
                                                 </select>
                                                 <small id="postWarning" class="form-text text-muted col-sm-11">
                                                     Your post will not be anonymous and any inapporpriate content will be filtered by us.

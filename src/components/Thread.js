@@ -43,6 +43,7 @@ export class Thread extends Component {
         this.getPost = this.getPost.bind(this);
     }
     componentDidMount() {
+        this.getPost();
 
         // fetch('http://localhost:5000/home')
         //     .then(res => res.json())
@@ -56,7 +57,7 @@ export class Thread extends Component {
         trackPromise(
             fetch('http://localhost:5000/answer/' + `${this.props.match.params.id}`)
                 .then(res => res.json())
-                .then(this.getPost())
+               // .then(this.getPost())
                 .then(console.log('posttt'))
                 .then(res => {
                     this.setState({ answers: res.data });
@@ -151,8 +152,8 @@ export class Thread extends Component {
         const postId = this.props.match.params.id; //get post id
         axios.get('http://localhost:5000/thread/' + postId)
             .then(res => {
-                this.setState({ feeds: res.data });
-                console.log("dataaaaa", res.data)
+                this.setState({ feeds: res.data.data });
+                console.log("dataaaaa", res.data.data)
             })
             .catch(err => console.log(err));
     }
@@ -181,7 +182,7 @@ export class Thread extends Component {
                                         <ul class="list-group">
                                             <li>
                                                 <div class="sub-text">
-                                                    {console.log(`${this.state.feeds[0]}`)}
+                                                    {console.log(`${this.state.feeds.data}`)}
                                                     <h8 class="pr-1">@ {`${this.state.feeds.postID}`}</h8>
                                                     &middot; Posted on {`${this.state.feeds.time}`}
                                                     {this.state.feeds.type == "2" &&

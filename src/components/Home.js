@@ -4,6 +4,7 @@ import NavigationRouter2 from './Navigation'
 import { animateScroll as scroll } from "react-scroll";
 import jwt_decode from 'jwt-decode';
 import Linkify from 'react-linkify';
+import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -29,6 +30,8 @@ export class Home extends Component {
         this.state = {
             feeds: [],
             name: '',
+            answers: [],
+            unanswered: [],
         };
     }
     componentDidMount() {
@@ -43,6 +46,16 @@ export class Home extends Component {
                         this.setState({ name: decoded.result.username });
                     }
                 }));
+        fetch('http://localhost:5000/answers')
+            .then(res => res.json())
+            .then(res => {
+                this.setState({ answers: res.data }, () => console.log('Answers fetched', res.data));
+            });
+        fetch('http://localhost:5000/unanswered')
+            .then(res => res.json())
+            .then(res => {
+                this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
+            });
     };
 
     componentDecorator = (href, text, key) => (
@@ -54,6 +67,18 @@ export class Home extends Component {
     scrollToTop = () => {
         scroll.scrollToTop();
     };
+
+    getAnswers(postID) {
+        axios.get('http://localhost:5000/answers/' + postID)
+            .then(res => {
+                if (res == null) {
+                    return null;
+                }
+            })
+            // this.setState({ answers: res.data.data });
+            // console.log("dataaaaa", res.data.data)
+            .catch(err => console.log(err));
+    }
 
     shuffleArray = () => {
         let i = this.state.feeds.length - 1;
@@ -126,7 +151,7 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {mostRecentPosts && mostRecentPosts.filter(feeds => feeds.post_content != '').map((feeds, index) => (
+                        {mostRecentPosts && mostRecentPosts.map((feeds, index) => (
                             <div class="card mb-3">
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
@@ -188,7 +213,7 @@ export class Home extends Component {
                                 Unanswered Questions
                             </div>
                             <ul class="list-group list-group-flush">
-                                {shuffledPosts && shuffledPosts.filter(feeds => feeds.answer == '').slice(0, 6).map((feeds, index) => (
+                                {this.state.unanswered && this.state.unanswered.slice(0, 6).map((feeds, index) => (
                                     <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>

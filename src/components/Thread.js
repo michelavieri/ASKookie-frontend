@@ -67,6 +67,7 @@ export class Thread extends Component {
                     this.setState({ answers: res.data });
                     console.log('Answers fetched', res.data);
                 }))
+       
     }
 
     onAnswerChange = e => {
@@ -78,6 +79,15 @@ export class Thread extends Component {
             answerer: decoded.result.username
         });
     };
+
+    onCommentChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+        this.setState({
+            comment: e.target.value,
+            username: decoded.result.username
+        })
+    }
 
     handleSubmitPost = e => {
         const { id } = this.props.match.params;
@@ -95,21 +105,20 @@ export class Thread extends Component {
             .then(
                 res => {
                     console.log(res);
-                    window.location.reload(false);
+                    // window.location.reload(false);
                 })
             .catch(err => console.log(err));
     };
 
     handleSubmitComment = e => {
-        const { id } = this.props.match.params;
-
         e.preventDefault();
 
         const data = {
-            postID: id,
-            answer: this.state.answer,
-            answerer: this.state.answerer,
+            comment: this.state.comment,
+            username: this.state.username,
             time: new Date().toLocaleDateString(),
+            answerID: 21,
+            anonymous: false,
         };
         axios
             .post('http://localhost:5000/comment/answer', data)

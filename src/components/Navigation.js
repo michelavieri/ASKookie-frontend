@@ -32,7 +32,7 @@ class Navigation extends Component {
             type: "",
             answer: "",
             anonymous: false,
-            time: new Date().toLocaleString().substring(0, new Date().toLocaleString().indexOf(",")),
+            time: "",
             post_content: "",
         };
 
@@ -79,7 +79,7 @@ class Navigation extends Component {
 
     handleSubmitAsk = e => {
         e.preventDefault();
-        
+
         console.log("post", this.state.post_content);
         const data = {
             question: this.state.question,
@@ -89,12 +89,12 @@ class Navigation extends Component {
             anonymous: true,
             post_content: this.state.post_content,
             title: this.state.title,
-            time: this.state.time,
+            time: new Date().toLocaleDateString(),
         };
         console.log(data);
 
         axios
-            .post('/ask', data)
+            .post('http://localhost:5000/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -107,14 +107,14 @@ class Navigation extends Component {
     handleSubmitPost = e => {
         e.preventDefault();
         const data = {
-            post: this.state.post,
+            title: this.state.title,
             category: this.state.category,
             asker: this.state.asker,
             type: "2",
-            answerer: this.state.answerer,
-            answer: this.state.answer
-
-
+            post_content: this.state.post_content,
+            anonymous: this.state.anonymous,
+            time: new Date().toLocaleDateString(),
+            
         };
         console.log(data);
         axios
@@ -129,11 +129,11 @@ class Navigation extends Component {
     };
 
     componentDidMount() {
-        trackPromise(
-            fetch('http://localhost:5000/home')
-                .then(res => res.json())
-                .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-        )
+        // trackPromise(
+        //     fetch('http://localhost:5000/home')
+        //         .then(res => res.json())
+        //         .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+        // )
     }
 
     handleInputChange = (event, value, reason) => {
@@ -149,7 +149,8 @@ class Navigation extends Component {
             .then(feeds => {
                 const { query } = this.state;
                 const filteredData = feeds.filter(element => {
-                    return element.post.toLowerCase().includes(query.toLowerCase());
+                    return element.question.toLowerCase().includes(query.toLowerCase()) || 
+                    element.title.toLowerCase().includes(query.toLowerCase()) ;
                 });
 
                 this.setState({
@@ -212,7 +213,7 @@ class Navigation extends Component {
                                     if (typeof data === "string") {
                                         return data;
                                     }
-                                    return data.post;
+                                    return data.question || data.title;
                                 }}
                                 noOptionsText={'No Posts Match the Keyword'}
 

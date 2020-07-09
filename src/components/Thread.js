@@ -27,25 +27,41 @@ export class Thread extends Component {
         super();
         this.state = {
             feeds: [],
-            answer: "",
+            answers: [],
             answerer: "",
             user: "", //current user
-            user_post: "" //user who post a certain question
+            user_post: "", //user who post a certain question
+            // title: "",
+            // post_content: "",
+            // anonymous: false,
+            // asker: "",
+            // question: "",
+            // type: ""
         };
 
         this.getUserPost = this.getUserPost.bind(this);
+        this.getPost = this.getPost.bind(this);
     }
     componentDidMount() {
+
+        // fetch('http://localhost:5000/home')
+        //     .then(res => res.json())
+        //     .then(res => {
+        //         this.setState({ feeds: res.data });
+        //         console.log('Data fetched', res);
+        //         if (localStorage.usertoken) {
+        //             this.getUserPost();
+        //         }
+        //     }));
         trackPromise(
-            fetch('http://localhost:5000/home')
+            fetch('http://localhost:5000/answer/' + `${this.props.match.params.id}`)
                 .then(res => res.json())
+                .then(this.getPost())
+                .then(console.log('posttt'))
                 .then(res => {
-                    this.setState({ feeds: res.data });
-                    console.log('Data fetched', res);
-                    if (localStorage.usertoken) {
-                        this.getUserPost();
-                    }
-                }));
+                    this.setState({ answers: res.data });
+                    console.log('Answers fetched', res);
+                }))
     }
 
     onAnswerChange = e => {
@@ -131,6 +147,16 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     };
 
+    getPost = () => {
+        const postId = this.props.match.params.id; //get post id
+        axios.get('http://localhost:5000/thread/' + postId)
+            .then(res => {
+                this.setState({ feeds: res.data });
+                console.log("dataaaaa", res.data)
+            })
+            .catch(err => console.log(err));
+    }
+
     refreshPage() {
         window.location.reload(false);
     }
@@ -140,37 +166,40 @@ export class Thread extends Component {
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
+        // var feedsArr = [];
+        // feedsArr = Object.values(this.state.feeds);
 
         return (
             <div className="container-fluid margin-top">
                 <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-9 text-left">
-                        {this.state.feeds && this.state.feeds.filter(feeds => feeds.postID == urlArray[urlArray.length - 1]).map((feeds, index) => (
+                        {/* {feedsArr && feedsArr.map((feeds, index) => ( */}
                             <div>
                                 <div class="card border border-secondary">
                                     <div class="card-body pb-0">
                                         <ul class="list-group">
                                             <li>
                                                 <div class="sub-text">
-                                                    <h8>@ {`${feeds.postID}`}</h8>
-                                                    {/* &middot; Posted on 17/01/2020 */}
-                                                    {feeds.type == "post" &&
-                                                        <div>Posted by {feeds.answerer}</div>
+                                                    {console.log(`${this.state.feeds[0]}`)}
+                                                    <h8 class="pr-1">@ {`${this.state.feeds.postID}`}</h8>
+                                                    &middot; Posted on {`${this.state.feeds.time}`}
+                                                    {this.state.feeds.type == "2" &&
+                                                        <div>Posted by {this.state.feeds.answerer}</div>
                                                     }
                                                 </div>
                                             </li>
                                             <li>
 
-                                                <p class="font-weight-bold lead" to="">{feeds.question}</p>
+                                                <p class="font-weight-bold lead" to="">{this.state.feeds.question}{this.state.feeds.title}</p>
                                             </li>
                                             <li>
                                                 <hr class="mt-0 mb-4 pb-0 mb-0" />
                                             </li>
-                                            {feeds.type == "post" &&
+                                            {this.state.feeds.type == "2" &&
                                                 <li>
                                                     <div class="col-sm-9">
-                                                        <p class="whiteSpace">{feeds.post_content}</p>
+                                                        <p class="whiteSpace">{this.state.feeds.post_content}</p>
                                                     </div>
                                                 </li>
                                             }
@@ -178,7 +207,7 @@ export class Thread extends Component {
                                             {localStorage.usertoken &&
                                                 <li class="feeds-footer pb-3">
                                                     <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
-                                                    {feeds.type == "post" &&
+                                                    {this.state.feeds.type == "2" &&
                                                         <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
                                                     }
                                                     <div class="btn-group dropright">
@@ -186,20 +215,20 @@ export class Thread extends Component {
                                                         <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
                                                             <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
                                                             <div class="dropdown-divider mt-0"></div>
-                                                            <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                            <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${this.state.feeds.postID}`) }}
                                                             ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
                                                             <div class="dropdown-divider"></div>
-                                                            <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                            <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                            <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                            <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} quote={this.state.feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                            <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} subject="Check this thread in ASKookie!" body={this.state.feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                            <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                            <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
@@ -211,7 +240,7 @@ export class Thread extends Component {
                                             {!localStorage.usertoken &&
                                                 <li class="feeds-footer pb-3">
                                                     <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
-                                                    {feeds.type == "post" &&
+                                                    {this.state.feeds.type == "2" &&
                                                         <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
                                                     }
                                                     <div class="btn-group dropright">
@@ -219,20 +248,20 @@ export class Thread extends Component {
                                                         <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
                                                             <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
                                                             <div class="dropdown-divider mt-0"></div>
-                                                            <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                            <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${this.state.feeds.postID}`) }}
                                                             ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
                                                             <div class="dropdown-divider"></div>
-                                                            <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                            <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                            <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                            <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} quote={this.state.feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                            <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} subject="Check this thread in ASKookie!" body={this.state.feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                            <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
                                                             <div class="dropdown-divider"></div>
-                                                            <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                            <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                         </div>
                                                     </div>
                                                     <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
@@ -240,7 +269,7 @@ export class Thread extends Component {
                                             }
 
 
-                                            {feeds.type != "post" &&
+                                            {this.state.feeds.type != "2" &&
 
                                                 <li>
                                                     {localStorage.usertoken &&
@@ -306,66 +335,69 @@ export class Thread extends Component {
                                     </div>
                                 </div>
 
-                                {feeds.type != "post" &&
+                                {this.state.feeds.type != "post" &&
                                     <div>
                                         <h2> <b>Answers: </b></h2>
                                         < Linkify >
-                                            {feeds.answer != "" &&
-                                                <div class="card mb-3">
-                                                    <div class="card-body mr-4 pb-0">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="sub-text">
-                                                                    Posted by {feeds.answerer}
-                                                                    <div class="pl-0">
-                                                                        Answered on 17/01/2020
+                                            {this.state.answers && this.state.answers.map((answers) =>
+                                                <div>
+                                                    <div class="card mb-3">
+                                                        <div class="card-body mr-4 pb-0">
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="sub-text">
+                                                                        Posted by {answers.answerer}
+                                                                        <div class="pl-0">
+                                                                            Answered on 17/01/2020
                                                                     </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <p class="whiteSpace">{feeds.answer}</p>
-                                                            </li>
-                                                            {localStorage.usertoken &&
-                                                                <li class="feeds-footer">
-                                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
-                                                                    <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 0</button>
+                                                                    </div>
                                                                 </li>
-                                                            }
-                                                            {!localStorage.usertoken &&
-                                                                <li class="feeds-footer">
-                                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
-                                                                    <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down pr-1" /> 0</button>
+                                                                <li>
+                                                                    <p class="whiteSpace">{answers.answer}</p>
                                                                 </li>
-                                                            }
-                                                        </ul>
+                                                                {localStorage.usertoken &&
+                                                                    <li class="feeds-footer">
+                                                                        <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
+                                                                        <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
+                                                                        <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
+                                                                        <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 0</button>
+                                                                    </li>
+                                                                }
+                                                                {!localStorage.usertoken &&
+                                                                    <li class="feeds-footer">
+                                                                        <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
+                                                                        <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />1</button>
+                                                                        <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down pr-1" /> 0</button>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }
-                                            {feeds.answer == "" &&
-                                                <div class="card mb-3">
-                                                    <div class="card-body mr-4">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="muted-text mt-3">
-                                                                    No answer yet for this question! Your contribution would be appreciated!
+
+                                                    {answers.answerer == "" &&
+                                                        <div class="card mb-3">
+                                                            <div class="card-body mr-4">
+                                                                <ul>
+                                                                    <li>
+                                                                        <div class="muted-text mt-3">
+                                                                            No answer yet for this question! Your contribution would be appreciated!
                                                                 </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
-                                            }
+                                            )}
                                         </Linkify>
                                     </div>
                                 }
                                 {/* end of answer */}
                             </div>
-                        ))}
+                        {/* ))} */}
                     </div>
                     {/* unanswered Questions */}
-                    <div class="col-sm-2">
+                    {/* <div class="col-sm-2">
                         <div class="card d-none d-xl-block text-left" style={{ width: '18rem' }}>
                             <div class="card-header">
                                 Unanswered Questions
@@ -376,12 +408,12 @@ export class Thread extends Component {
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">
-                                <button class="btn refresh-button pull-right">
-                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" /> */}
-                                    <NavLink class="listku" to="/answer">See More</NavLink></button>
+                                <button class="btn refresh-button pull-right"> */}
+                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" /> */}
+                    {/* <NavLink class="listku" to="/answer">See More</NavLink></button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     {/* end of unanswered Questions */}
 
                     {/* modal for comments */}

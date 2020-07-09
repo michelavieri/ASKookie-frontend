@@ -133,11 +133,11 @@ export class Home extends Component {
                                         <li>
                                             <div class="sub-text">
                                                 <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
-                                                &middot; posted by {feeds.answerer}
+                                                &middot; Posted by {feeds.asker} on {`${feeds.time}`}
                                             </div>
                                         </li>
                                         <li>
-                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}</NavLink>
+                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}{feeds.title}</NavLink>
                                         </li>
                                         <li>
                                             <Linkify componentDecorator={this.componentDecorator}>

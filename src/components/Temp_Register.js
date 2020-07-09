@@ -43,7 +43,7 @@ export class Temp_Register extends Component {
         }
 
         axios
-            .post('https://whispering-hamlet-08619.herokuapp.com/register', newUser)
+            .post('http://localhost:5000/register', newUser)
             .then(res => {
                 if (res.data != null) {
                     console.log(res.data);

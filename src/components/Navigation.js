@@ -85,7 +85,7 @@ class Navigation extends Component {
             question: this.state.question,
             category: this.state.category,
             asker: this.state.asker,
-            type: "question",
+            type: "1",
             anonymous: true,
             post_content: this.state.post_content,
             title: this.state.title,
@@ -94,7 +94,7 @@ class Navigation extends Component {
         console.log(data);
 
         axios
-            .post('http://localhost:5000/ask', data)
+            .post('/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -110,7 +110,7 @@ class Navigation extends Component {
             post: this.state.post,
             category: this.state.category,
             asker: this.state.asker,
-            type: "post",
+            type: "2",
             answerer: this.state.answerer,
             answer: this.state.answer
 

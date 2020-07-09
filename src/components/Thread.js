@@ -37,7 +37,7 @@ export class Thread extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://localhost:5000/home')
+            fetch('http://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data });
@@ -69,7 +69,7 @@ export class Thread extends Component {
             answerer: this.state.answerer
         };
         axios
-            .post('https://localhost:5000/answer', data)
+            .post('http://localhost:5000/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -89,7 +89,7 @@ export class Thread extends Component {
             answerer: this.state.answerer
         };
         axios
-            .post('https://localhost:5000/answer', data)
+            .post('http://localhost:5000/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -106,7 +106,7 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('https://localhost:5000/delete/' + id_del) //delete post with id id_del
+            .delete('http://localhost:5000/delete/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/`); //redirect to home
@@ -123,7 +123,7 @@ export class Thread extends Component {
 
         this.setState({ user: decoded.result.username }); //set current user
         axios
-            .get('https://localhost:5000/user/' + postId) //search user who post the question
+            .get('http://localhost:5000/user/' + postId) //search user who post the question
             .then(res => {
                 //console.log(res.data.data.asker);
                 this.setState({ user_post: res.data.data.asker }); //set user_post 
@@ -162,7 +162,7 @@ export class Thread extends Component {
                                             </li>
                                             <li>
 
-                                                <p class="font-weight-bold lead" to="">{feeds.post}</p>
+                                                <p class="font-weight-bold lead" to="">{feeds.question}</p>
                                             </li>
                                             <li>
                                                 <hr class="mt-0 mb-4 pb-0 mb-0" />
@@ -170,7 +170,7 @@ export class Thread extends Component {
                                             {feeds.type == "post" &&
                                                 <li>
                                                     <div class="col-sm-9">
-                                                        <p class="whiteSpace">{feeds.answer}</p>
+                                                        <p class="whiteSpace">{feeds.post_content}</p>
                                                     </div>
                                                 </li>
                                             }

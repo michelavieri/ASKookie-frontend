@@ -67,7 +67,7 @@ export class Answer extends Component {
     };
 
     getData = () => {
-        fetch('https://localhost:5000/home')
+        fetch('http://localhost:5000/home')
             .then(response => response.json())
             .then(feeds => {
                 const { category } = this.state;

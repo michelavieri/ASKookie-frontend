@@ -24,12 +24,16 @@ class Navigation extends Component {
             feeds: [],
             query: "",
             filteredData: [],
-            post: "",
+            question: "",
+            title: "",
             category: "",
             asker: "",
             answerer: "",
             type: "",
             answer: "",
+            anonymous: false,
+            time: new Date().toLocaleString(),
+            post_content: ""
         };
 
         this.onPostChange = this.onPostChange.bind(this);
@@ -43,7 +47,7 @@ class Navigation extends Component {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
         this.setState({
-            answer: e.target.value,
+            post_content: e.target.value,
             asker: decoded.result.username,
         });
     };
@@ -52,7 +56,7 @@ class Navigation extends Component {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
         this.setState({
-            post: e.target.value,
+            question: e.target.value,
             asker: decoded.result.username,
         });
     };
@@ -61,7 +65,7 @@ class Navigation extends Component {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
         this.setState({
-            post: e.target.value,
+            title: e.target.value,
             answerer: decoded.result.username
         });
     };
@@ -74,20 +78,25 @@ class Navigation extends Component {
 
     handleSubmitAsk = e => {
         e.preventDefault();
+
+        this.setState({
+            post_content: "",
+            title: "",
+        })
         const data = {
-            post: this.state.post,
+            question: this.state.question,
             category: this.state.category,
             asker: this.state.asker,
             type: "question",
-            answerer: this.state.answerer,
-            answer: this.state.answer
-
-
+            anonymous: true,
+            post_content:this.state.post_content,
+            title: this.state.title,
+            time: this.state.time,
         };
         console.log(data);
 
         axios
-            .post('https://localhost:5000/ask', data)
+            .post('http://localhost:5000/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -111,7 +120,7 @@ class Navigation extends Component {
         };
         console.log(data);
         axios
-            .post('https://localhost:5000/ask', data)
+            .post('http://localhost:5000/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -123,7 +132,7 @@ class Navigation extends Component {
 
     componentDidMount() {
         trackPromise(
-            fetch('https://localhost:5000/home')
+            fetch('http://localhost:5000/home')
                 .then(res => res.json())
                 .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
         )
@@ -137,7 +146,7 @@ class Navigation extends Component {
     };
 
     getData = () => {
-        fetch('https://localhost:5000/home')
+        fetch('http://localhost:5000/home')
             .then(response => response.json())
             .then(feeds => {
                 const { query } = this.state;
@@ -291,7 +300,7 @@ class Navigation extends Component {
                                                     <textarea
                                                         rows="2"
                                                         class="form-control col-sm-9"
-                                                        value={this.state.post}
+                                                        value={this.state.question}
                                                         onChange={this.onQuestionChange}
                                                         aria-describedby="questionHere"
                                                         placeholder="Start your question with 'What', 'Why', 'How', etc. "
@@ -309,12 +318,12 @@ class Navigation extends Component {
                                                     class="form-control col-sm-9"
                                                     required>
                                                     <option value="" selected>Choose one...</option>
-                                                    <option value="faculties">Faculties</option>
-                                                    <option value="accommodation">Accomodation</option>
-                                                    <option value="student_life">Student Life</option>
-                                                    <option value="job_intern">Job/Internship</option>
-                                                    <option value="exchange_noc">Exchange Program/NOC</option>
-                                                    <option value="others">Others</option>
+                                                    <option value="1">Faculties</option>
+                                                    <option value="2">Accomodation</option>
+                                                    <option value="3">Student Life</option>
+                                                    <option value="4">Job/Internship</option>
+                                                    <option value="5">Exchange Program/NOC</option>
+                                                    <option value="6">Others</option>
                                                 </select>
                                                 <small id="questionWarning" class="form-text text-muted col-sm-11">
                                                     Your question will be posted anonymously but any inapporpriate content will be filtered.

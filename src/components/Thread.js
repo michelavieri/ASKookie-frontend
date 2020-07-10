@@ -103,7 +103,7 @@ export class Thread extends Component {
         e.preventDefault();
 
         const data = {
-            postID: id,
+            postID2: id,
             answer: this.state.answer,
             answerer: this.state.answerer,
             time: new Date().toLocaleDateString(),
@@ -209,7 +209,7 @@ export class Thread extends Component {
                                                 <h8 class="pr-1">@ {`${this.state.feeds.postID}`}</h8>
                                                     &middot; Posted on {`${this.state.feeds.time}`}
                                                 {this.state.feeds.type == "2" &&
-                                                    <div>Posted by {this.state.feeds.answerer}</div>
+                                                    <div>Posted by {this.state.feeds.asker}</div>
                                                 }
                                             </div>
                                         </li>

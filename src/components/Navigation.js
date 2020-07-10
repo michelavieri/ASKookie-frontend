@@ -34,6 +34,7 @@ class Navigation extends Component {
             anonymous: false,
             time: "",
             post_content: "",
+            report: ""
         };
 
         this.onPostChange = this.onPostChange.bind(this);
@@ -114,7 +115,7 @@ class Navigation extends Component {
             post_content: this.state.post_content,
             anonymous: this.state.anonymous,
             time: new Date().toLocaleDateString(),
-            
+
         };
         console.log(data);
         axios
@@ -128,13 +129,42 @@ class Navigation extends Component {
             .catch(err => console.log(err));
     };
 
-    componentDidMount() {
-        // trackPromise(
-        //     fetch('http://localhost:5000/home')
-        //         .then(res => res.json())
-        //         .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-        // )
+    onChangeReport = e => {
+        this.setState({
+            report: e.target.value,
+        })
     }
+
+    handleSubmitReport = e => {
+        e.preventDefault();
+        const { id } = this.props.match.params;
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+
+        const data = {
+            postID: id,
+            username: decoded.result.username,
+            type: this.state.report,
+        };
+        console.log(data);
+        axios
+            .post('http://localhost:5000/report', data)
+            .then(res => {
+                console.log(res);
+                console.log(this.props);
+                window.location.reload(false);
+            })
+            .catch(err => console.log(err));
+    };
+
+
+    // componentDidMount() {
+    //     trackPromise(
+    //         fetch('http://localhost:5000/home')
+    //             .then(res => res.json())
+    //             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
+    //     )
+    // }
 
     handleInputChange = (event, value, reason) => {
         if (reason === 'select-option') {
@@ -143,14 +173,15 @@ class Navigation extends Component {
         }
     };
 
+
     getData = () => {
         fetch('http://localhost:5000/home')
             .then(response => response.json())
             .then(feeds => {
                 const { query } = this.state;
                 const filteredData = feeds.filter(element => {
-                    return element.question.toLowerCase().includes(query.toLowerCase()) || 
-                    element.title.toLowerCase().includes(query.toLowerCase()) ;
+                    return element.question.toLowerCase().includes(query.toLowerCase()) ||
+                        element.title.toLowerCase().includes(query.toLowerCase());
                 });
 
                 this.setState({
@@ -420,51 +451,51 @@ class Navigation extends Component {
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-2">
-                                <form>
+                                <form onSubmit={this.handleSubmitReport}>
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" required />
-                                        <label class="custom-control-label" for="customRadio1">Spam</label>
+                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" value="Spam" onClick={this.onChangeReport} required />
+                                        <label class="custom-control-label" for="customRadio1" >Spam</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" />
-                                        <label class="custom-control-label" for="customRadio2">Harrassment</label>
+                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" value="Harrassment" onClick={this.onChangeReport} />
+                                        <label class="custom-control-label" for="customRadio2" >Harrassment</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" />
-                                        <label class="custom-control-label" for="customRadio3">Joke/Troll</label>
+                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" value="Joke_Troll" onClick={this.onChangeReport} />
+                                        <label class="custom-control-label" for="customRadio3" >Joke/Troll</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input" value="Poorly_Written" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio4">Poorly Written</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input" value="Plagiarism" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio5">Plagiarism</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio6" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio6" name="customRadio" class="custom-control-input" value="Doesnt_Answer" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio6">Doesn't Answer the Question</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio7" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio7" name="customRadio" class="custom-control-input" value="Disturbing_Content" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio7">Disturbing Content</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" value="False_Info" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio8">Spreading False Information/Inaccurate</label>
                                     </div>
                                     <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" value="Spread_Hate" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio9">Spreading Hate</label>
                                     </div>
                                     <div class="custom-control custom-radio pb-2 pt-2">
-                                        <input type="radio" id="customRadio10" name="customRadio" class="custom-control-input" />
+                                        <input type="radio" id="customRadio10" name="customRadio" class="custom-control-input" value="Adult_Content" onClick={this.onChangeReport} />
                                         <label class="custom-control-label" for="customRadio10">Adult Content</label>
                                     </div>
 
                                     <div class="modal-footer mb-0 pb-0">
                                         <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-orange my-2 my-sm-0 ml-2">Submit</button>
+                                        <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Submit</button>
                                     </div>
                                 </form>
                             </div>

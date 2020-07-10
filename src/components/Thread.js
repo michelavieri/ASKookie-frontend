@@ -51,6 +51,7 @@ export class Thread extends Component {
     }
     componentDidMount() {
         this.getPost();
+        this.getCommentsPost();
         if (localStorage.usertoken) {
             this.getUserPost();
         }
@@ -278,7 +279,7 @@ export class Thread extends Component {
                                             <li class="feeds-footer pb-3">
                                                 <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
                                                 {this.state.feeds.type == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" onClick={this.getCommentsPost} />{this.state.commentPostCount.count}</button>
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.count}</button>
                                                 }
                                                 <div class="btn-group dropright">
                                                     <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
@@ -311,7 +312,7 @@ export class Thread extends Component {
                                             <li class="feeds-footer pb-3">
                                                 <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
                                                 {this.state.feeds.type == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" onClick={this.getCommentsPost} />{this.state.commentPostCount.count}</button>
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.count}</button>
                                                 }
                                                 <div class="btn-group dropright">
                                                     <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>

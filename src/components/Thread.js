@@ -32,6 +32,8 @@ export class Thread extends Component {
             user: "", //current user
             user_post: "", //user who post a certain question
             time: "",
+            commentPostCount: [],
+            commentAnsCount: "",
             // title: "",
             // post_content: "",
             // anonymous: false,
@@ -67,7 +69,13 @@ export class Thread extends Component {
                     this.setState({ answers: res.data });
                     console.log('Answers fetched', res.data);
                 }))
-       
+        fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}`)
+            .then(res => res.json())
+            .then(res => {
+                this.setState({ commentPostCount: res.data });
+                console.log('Count comments Post fetched', res.data);
+            })
+
     }
 
     onAnswerChange = e => {
@@ -105,7 +113,7 @@ export class Thread extends Component {
             .then(
                 res => {
                     console.log(res);
-                    // window.location.reload(false);
+                    window.location.reload(false);
                 })
             .catch(err => console.log(err));
     };
@@ -392,7 +400,7 @@ export class Thread extends Component {
                                                 </div>
                                             </div>
                                         )}
-                                        {this.state.answers.length == "0" &&
+                                        {!this.state.answers || this.state.answers.length == "0" &&
                                             <div class="card mb-3">
                                                 <div class="card-body mr-4">
                                                     <ul>
@@ -453,6 +461,8 @@ export class Thread extends Component {
                                                 <TextareaAutosize
                                                     class="col-sm-10 comment-input p-2 pl-4 pr-4"
                                                     placeholder="Add a comment..."
+                                                    value={this.state.comment}
+                                                    onChange={this.onCommentChange}
                                                     maxRows="5"
                                                     minRows="1"
                                                     required

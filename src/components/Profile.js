@@ -13,18 +13,13 @@ export class Profile extends Component {
         };
     }
     componentDidMount() {
-        trackPromise(
-            fetch('https://localhost:5000/home')
-                .then(res => res.json())
-                .then(res => {
-                    this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                    if (localStorage.usertoken) {
-                        const token = localStorage.usertoken;
-                        const decoded = jwt_decode(token);
-                        this.setState({ name: decoded.result.username });
-                    }
-                }))
-    };
+        if (localStorage.usertoken) {
+            const token = localStorage.usertoken;
+            const decoded = jwt_decode(token);
+            this.setState({ name: decoded.result.username });
+        }
+    }
+
 
     componentDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">

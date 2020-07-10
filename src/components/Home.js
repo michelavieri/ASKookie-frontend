@@ -214,7 +214,7 @@ export class Home extends Component {
                             </div>
                             <ul class="list-group list-group-flush">
                                 {this.state.unanswered && this.state.unanswered.slice(0, 6).map((feeds, index) => (
-                                    <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.post}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                    <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.question}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div class="card-footer overflow-auto">

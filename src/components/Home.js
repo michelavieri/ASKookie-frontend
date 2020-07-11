@@ -36,7 +36,7 @@ export class Home extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('http://localhost:5000/home')
+            fetch('http://localhost:5000/answered')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data }, () => console.log('Data fetched', res));

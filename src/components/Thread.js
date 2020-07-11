@@ -54,6 +54,10 @@ export class Thread extends Component {
         this.getCommentsPost();
         if (localStorage.usertoken) {
             this.getUserPost();
+            const token = localStorage.usertoken;
+            const decoded = jwt_decode(token);
+            this.setState({ username: decoded.result.username });
+
         }
         trackPromise(
             fetch('http://localhost:5000/answer/' + `${this.props.match.params.id}`)
@@ -77,6 +81,16 @@ export class Thread extends Component {
                 }))
 
     }
+
+    // getCommentAnsCount(id) {
+    //     trackPromise (
+    //     fetch('http://localhost:5000/comments/count/answer/' + id)
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             this.setState({ commentPostCount: res.data[0] });
+    //             console.log('Count comments Answer fetched', res.data[0]);
+    //         }))
+    // }
 
     getCommentsAns(id) {
         console.log("answerid", id);
@@ -430,7 +444,7 @@ export class Thread extends Component {
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">
                                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />1</button>
+                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" /></button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                                     <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button>
                                                                 </li>
@@ -438,7 +452,7 @@ export class Thread extends Component {
                                                             {!localStorage.usertoken &&
                                                                 <li class="feeds-footer">
                                                                     <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 25</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />1</button>
+                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" /></button>
                                                                     <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button>
                                                                 </li>
                                                             }
@@ -505,7 +519,7 @@ export class Thread extends Component {
                                             <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as Michela Vieri</p>
+                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
                                             <form onSubmit={this.handleSubmitCommentAns}>
                                                 <TextareaAutosize
                                                     class="col-sm-10 comment-input p-2 pl-4 pr-4"
@@ -570,7 +584,7 @@ export class Thread extends Component {
                                             <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as Michela Vieri</p>
+                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
                                             <form onSubmit={this.handleSubmitCommentPost}>
                                                 <TextareaAutosize
                                                     class="col-sm-10 comment-input p-2 pl-4 pr-4"

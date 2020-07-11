@@ -156,7 +156,7 @@ class Navigation extends Component {
             })
             .catch(err => {
                 console.log(err);
-                alert("cannot report twice");
+                alert("Cannot Report a Post Twice");
             });
     };
 

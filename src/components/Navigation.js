@@ -154,7 +154,10 @@ class Navigation extends Component {
                 console.log(this.props);
                 window.location.reload(false);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                alert("cannot report twice");
+            });
     };
 
 

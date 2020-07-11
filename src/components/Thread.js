@@ -39,7 +39,7 @@ export class Thread extends Component {
             comment: "",
             // title: "",
             // post_content: "",
-            // anonymous: false,
+            anonymous: "1",
             // asker: "",
             // question: "",
             // type: ""
@@ -125,6 +125,20 @@ export class Thread extends Component {
         })
     }
 
+    onAnonChange = e => {
+        if (e.target.checked) {
+            console.log("anon")
+            this.setState({
+                anonymous: 0,
+            })
+        } else {
+            console.log("not anon")
+            this.setState({
+                anonymous: 1,
+            })
+        }
+    }
+
     handleSubmitPost = e => {
         const { id } = this.props.match.params;
 
@@ -135,13 +149,14 @@ export class Thread extends Component {
             answer: this.state.answer,
             answerer: this.state.answerer,
             time: new Date().toLocaleDateString(),
+            anonymous: this.state.anonymous,
         };
         axios
             .post('http://localhost:5000/answer', data)
             .then(
                 res => {
                     console.log(res);
-                    window.location.reload(false);
+                    // window.location.reload(false);
                 })
             .catch(err => console.log(err));
     };
@@ -170,7 +185,6 @@ export class Thread extends Component {
 
     handleSubmitCommentAns = e => {
         e.preventDefault();
-
         const data = {
             comment: this.state.comment,
             username: this.state.username,
@@ -179,6 +193,7 @@ export class Thread extends Component {
             anonymous: false,
             postID: this.props.match.params.id,
         };
+
         axios
             .post('http://localhost:5000/comment/answer', data)
             .then(
@@ -363,7 +378,7 @@ export class Thread extends Component {
 
 
                                                         <div class="form-check row pull-left ml-3">
-                                                            <input class="form-check-input" type="checkbox" value="" id="anonymousCheck" />
+                                                            <input class="form-check-input" type="checkbox" defaultChecked={false} onChange={this.onAnonChange} id="anonymousCheck" />
                                                             <label class="form-check-label" for="anonymousCheck">
                                                                 Appear Anonymous to others
                                                 </label>
@@ -420,12 +435,22 @@ export class Thread extends Component {
                                                     <div class="card-body mr-4 pb-0">
                                                         <ul>
                                                             <li>
-                                                                <div class="sub-text">
-                                                                    Posted by {answers.answerer}
-                                                                    <div class="pl-0">
-                                                                        Answered on {answers.time}
+                                                                {answers.anonymous == "1" &&
+                                                                    <div class="sub-text">
+                                                                        Posted by {answers.answerer}
+                                                                        <div class="pl-0">
+                                                                            Answered on {answers.time}
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                }
+                                                                {answers.anonymous == "0" &&
+                                                                    <div class="sub-text">
+                                                                        Posted by an anonymous user
+                                                                        <div class="pl-0">
+                                                                            Answered on {answers.time}
+                                                                        </div>
+                                                                    </div>
+                                                                }
                                                             </li>
                                                             <li>
                                                                 <p class="whiteSpace">{answers.answer}</p>
@@ -433,7 +458,7 @@ export class Thread extends Component {
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">
                                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{answers.like_count}</button>
-                                                            <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count}</button>
+                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count}</button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                                     <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button>
                                                                 </li>

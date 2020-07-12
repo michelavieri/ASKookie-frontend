@@ -139,6 +139,12 @@ export class Thread extends Component {
         }
     }
 
+    setAnswerID(id) {
+        this.setState({
+            answerID: id,
+        })
+    }
+
     handleSubmitPost = e => {
         const { id } = this.props.match.params;
 
@@ -212,12 +218,31 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/' + id_del) //delete post with id id_del
+            .delete('http://localhost:5000/delete/post/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/`); //redirect to home
                 window.location.reload(false);
                 console.log("Post deleted");
+            })
+            .catch(err => console.log(err));
+    };
+
+    handleDeleteAnswer = e => { //deleting answer
+        const id_del = this.state.answerID;
+        const id = this.props.match.params.id;
+
+        e.preventDefault();
+
+        console.log("iddel", id_del);
+
+        axios
+            .delete('http://localhost:5000/delete/answer/' + id_del) //delete answer with id id_del
+            .then(res => {
+                console.log(res);
+                // this.props.history.push(`/thread/` + id);
+                // window.location.reload(false);
+                console.log("Answer deleted");
             })
             .catch(err => console.log(err));
     };
@@ -416,7 +441,6 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken && this.state.user == this.state.user_post &&
                                             <div>
-                                                {/* {console.log("tettt", this.state.user, this.state.user_post)} */}
                                                 <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }}><i class="fa fa-pencil mr-2" />Edit</button>
                                                 <button class="btn btn-outline-danger mb-2 ml-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash mr-2" />Delete</button>
                                             </div>
@@ -468,6 +492,12 @@ export class Thread extends Component {
                                                                     <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {answers.like_count2}</button>
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button>
+                                                                </li>
+                                                            }
+                                                            {localStorage.usertoken && this.state.user == `${answers.answerer}` &&
+                                                                <li>
+                                                                    <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Answer" data-target="#deleteAnswerModal" onClick={() => this.setAnswerID(`${answers.answerID}`)}><i class="fa fa-trash like" /></button>
+                                                                    <button class="btn btn-icon float-right" title="Edit Answer"><i class="fa fa-pencil comment" /></button>
                                                                 </li>
                                                             }
                                                         </ul>
@@ -666,6 +696,28 @@ export class Thread extends Component {
                             </div>
                         </div>
                     </div>
+                    {/* end of delete modal */}
+
+
+                    {/* start of delete answer modal */}
+                    <div id="deleteAnswerModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Delete Answer</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <div class="modal-body text-left pt-3 pb-3">
+                                    Are you sure you want to delete your answer?
+                                    <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
+                                        <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteAnswer}>Delete</button>
+                                        <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         )

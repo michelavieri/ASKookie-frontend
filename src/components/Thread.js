@@ -435,19 +435,19 @@ export class Thread extends Component {
                                                     <div class="card-body mr-4 pb-0">
                                                         <ul>
                                                             <li>
-                                                                {answers.anonymous == "1" &&
+                                                                {answers.anonymous2 == "1" &&
                                                                     <div class="sub-text">
                                                                         Posted by {answers.answerer}
                                                                         <div class="pl-0">
-                                                                            Answered on {answers.time}
+                                                                            Answered on {answers.time2}
                                                                         </div>
                                                                     </div>
                                                                 }
-                                                                {answers.anonymous == "0" &&
+                                                                {answers.anonymous2 == "0" &&
                                                                     <div class="sub-text">
                                                                         Posted by an anonymous user
                                                                         <div class="pl-0">
-                                                                            Answered on {answers.time}
+                                                                            Answered on {answers.time2}
                                                                         </div>
                                                                     </div>
                                                                 }
@@ -457,16 +457,16 @@ export class Thread extends Component {
                                                             </li>
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">
-                                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{answers.like_count}</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count}</button>
+                                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{answers.like_count2}</button>
+                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                                     <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button>
                                                                 </li>
                                                             }
                                                             {!localStorage.usertoken &&
                                                                 <li class="feeds-footer">
-                                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {answers.like_count}</button>
-                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count}</button>
+                                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {answers.like_count2}</button>
+                                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button>
                                                                 </li>
                                                             }

@@ -81,15 +81,19 @@ export class Home extends Component {
     }
 
     shuffleArray = () => {
-        let i = this.state.feeds.length - 1;
-        var array = this.state.feeds.slice();
-        for (; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
+        if (this.state.feeds) {
+            let i = this.state.feeds.length - 1;
+            var array = this.state.feeds.slice();
+            for (; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        } else {
+            return this.state.feeds;
         }
-        return array;
     }
 
     mostRecent = () => {

@@ -37,7 +37,10 @@ export class Thread extends Component {
             commentsAns: [],
             commentsPost: [],
             comment: "",
-            // title: "",
+            answer: "",
+            answerEdit: "",
+            questionEdit: "",
+            postEdit: "",
             // post_content: "",
             anonymous: "1",
             // asker: "",
@@ -116,6 +119,36 @@ export class Thread extends Component {
         });
     };
 
+    onAnswerEditChange = e => {
+        this.setState({
+            answerEdit: e.target.value,
+        });
+    };
+
+    onQuestionEditChange = e => {
+        this.setState({
+            questionEdit: e.target.value,
+        });
+    };
+
+    setQuestion(quest) {
+        this.setState({
+            questionEdit: quest,
+        })
+    }
+
+    setPost(post) {
+        this.setState({
+            postEdit: post,
+        })
+    }
+
+    onPostEditChange = e => {
+        this.setState({
+            postEdit: e.target.value,
+        });
+    };
+
     onCommentChange = e => {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
@@ -145,6 +178,17 @@ export class Thread extends Component {
         })
     }
 
+    setAnswer(ans) {
+        this.setState({
+            answerEdit: ans,
+        })
+    }
+
+    setAnswerAndID(id, ans) {
+        this.setAnswerID(id);
+        this.setAnswer(ans);
+    }
+
     handleSubmitPost = e => {
         const { id } = this.props.match.params;
 
@@ -166,6 +210,27 @@ export class Thread extends Component {
                 })
             .catch(err => console.log(err));
     };
+
+    handleLike = e => {
+        var likeCount = this.state.feeds.like_count;
+        likeCount = likeCount + 1;
+        this.setState({
+            feeds: {
+                anonymous: this.state.feeds.anonymous,
+                asker: this.state.feeds.asker,
+                category: this.state.feeds.category,
+                comment_count: this.state.feeds.comment_count,
+                like_count: likeCount,
+                postID: this.state.feeds.postID,
+                post_content: this.state.feeds.post_content,
+                question: this.state.feeds.question,
+                time: this.state.feeds.time,
+                title: this.state.feeds.title,
+                type: this.state.feeds.type,
+            }
+        })
+        console.log("feeds now", this.state.feeds);
+    }
 
     handleSubmitCommentPost = e => {
         e.preventDefault();
@@ -240,12 +305,63 @@ export class Thread extends Component {
             .delete('http://localhost:5000/delete/answer/' + id_del) //delete answer with id id_del
             .then(res => {
                 console.log(res);
-                // this.props.history.push(`/thread/` + id);
-                // window.location.reload(false);
+                this.props.history.push(`/thread/` + id);
+                window.location.reload(false);
                 console.log("Answer deleted");
             })
             .catch(err => console.log(err));
     };
+
+    handleEditAnswer = e => {
+        e.preventDefault();
+        const data = {
+            content: this.state.answerEdit,
+            answerID: this.state.answerID,
+        };
+
+        axios
+            .post('http://localhost:5000/edit/answer', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    }
+
+    handleEditQuestion = e => {
+        e.preventDefault();
+        const data = {
+            question: this.state.questionEdit,
+            postID: this.props.match.params.id,
+        };
+
+        axios
+            .post('http://localhost:5000/edit/question', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    }
+
+    handleEditPost = e => {
+        e.preventDefault();
+        const data = {
+            post_content: this.state.postEdit,
+            postID: this.props.match.params.id,
+        };
+
+        axios
+            .post('http://localhost:5000/edit/post', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    }
 
     getUserPost = () => { //get the user who post the question/post
         const postId = this.props.match.params.id; //get post id
@@ -266,7 +382,7 @@ export class Thread extends Component {
         axios.get('http://localhost:5000/thread/' + postId)
             .then(res => {
                 this.setState({ feeds: res.data.data });
-                // console.log("dataaaaa", res.data.data)
+                console.log("Feeds fetched", res.data.data)
             })
             .catch(err => console.log(err));
     }
@@ -287,9 +403,7 @@ export class Thread extends Component {
             <div className="container-fluid margin-top">
                 <NavigationRouter2 />
                 <div class="row content">
-                    {/* {console.log("answerslength:", this.state.answers.length)} */}
                     <div class="col-sm-9 text-left">
-                        {/* {feedsArr && feedsArr.map((feeds, index) => ( */}
                         <div>
                             <div class="card border border-secondary">
                                 <div class="card-body pb-0">
@@ -320,7 +434,7 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken &&
                                             <li class="feeds-footer pb-3">
-                                                <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{this.state.feeds.like_count}</button>
+                                                <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={this.handleLike} />{this.state.feeds.like_count}</button>
                                                 {this.state.feeds.type == "2" &&
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.comment_count}</button>
                                                 }
@@ -441,7 +555,12 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken && this.state.user == this.state.user_post &&
                                             <div>
-                                                <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                {this.state.feeds.type == "1" &&
+                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editQuestionModal" onClick={() => this.setQuestion}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                }
+                                                {this.state.feeds.type = "2" &&
+                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editPostModal" onClick={() => this.setPost}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                }
                                                 <button class="btn btn-outline-danger mb-2 ml-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash mr-2" />Delete</button>
                                             </div>
                                         }
@@ -497,7 +616,7 @@ export class Thread extends Component {
                                                             {localStorage.usertoken && this.state.user == `${answers.answerer}` &&
                                                                 <li>
                                                                     <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Answer" data-target="#deleteAnswerModal" onClick={() => this.setAnswerID(`${answers.answerID}`)}><i class="fa fa-trash like" /></button>
-                                                                    <button class="btn btn-icon float-right" title="Edit Answer"><i class="fa fa-pencil comment" /></button>
+                                                                    <button class="btn btn-icon float-right" title="Edit Answer" data-toggle="modal" data-target="#editAnswerModal" onClick={() => this.setAnswerAndID(`${answers.answerID}`, `${answers.answer}`)}><i class="fa fa-pencil comment" /></button>
                                                                 </li>
                                                             }
                                                         </ul>
@@ -525,7 +644,6 @@ export class Thread extends Component {
                             }
                             {/* end of answer */}
                         </div>
-                        {/* ))} */}
                     </div>
                     {/* unanswered Questions */}
                     <div class="col-sm-2">
@@ -596,7 +714,7 @@ export class Thread extends Component {
                                             </div>
                                             <li class="feeds-footer">
                                                 <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                                <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
+                                                {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                 <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
                                             </li>
                                             <hr class="mt-0 mb-4" />
@@ -699,6 +817,93 @@ export class Thread extends Component {
                     {/* end of delete modal */}
 
 
+                    {/* start of edit answer modal */}
+                    <div id="editAnswerModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Edit My Answer</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <form onSubmit={this.handleEditAnswer}>
+                                    <ul class="row content">
+                                        <li class="col-sm-9 mt-3">
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                class="form-control"
+                                                value={this.state.answerEdit}
+                                                onChange={this.onAnswerEditChange}
+                                                required
+                                            />
+                                        </li>
+                                        <li class="col-sm-2 mt-3">
+                                            <button type="submit" class="btn btn-orange">Edit Answer</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of edit answer modal */}
+
+                    {/* start of edit question modal */}
+                    <div id="editQuestionModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Edit My Question</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <form onSubmit={this.handleEditQuestion}>
+                                    <ul class="row content">
+                                        <li class="col-sm-9 mt-3">
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                class="form-control"
+                                                value={this.state.questionEdit}
+                                                onChange={this.onQuestionEditChange}
+                                                required
+                                            />
+                                        </li>
+                                        <li class="col-sm-2 mt-3">
+                                            <button type="submit" class="btn btn-orange">Edit Question</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of edit question modal */}
+
+                    {/* start of edit post modal */}
+                    <div id="editPostModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Edit My Post</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <form onSubmit={this.handleEditPost}>
+                                    <ul class="row content">
+                                        <li class="col-sm-9 mt-3">
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                class="form-control"
+                                                value={this.state.postEdit}
+                                                onChange={this.onPostEditChange}
+                                                required
+                                            />
+                                        </li>
+                                        <li class="col-sm-2 mt-3">
+                                            <button type="submit" class="btn btn-orange">Edit Post</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of edit post modal */}
+
                     {/* start of delete answer modal */}
                     <div id="deleteAnswerModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -719,7 +924,7 @@ export class Thread extends Component {
                     </div>
 
                 </div>
-            </div>
+            </div >
         )
     }
 }

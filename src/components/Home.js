@@ -32,9 +32,20 @@ export class Home extends Component {
             name: '',
             answers: [],
             unanswered: [],
+            answerID: "",
+            commentsAns: "",
+            commentsPost: "",
+            user: "",
+            postID: "",
         };
     }
     componentDidMount() {
+        if (localStorage.usertoken) {
+            const token = localStorage.usertoken;
+            const decoded = jwt_decode(token);
+            this.setState({ user: decoded.result.username });
+
+        }
         trackPromise(
             fetch('http://localhost:5000/answered')
                 .then(res => res.json())
@@ -109,6 +120,85 @@ export class Home extends Component {
         return array;
     }
 
+    onCommentChange = e => {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+        this.setState({
+            comment: e.target.value,
+            username: decoded.result.username
+        })
+    }
+
+    handleSubmitCommentPost = e => {
+        e.preventDefault();
+
+        const data = {
+            comment: this.state.comment,
+            username: this.state.username,
+            time: new Date().toLocaleDateString(),
+            postID: this.state.postID,
+            anonymous: false,
+            answerID: null,
+        };
+        axios
+            .post('http://localhost:5000/comment/post', data)
+            .then(
+                res => {
+                    console.log(res);
+                    this.props.history.push(`/thread/` + this.state.postID);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    };
+
+    handleSubmitCommentAns = e => {
+        e.preventDefault();
+        const data = {
+            comment: this.state.comment,
+            username: this.state.username,
+            time: new Date().toLocaleDateString(),
+            answerID: this.state.answerID,
+            anonymous: false,
+            postID: this.props.match.params.id,
+        };
+
+        axios
+            .post('http://localhost:5000/comment/answer', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    };
+
+    getCommentsAns(id) {
+        console.log("answerid", id);
+        this.setState({
+            answerID: id,
+        })
+        trackPromise(
+            fetch('http://localhost:5000/comments/answer/' + id)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ commentsAns: res.data });
+                    console.log('Comments Answer fetched', res.data);
+                }))
+    }
+
+    getCommentsPost = (id) => {
+        trackPromise(
+            fetch('http://localhost:5000/comments/post/' + id)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({
+                        commentsPost: res.data,
+                        postID: id,
+                    });
+                    console.log('Comments Post fetched', res.data);
+                }))
+    }
+
 
     render() {
         var shuffledPosts = this.shuffleArray();
@@ -160,10 +250,24 @@ export class Home extends Component {
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
                                         <li>
-                                            <div class="sub-text">
-                                                <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                            {feeds.type == "1" && feeds.anonymous2 == "1" &&
+                                                <div class="sub-text">
+                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                &middot; Posted by {feeds.answerer} on {`${feeds.time2}`}
+                                                </div>
+                                            }
+                                            {feeds.type == "1" && feeds.anonymous2 == "0" &&
+                                                <div class="sub-text">
+                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                &middot; Posted by an anonymous user on {`${feeds.time2}`}
+                                                </div>
+                                            }
+                                            {feeds.type == "2" &&
+                                                <div class="sub-text">
+                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by {feeds.asker} on {`${feeds.time}`}
-                                            </div>
+                                                </div>
+                                            }
                                         </li>
                                         <li>
                                             <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}{feeds.title}</NavLink>
@@ -171,13 +275,23 @@ export class Home extends Component {
                                         <li>
                                             <Linkify componentDecorator={this.componentDecorator}>
                                                 <div class="show-more" data-type="text" data-number="80">
-                                                    <p class="whiteSpace">{feeds.post_content}</p>
+                                                    <p class="whiteSpace">{feeds.post_content}{feeds.answer}</p>
                                                 </div>
                                             </Linkify>
                                         </li>
                                         <li class="feeds-footer">
-                                            <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
-                                            <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal"><i class="fa fa-comment-o pr-1" />10</button>
+                                            {feeds.type == "1" &&
+                                                <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                            }
+                                            {feeds.type == "1" &&
+                                                <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                            }
+                                            {feeds.type == "2" &&
+                                                <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
+                                            }
+                                            {feeds.type == "2" &&
+                                                <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
+                                            }
                                             <div class="btn-group dropright">
                                                 <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
                                                 <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
@@ -234,7 +348,7 @@ export class Home extends Component {
                 </div>
 
 
-                {/* modal for comments */}
+                {/* modal for comments ans */}
                 <div id="commentsModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -248,11 +362,13 @@ export class Home extends Component {
                                         <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
                                     </div>
                                     <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as Michela Vieri</p>
-                                        <form>
+                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                        <form onSubmit={this.handleSubmitCommentAns}>
                                             <TextareaAutosize
                                                 class="col-sm-10 comment-input p-2 pl-4 pr-4"
                                                 placeholder="Add a comment..."
+                                                value={this.state.comment}
+                                                onChange={this.onCommentChange}
                                                 maxRows="5"
                                                 minRows="1"
                                                 required
@@ -265,69 +381,96 @@ export class Home extends Component {
 
                                 <hr class="mt-0 mb-4" />
 
-                                <div class="row content">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                {this.state.commentsAns && this.state.commentsAns.map(comment =>
+                                    <div>
+                                        <div class="row content">
+                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            </div>
+                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                                <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
+                                                <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
+                                            </div>
+                                            <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
+                                        </div>
+                                        <li class="feeds-footer">
+                                            <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                            {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
+                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                        </li>
+                                        <hr class="mt-0 mb-4" />
+                                    </div>
+                                )}
+
+                                {this.state.commentsAns.length == "0" &&
+                                    <div class="muted-text mt-3 pl-3 pb-3">
+                                        No comments yet!
+                                        </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* end of modal comments */}
+
+                {/* modal for comments post */}
+                <div id="commentsPostModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header blueBg">
+                                <h4 class="modal-title text-white">Comments (4)</h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body text-left pt-0">
+                                <div class="row content mb-0 greyBg pt-4 pb-3">
+                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
                                         <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
                                     </div>
                                     <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
+                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                        <form onSubmit={this.handleSubmitCommentPost}>
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                placeholder="Add a comment..."
+                                                value={this.state.comment}
+                                                onChange={this.onCommentChange}
+                                                maxRows="5"
+                                                minRows="1"
+                                                required
+                                            ></TextareaAutosize>
+                                            <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                        </form>
                                     </div>
-                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
+
                                 </div>
-                                <li class="feeds-footer">
-                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                    {/* <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button> */}
-                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                </li>
+
                                 <hr class="mt-0 mb-4" />
-                                <div class="row content">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+
+                                {this.state.commentsPost && this.state.commentsPost.map(comment =>
+                                    <div>
+                                        <div class="row content">
+                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            </div>
+                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                                <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
+                                                <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
+                                            </div>
+                                            <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
+                                        </div>
+                                        <li class="feeds-footer">
+                                            <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                            <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
+                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                        </li>
+                                        <hr class="mt-0 mb-4" />
                                     </div>
-                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                    </div>
-                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                </div>
-                                <li class="feeds-footer">
-                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                    {/* <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button> */}
-                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                </li>
-                                <hr class="mt-0 mb-4" />
-                                <div class="row content">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                    </div>
-                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                    </div>
-                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                </div>
-                                <li class="feeds-footer">
-                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                    {/* <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button> */}
-                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                </li>
-                                <hr class="mt-0 mb-4" />
-                                <div class="row content">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                    </div>
-                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-weight-bold pb-0 mb-0">Michela Vieri</p>
-                                        <p class="sub-text pt-0 mt-0">Answered on 15/07/2020</p>
-                                    </div>
-                                    <p class="mr-3 ml-4 whiteSpace">I think this post is a very good answer thus i would like to try here if i have a very very very long paragraph what will it look like</p>
-                                </div>
-                                <li class="feeds-footer">
-                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                    {/* <button class="btn btn-icon float-right report" title="Report"><i class="fa fa-exclamation-circle" /></button> */}
-                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
-                                </li>
+                                )}
+                                {this.state.commentsPost.length == "0" &&
+                                    <div class="muted-text mt-3 pl-3 pb-3">
+                                        No comments yet!
+                                        </div>
+                                }
                             </div>
                         </div>
                     </div>

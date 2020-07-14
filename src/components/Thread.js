@@ -41,6 +41,7 @@ export class Thread extends Component {
             answerEdit: "",
             questionEdit: "",
             postEdit: "",
+
             // post_content: "",
             anonymous: "1",
             // asker: "",
@@ -62,7 +63,7 @@ export class Thread extends Component {
 
         }
         trackPromise(
-            fetch('http://localhost:5000/comments/count/answer/' + `${this.props.match.params.id}`)
+            fetch('http://localhost:5000/comments/count/answer/' + `${this.props.match.params}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ answers: res.data });
@@ -229,7 +230,20 @@ export class Thread extends Component {
                 type: this.state.feeds.type,
             }
         })
-        console.log("feeds now", this.state.feeds);
+        const data = {
+            postID: this.props.match.params.id,
+            username: this.state.user,
+        };
+        console.log("postID", data.postID)
+        console.log("username", data.username)
+        axios
+            .post('http://localhost:5000/like/post', data)
+            .then(
+                res => {
+                    console.log(res);
+                    // window.location.reload(false);
+                })
+            .catch(err => console.log(err));
     }
 
     handleSubmitCommentPost = e => {

@@ -50,10 +50,10 @@ export class Thread extends Component {
         };
 
         this.getUserPost = this.getUserPost.bind(this);
-        this.getPost = this.getPost.bind(this);
+        // this.getPost = this.getPost.bind(this);
     }
     componentDidMount() {
-        this.getPost();
+        // this.getPost();
         this.getCommentsPost();
         if (localStorage.usertoken) {
             this.getUserPost();
@@ -63,18 +63,19 @@ export class Thread extends Component {
 
         }
         trackPromise(
-            fetch('http://localhost:5000/comments/count/answer/' + `${this.props.match.params}` + "/" + `${this.state.username}`)
+            fetch('http://localhost:5000/comments/count/answer/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ answers: res.data });
                     console.log('Answers fetched', res.data);
                 }))
         trackPromise(
-            fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}`)
+            fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ commentPostCount: res.data[0] });
-                    console.log('Count comments Post fetched', res.data[0]);
+                    this.setState({ feeds: res.data[0] });
+                    console.log('Feeds fetched', res.data);
+                    console.log("type", res.data[0].type)
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')
@@ -212,38 +213,69 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     };
 
-    handleLike = e => {
+    handleLike = (liked) => {
         var likeCount = this.state.feeds.like_count;
-        likeCount = likeCount + 1;
-        this.setState({
-            feeds: {
-                anonymous: this.state.feeds.anonymous,
-                asker: this.state.feeds.asker,
-                category: this.state.feeds.category,
-                comment_count: this.state.feeds.comment_count,
-                like_count: likeCount,
-                postID: this.state.feeds.postID,
-                post_content: this.state.feeds.post_content,
-                question: this.state.feeds.question,
-                time: this.state.feeds.time,
-                title: this.state.feeds.title,
-                type: this.state.feeds.type,
-            }
-        })
-        const data = {
-            postID: this.props.match.params.id,
-            username: this.state.user,
-        };
-        console.log("postID", data.postID)
-        console.log("username", data.username)
-        axios
-            .post('http://localhost:5000/like/post', data)
-            .then(
-                res => {
-                    console.log(res);
-                    // window.location.reload(false);
-                })
-            .catch(err => console.log(err));
+        if (!liked) {
+            likeCount = likeCount + 1;
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: likeCount,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type: this.state.feeds.type,
+                    hasLiked: true,
+                }
+            })
+            const data = {
+                postID: this.props.match.params.id,
+                username: this.state.user,
+            };
+            console.log("postID", data.postID)
+            console.log("username", data.username)
+            axios
+                .post('http://localhost:5000/like/post', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            likeCount = likeCount - 1;
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: likeCount,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type: this.state.feeds.type,
+                    hasLiked: false,
+                }
+            })
+            const data = {
+                postID: this.props.match.params.id,
+                username: this.state.user,
+            };
+            axios
+                .post('http://localhost:5000/unlike/post', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        }
     }
 
     handleSubmitCommentPost = e => {
@@ -391,15 +423,15 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     };
 
-    getPost = () => {
-        const postId = this.props.match.params.id; //get post id
-        axios.get('http://localhost:5000/thread/' + postId)
-            .then(res => {
-                this.setState({ feeds: res.data.data });
-                console.log("Feeds fetched", res.data.data)
-            })
-            .catch(err => console.log(err));
-    }
+    // getPost = () => {
+    //     const postId = this.props.match.params.id; //get post id
+    //     axios.get('http://localhost:5000/thread/' + postId)
+    //         .then(res => {
+    //             this.setState({ feeds: res.data.data });
+    //             console.log("Feeds fetched", res.data.data)
+    //         })
+    //         .catch(err => console.log(err));
+    // }
 
     refreshPage() {
         window.location.reload(false);
@@ -448,7 +480,12 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken &&
                                             <li class="feeds-footer pb-3">
-                                                <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={this.handleLike} />{this.state.feeds.like_count}</button>
+                                                {this.state.feeds.hasLiked &&
+                                                    <button class="btn btn-icon like pr-1 pl-2 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(this.state.feeds.hasLiked)} />{this.state.feeds.like_count}</button>
+                                                }
+                                                {!this.state.feeds.hasLiked &&
+                                                    <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(this.state.feeds.hasLiked)} />{this.state.feeds.like_count}</button>
+                                                }
                                                 {this.state.feeds.type == "2" &&
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.comment_count}</button>
                                                 }

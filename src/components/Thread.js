@@ -73,9 +73,9 @@ export class Thread extends Component {
             fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res.data[0] });
-                    console.log('Feeds fetched', res.data);
-                    console.log("type", res.data[0].type)
+                    this.setState({ feeds: res });
+                    console.log('Feeds fetched', res);
+                    console.log("type_post", this.state.feeds.type_post)
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')
@@ -229,7 +229,7 @@ export class Thread extends Component {
                     question: this.state.feeds.question,
                     time: this.state.feeds.time,
                     title: this.state.feeds.title,
-                    type: this.state.feeds.type,
+                    type_post: this.state.feeds.type_post,
                     hasLiked: true,
                 }
             })
@@ -260,7 +260,7 @@ export class Thread extends Component {
                     question: this.state.feeds.question,
                     time: this.state.feeds.time,
                     title: this.state.feeds.title,
-                    type: this.state.feeds.type,
+                    type_post: this.state.feeds.type,
                     hasLiked: false,
                 }
             })
@@ -409,6 +409,34 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     }
 
+    saveThread() {
+        const data = {
+            username: this.state.username,
+            postID: this.props.match.params.id,
+        };
+        if (this.state.feeds.hasSaved == "0") {
+            console.log("saved!")
+            axios
+                .post('http://localhost:5000/save', data)
+                .then(
+                    res => {
+                        console.log(res);
+                        window.location.reload(false);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            console.log("unsaved!")
+            axios
+                .post('http://localhost:5000/unsave', data)
+                .then(
+                    res => {
+                        console.log(res);
+                        window.location.reload(false);
+                    })
+                .catch(err => console.log(err));
+        }
+    }
+
     getUserPost = () => { //get the user who post the question/post
         const postId = this.props.match.params.id; //get post id
         const token = localStorage.usertoken;
@@ -458,7 +486,7 @@ export class Thread extends Component {
                                             <div class="sub-text">
                                                 <h8 class="pr-1">@ {`${this.state.feeds.postID}`}</h8>
                                                     &middot; Posted on {`${this.state.feeds.time}`}
-                                                {this.state.feeds.type == "2" &&
+                                                {this.state.feeds.type_post == "2" &&
                                                     <div>Posted by {this.state.feeds.asker}</div>
                                                 }
                                             </div>
@@ -470,7 +498,7 @@ export class Thread extends Component {
                                         <li>
                                             <hr class="mt-0 mb-4 pb-0 mb-0" />
                                         </li>
-                                        {this.state.feeds.type == "2" &&
+                                        {this.state.feeds.type_post == "2" &&
                                             <li>
                                                 <div class="col-sm-9">
                                                     <p class="whiteSpace">{this.state.feeds.post_content}</p>
@@ -480,14 +508,14 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken &&
                                             <li class="feeds-footer pb-3">
-                                                {this.state.feeds.hasLiked &&
+                                                {this.state.feeds.hasLiked == "1" &&
                                                     <button class="btn btn-icon like pr-1 pl-2 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(this.state.feeds.hasLiked)} />{this.state.feeds.like_count}</button>
                                                 }
                                                 {!this.state.feeds.hasLiked &&
                                                     <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(this.state.feeds.hasLiked)} />{this.state.feeds.like_count}</button>
                                                 }
-                                                {this.state.feeds.type == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.comment_count}</button>
+                                                {this.state.feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.feeds.comment_count}</button>
                                                 }
                                                 <div class="btn-group dropright">
                                                     <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
@@ -510,16 +538,21 @@ export class Thread extends Component {
                                                         <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
+                                                {this.state.feeds.hasSaved == "0" &&
+                                                    < button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
+                                                }
+                                                {this.state.feeds.hasSaved == "1" &&
+                                                    < button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
+                                                }
                                                 <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                                <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
+                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}
                                             </li>
                                         }
 
                                         {!localStorage.usertoken &&
                                             <li class="feeds-footer pb-3">
                                                 <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
-                                                {this.state.feeds.type == "2" &&
+                                                {this.state.feeds.type_post == "2" &&
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.count}</button>
                                                 }
                                                 <div class="btn-group dropright">
@@ -543,12 +576,12 @@ export class Thread extends Component {
                                                         <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
+                                                {/* <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}
                                             </li>
                                         }
 
 
-                                        {this.state.feeds.type != "2" &&
+                                        {this.state.feeds.type_post != "2" &&
 
                                             <li>
                                                 {localStorage.usertoken &&
@@ -606,10 +639,10 @@ export class Thread extends Component {
 
                                         {localStorage.usertoken && this.state.user == this.state.user_post &&
                                             <div>
-                                                {this.state.feeds.type == "1" &&
+                                                {this.state.feeds.type_post == "1" &&
                                                     <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editQuestionModal" onClick={() => this.setQuestion}><i class="fa fa-pencil mr-2" />Edit</button>
                                                 }
-                                                {this.state.feeds.type = "2" &&
+                                                {this.state.feeds.type_post = "2" &&
                                                     <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editPostModal" onClick={() => this.setPost}><i class="fa fa-pencil mr-2" />Edit</button>
                                                 }
                                                 <button class="btn btn-outline-danger mb-2 ml-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash mr-2" />Delete</button>
@@ -619,7 +652,7 @@ export class Thread extends Component {
                                 </div>
                             </div>
 
-                            {this.state.feeds.type != "2" &&
+                            {this.state.feeds.type_post != "2" &&
                                 <div>
                                     <h2 class="pt-5 pb-2"> <b>Answers: </b></h2>
                                     < Linkify >
@@ -654,14 +687,14 @@ export class Thread extends Component {
                                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{answers.like_count2}</button>
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                                    <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button>
+                                                                    {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button> */}
                                                                 </li>
                                                             }
                                                             {!localStorage.usertoken &&
                                                                 <li class="feeds-footer">
                                                                     <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {answers.like_count2}</button>
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="Comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
-                                                                    <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button>
+                                                                    {/* <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button> */}
                                                                 </li>
                                                             }
                                                             {localStorage.usertoken && this.state.user == `${answers.answerer}` &&
@@ -766,7 +799,7 @@ export class Thread extends Component {
                                             <li class="feeds-footer">
                                                 <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
                                                 {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                             </li>
                                             <hr class="mt-0 mb-4" />
                                         </div>
@@ -831,7 +864,7 @@ export class Thread extends Component {
                                             <li class="feeds-footer">
                                                 <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
                                                 <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                                <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                             </li>
                                             <hr class="mt-0 mb-4" />
                                         </div>

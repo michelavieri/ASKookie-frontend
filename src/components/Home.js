@@ -129,6 +129,7 @@ export class Home extends Component {
         })
     }
 
+
     handleSubmitCommentPost = e => {
         e.preventDefault();
 
@@ -250,19 +251,19 @@ export class Home extends Component {
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
                                         <li>
-                                            {feeds.type == "1" && feeds.anonymous2 == "1" &&
+                                            {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
                                                 <div class="sub-text">
                                                     <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by {feeds.answerer} on {`${feeds.time2}`}
                                                 </div>
                                             }
-                                            {feeds.type == "1" && feeds.anonymous2 == "0" &&
+                                            {feeds.type_post == "1" && feeds.anonymous2 == "0" &&
                                                 <div class="sub-text">
                                                     <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by an anonymous user on {`${feeds.time2}`}
                                                 </div>
                                             }
-                                            {feeds.type == "2" &&
+                                            {feeds.type_post == "2" &&
                                                 <div class="sub-text">
                                                     <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by {feeds.asker} on {`${feeds.time}`}
@@ -280,16 +281,16 @@ export class Home extends Component {
                                             </Linkify>
                                         </li>
                                         <li class="feeds-footer">
-                                            {feeds.type == "1" &&
+                                            {feeds.type_post == "1" &&
                                                 <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                             }
-                                            {feeds.type == "1" &&
+                                            {feeds.type_post == "1" &&
                                                 <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                             }
-                                            {feeds.type == "2" &&
+                                            {feeds.type_post == "2" &&
                                                 <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
                                             }
-                                            {feeds.type == "2" &&
+                                            {feeds.type_post == "2" &&
                                                 <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
                                             }
                                             <div class="btn-group dropright">
@@ -315,7 +316,7 @@ export class Home extends Component {
                                             </div>
                                             <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
                                             {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button>
+                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}
                                         </li>
                                     </ul>
                                 </div>
@@ -396,7 +397,7 @@ export class Home extends Component {
                                         <li class="feeds-footer">
                                             <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
                                             {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                         </li>
                                         <hr class="mt-0 mb-4" />
                                     </div>
@@ -461,7 +462,7 @@ export class Home extends Component {
                                         <li class="feeds-footer">
                                             <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
                                             <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                            <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button>
+                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                         </li>
                                         <hr class="mt-0 mb-4" />
                                     </div>

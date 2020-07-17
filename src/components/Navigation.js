@@ -21,7 +21,7 @@ class Navigation extends Component {
     constructor() {
         super();
         this.state = {
-            feeds: [],
+            feeds_nav: [],
             query: "",
             filteredData: [],
             question: "",
@@ -44,6 +44,20 @@ class Navigation extends Component {
         this.handleSubmitAsk = this.handleSubmitAsk.bind(this);
         this.handleSubmitPost = this.handleSubmitPost.bind(this);
     }
+
+    // componentDidMount() {
+    //     if (localStorage.usertoken) {
+    //         const token = localStorage.usertoken;
+    //         const decoded = jwt_decode(token);
+    //         this.setState({ name: decoded.result.username });
+    //     }
+    //     trackPromise(
+    //         fetch('http://localhost:5000/home')
+    //             .then(res => res.json())
+    //             .then(res => {
+    //                 this.setState({ feeds_nav: res.data });
+    //             }))
+    // }
 
     onPostChange = e => {
         const token = localStorage.usertoken;
@@ -86,7 +100,7 @@ class Navigation extends Component {
             question: this.state.question,
             category: this.state.category,
             asker: this.state.asker,
-            type: "1",
+            type_post: 1,
             anonymous: true,
             post_content: this.state.post_content,
             title: this.state.title,
@@ -111,7 +125,7 @@ class Navigation extends Component {
             title: this.state.title,
             category: this.state.category,
             asker: this.state.asker,
-            type: "2",
+            type_post: 2,
             post_content: this.state.post_content,
             anonymous: this.state.anonymous,
             time: new Date().toLocaleDateString(),
@@ -144,7 +158,7 @@ class Navigation extends Component {
         const data = {
             postID: id,
             username: decoded.result.username,
-            type: this.state.report,
+            type_post: this.state.report,
         };
         console.log(data);
         axios
@@ -169,27 +183,56 @@ class Navigation extends Component {
     //     )
     // }
 
-    handleInputChange = (event, value, reason) => {
-        if (reason === 'select-option') {
-            this.props.history.push(`/thread/${value.postID}`);
-            window.location.reload(false);
-        }
-    };
+    // handleInputChange = (event, value, reason) => {
+    //     console.log("value", value, event, reason);
+    //     if (reason === 'select-option') {
+    //         this.props.history.push(`/thread/${value.postID}`);
+    //         window.location.reload(false);
+    //     }
+    // };
 
+    handleInputChange = e => {
+        console.log("query", e.target.value)
+        this.setState({
+            query: e.target.value
+        });
 
-    getData = () => {
-        fetch('http://localhost:5000/home')
-            .then(response => response.json())
-            .then(feeds => {
-                const { query } = this.state;
-                const filteredData = feeds.filter(element => {
-                    return element.question.toLowerCase().includes(query.toLowerCase()) ||
-                        element.title.toLowerCase().includes(query.toLowerCase());
-                });
+        axios.get('http://localhost:5000/search/' + `${this.state.query}`)
+            .then(res => {
+                const filtered_Data = res.data;
+                console.log("filteredData", res.data)
+                // .then(response => response.json())
+                // .then(feeds_nav => {
+                //     const { query } = this.state;
+                //     const filteredData = feeds_nav && feeds_nav.filter(element => {
+                //         return element.question.toLowerCase().includes(query.toLowerCase()) 
+                //         || element.title.toLowerCase().includes(query.toLowerCase());
+                //     });
+                //     console.log("filteredData", filteredData);
 
                 this.setState({
-                    feeds,
-                    filteredData
+                    filteredData: filtered_Data,
+                });
+            });
+    }
+
+    search = () => {
+        axios.get('http://localhost:5000/search' + `${this.state.query}`)
+            .then(res => res.json())
+            .then(res => {
+                const filtered_Data = res.data.data;
+                console.log("filteredData", res.data.data)
+                // .then(response => response.json())
+                // .then(feeds_nav => {
+                //     const { query } = this.state;
+                //     const filteredData = feeds_nav && feeds_nav.filter(element => {
+                //         return element.question.toLowerCase().includes(query.toLowerCase()) 
+                //         || element.title.toLowerCase().includes(query.toLowerCase());
+                //     });
+                //     console.log("filteredData", filteredData);
+
+                this.setState({
+                    filteredData: filtered_Data,
                 });
             });
     };
@@ -235,14 +278,27 @@ class Navigation extends Component {
 
                         </ul>
 
-
                         <div style={{ width: 300 }}>
+                            <form>
+                                <input type="text" id="searchSelect"
+                                    onChange={this.handleInputChange}
+                                    options={this.state.filteredData}
+                                    placeholder="Search..."
+                                />
+                                {/* <button type="submit"><i class="fa fa-search"></i></button> */}
+                            </form>
+                        </div>
+
+
+                    </div>
+
+                    {/* <div style={{ width: 300 }}>
                             <Autocomplete
                                 // freeSolo
                                 disableClearable
                                 id="searchSelect"
                                 onChange={this.handleInputChange}
-                                options={this.state.feeds}
+                                options={this.state.filteredData}
                                 getOptionLabel={(data) => {
                                     if (typeof data === "string") {
                                         return data;
@@ -268,50 +324,50 @@ class Navigation extends Component {
                                     </div>
                                 )}
                             />
+                            {console.log("filteredd", this.state.filteredData)}
+                        </div> */}
 
-                        </div>
-
-                        {/* modal button */}
-                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
+                    {/* modal button */}
+                    <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
 
 
-                        <ul class="navbar-nav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown nav-icon">
+                            <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
+                            <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
+                                <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
+                                <div class="dropdown-divider"></div>
+                                <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
+                                <div class="dropdown-divider"></div>
+                                <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
+                            </div>
+                        </li>
+                        {localStorage.usertoken &&
                             <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
-                                <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
+                                    <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
+                                    <NavLink class="dropdown-item" to="/profile" >
+                                        Signed in as <br /> {this.getUsername()}
+                                    </NavLink>
                                     <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
-                                    <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
+                                    <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
+                                    <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
                                 </div>
                             </li>
-                            {localStorage.usertoken &&
-                                <li class="nav-item dropdown nav-icon">
-                                    <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                        <NavLink class="dropdown-item" to="/profile" >
-                                            Signed in as <br /> {this.getUsername()}
-                                        </NavLink>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
-                                        <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
-                                    </div>
-                                </li>
-                            }
-                            {!localStorage.usertoken &&
-                                <li class="mr-3 btn-group">
-                                    <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
-                                    <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
-                                </li>
-                            }
-                        </ul>
-                    </div>
+                        }
+                        {!localStorage.usertoken &&
+                            <li class="mr-3 btn-group">
+                                <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
+                                <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                            </li>
+                        }
+                    </ul>
                 </nav>
                 {/* modal ask  */}
-                {localStorage.usertoken &&
+                {
+                    localStorage.usertoken &&
                     <div id="askModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -425,7 +481,8 @@ class Navigation extends Component {
                         </div>
                     </div>
                 }
-                {!localStorage.usertoken &&
+                {
+                    !localStorage.usertoken &&
                     <div id="askModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">

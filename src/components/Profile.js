@@ -10,6 +10,7 @@ export class Profile extends Component {
         super();
         this.state = {
             name: '',
+            saved: [],
         };
     }
     componentDidMount() {
@@ -18,6 +19,12 @@ export class Profile extends Component {
             const decoded = jwt_decode(token);
             this.setState({ name: decoded.result.username });
         }
+        trackPromise(
+            fetch('http://localhost:5000/save/' + `${this.state.username}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ saved: res.data });
+                }))
     }
 
 
@@ -63,6 +70,20 @@ export class Profile extends Component {
                                 Please sign in or register first
                             </div>
                         }
+                    </div>
+
+                    {/* saved posts */}
+                    <div class="col-sm-12 mt-5">
+                        <div class="card d-none d-xl-block text-left">
+                            <div class="card-header">
+                                My Saved Threads
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {this.state.saved && this.state.saved.map((saved) => (
+                                    <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0"></p> </li></NavLink>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

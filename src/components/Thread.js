@@ -73,9 +73,8 @@ export class Thread extends Component {
             fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res });
-                    console.log('Feeds fetched', res);
-                    console.log("type_post", this.state.feeds.type_post)
+                    this.setState({ feeds: res.data[0] });
+                    console.log('Feeds fetched', res.data[0]);
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')
@@ -134,6 +133,7 @@ export class Thread extends Component {
     };
 
     setQuestion(quest) {
+        console.log("questt", quest)
         this.setState({
             questionEdit: quest,
         })
@@ -260,7 +260,7 @@ export class Thread extends Component {
                     question: this.state.feeds.question,
                     time: this.state.feeds.time,
                     title: this.state.feeds.title,
-                    type_post: this.state.feeds.type,
+                    type_post: this.state.feeds.type_post,
                     hasLiked: false,
                 }
             })
@@ -414,14 +414,13 @@ export class Thread extends Component {
             username: this.state.username,
             postID: this.props.match.params.id,
         };
-        if (this.state.feeds.hasSaved == "0") {
+        if (!this.state.feeds.hasSave) {
             console.log("saved!")
             axios
                 .post('http://localhost:5000/save', data)
                 .then(
                     res => {
                         console.log(res);
-                        window.location.reload(false);
                     })
                 .catch(err => console.log(err));
         } else {
@@ -538,10 +537,10 @@ export class Thread extends Component {
                                                         <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${this.state.feeds.postID}`} title={this.state.feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
-                                                {this.state.feeds.hasSaved == "0" &&
+                                                {!this.state.feeds.hasSave &&
                                                     < button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
                                                 }
-                                                {this.state.feeds.hasSaved == "1" &&
+                                                {this.state.feeds.hasSave == "1" &&
                                                     < button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
                                                 }
                                                 <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
@@ -640,10 +639,10 @@ export class Thread extends Component {
                                         {localStorage.usertoken && this.state.user == this.state.user_post &&
                                             <div>
                                                 {this.state.feeds.type_post == "1" &&
-                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editQuestionModal" onClick={() => this.setQuestion}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editQuestionModal" onClick={() => this.setQuestion(`${this.state.feeds.question}`)}><i class="fa fa-pencil mr-2" />Edit</button>
                                                 }
-                                                {this.state.feeds.type_post = "2" &&
-                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editPostModal" onClick={() => this.setPost}><i class="fa fa-pencil mr-2" />Edit</button>
+                                                {this.state.feeds.type_post == "2" &&
+                                                    <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editPostModal" onClick={() => this.setPost(`${this.state.feeds.post_content}`)}><i class="fa fa-pencil mr-2" />Edit</button>
                                                 }
                                                 <button class="btn btn-outline-danger mb-2 ml-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash mr-2" />Delete</button>
                                             </div>

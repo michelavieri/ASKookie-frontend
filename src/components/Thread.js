@@ -289,29 +289,14 @@ export class Thread extends Component {
             }
         }
 
-        var likeCount = this.state.answers[index].like_count;
+        var likeCount = this.state.answers[index].like_count2;
         if (!liked) {
             likeCount = likeCount + 1;
-            this.setState(state => {
-                const answers = state.answers.map((answer, j) => {
-                    if (j == index) {
-                        return (answer.answerID,
-                            answer.answer,
-                            answer.anonymous2,
-                            answer.answerer,
-                            answer.comment_count2,
-                            answer.hasLiked = 1,
-                            answer.like_count2 = likeCount,
-                            answer.postID2,
-                            answer.time2)
-                    } else {
-                        return answer;
-                    }
-                });
+            this.state.answers[index].like_count2 = likeCount;
+            this.state.answers[index].hasLiked = 1;
 
-                return {
-                    answers,
-                };
+            this.setState({
+                answers: this.state.answers,
             })
             const data = {
                 postID: this.props.match.params.id,
@@ -328,42 +313,26 @@ export class Thread extends Component {
                     })
                 .catch(err => console.log(err));
         } else {
-            if (!liked) {
-                likeCount = likeCount + 1;
-                this.setState(state => {
-                    const answers = state.answers.map((answer, j) => {
-                        if (j == index) {
-                            return (answer.answerID,
-                                answer.answer,
-                                answer.anonymous2,
-                                answer.answerer,
-                                answer.comment_count2,
-                                answer.hasLiked = 1,
-                                answer.like_count2 = likeCount,
-                                answer.postID2,
-                                answer.time2)
-                        } else {
-                            return answer;
-                        }
-                    });
+            likeCount = likeCount - 1;
+            this.state.answers[index].like_count2 = likeCount;
+            this.state.answers[index].hasLiked = null;
 
-                    return {
-                        answers,
-                    };
-                })
-                const data = {
-                    postID: this.props.match.params.id,
-                    username: this.state.user,
-                    answerID: id,
-                };
-                axios
-                    .post('http://localhost:5000/unlike/answer', data)
-                    .then(
-                        res => {
-                            console.log(res);
-                        })
-                    .catch(err => console.log(err));
-            }
+            this.setState({
+                answers: this.state.answers,
+            })
+            const data = {
+                postID: this.props.match.params.id,
+                username: this.state.user,
+                answerID: id,
+            };
+            axios
+                .post('http://localhost:5000/unlike/answer', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+
         }
     }
 

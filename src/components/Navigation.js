@@ -147,6 +147,7 @@ class Navigation extends Component {
         this.setState({
             report: e.target.value,
         })
+        console.log(this.state.report)
     }
 
     handleSubmitReport = e => {
@@ -158,7 +159,7 @@ class Navigation extends Component {
         const data = {
             postID: id,
             username: decoded.result.username,
-            type_post: this.state.report,
+            type: this.state.report,
         };
         console.log(data);
         axios
@@ -170,7 +171,6 @@ class Navigation extends Component {
             })
             .catch(err => {
                 console.log(err);
-                alert("Cannot Report a Post Twice");
             });
     };
 

@@ -11,19 +11,20 @@ export class Answer extends Component {
             feeds: [],
             query: "",
             filteredQuestions: [],
-            checkedCategories: ['faculties', 'accommodation', 'student_life', 'job_intern', 'exchange_noc', 'others'],
+            checkedCategories: ['1', '2', '3', '4', '5', '6'],
             isChecked: true,
         };
     }
     componentDidMount() {
         trackPromise(
-            fetch('https://localhost:5000/home')
+            fetch('http://localhost:5000/unanswered')
                 .then(res => res.json())
-                .then(res => this.setState({
-                    feeds: res.data,
-                    filteredQuestions: res.data,
-                }, () => console.log('Data fetched', res)))
-        )
+                .then(res => {
+                    this.setState({ 
+                        feeds: res.data,
+                        filteredQuestions: res.data,
+                     }, () => console.log('Unanswered fetched', res.data));
+                }))
     }
     scrollToTop = () => {
         scroll.scrollToTop();
@@ -37,6 +38,7 @@ export class Answer extends Component {
         this.setState(prevState => {
 
             console.log(first);
+            
             var checkedCategories = prevState.checkedCategories;
             if (first) {
                 if (isChecked) {
@@ -46,11 +48,12 @@ export class Answer extends Component {
                 }
             }
             first = false;
+            console.log("checked", checkedCategories)
 
             const filteredQuestions = prevState.feeds.filter(element => {
                 var found = false;
                 for (var i in checkedCategories) {
-                    if (element.category.includes(checkedCategories[i])) {
+                    if (element.category == checkedCategories[i]) {
                         found = true;
                     }
                 }
@@ -100,37 +103,37 @@ export class Answer extends Component {
                                         <ul class="list-group list-group-flush large-space">
                                             <div class="form-check row pull-left ml-0">
                                                 <div>
-                                                    <input type="checkbox" value="faculties" id="faculties" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} />
+                                                    <input type="checkbox" value="1" id="faculties" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} />
                                                     <label class="ml-3 font-weight-bold" for="faculties">
                                                         Faculties
                                                     </label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" value="accommodation" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="accommodation" />
+                                                    <input type="checkbox" value="2" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="accommodation" />
                                                     <label class="ml-3 font-weight-bold" for="accommodation">
                                                         Accommodation
                                                      </label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" value="student_life" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="student_life" />
+                                                    <input type="checkbox" value="3" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="student_life" />
                                                     <label class="ml-3 font-weight-bold" for="student_life">
                                                         Student Life
                                                     </label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" value="job_intern" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="job_intern" />
+                                                    <input type="checkbox" value="4" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="job_intern" />
                                                     <label class="ml-3 font-weight-bold" for="job_intern">
                                                         Job/Internship
                                                     </label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" value="exchange_noc" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="exchange_noc" />
+                                                    <input type="checkbox" value="5" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="exchange_noc" />
                                                     <label class="ml-3 font-weight-bold" for="exchange_noc">
                                                         Exchange/NOC
                                                     </label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" value="others" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="others" />
+                                                    <input type="checkbox" value="6" defaultChecked={this.state.isChecked} onChange={this.onCategoryChange} id="others" />
                                                     <label class="ml-3 font-weight-bold" for="others">
                                                         Others
                                                     </label>

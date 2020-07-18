@@ -9,23 +9,26 @@ export class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            name: '',
+            name: "",
             saved: [],
         };
     }
     componentDidMount() {
+        var token;
+        var decoded;
         if (localStorage.usertoken) {
-            const token = localStorage.usertoken;
-            const decoded = jwt_decode(token);
+            token = localStorage.usertoken;
+            decoded = jwt_decode(token);
             this.setState({ name: decoded.result.username });
         }
+        
         trackPromise(
-            fetch('http://localhost:5000/save/' + `${this.state.name}`)
+            fetch('http://localhost:5000/save/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ saved: res.data });
                     console.log(res.data)
-                })) 
+                }))
     }
 
 
@@ -81,7 +84,7 @@ export class Profile extends Component {
                             </div>
                             <ul class="list-group list-group-flush">
                                 {this.state.saved && this.state.saved.map((saved) => (
-                                    <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0"></p> </li></NavLink>
+                                    <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{saved.title}{saved.question}</p> </li></NavLink>
                                 ))}
                             </ul>
                         </div>

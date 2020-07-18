@@ -278,6 +278,93 @@ export class Thread extends Component {
         }
     }
 
+    handleLikeAns = (liked, id) => {
+        var index;
+        for (var i = 0; i < this.state.answers.length; i++) {
+            if (this.state.answers[i].answerID === id) {
+                index = i;
+                break;
+            }
+        }
+
+        var likeCount = this.state.answers[index].like_count;
+        if (!liked) {
+            likeCount = likeCount + 1;
+            this.setState(state => {
+                const answers = state.answers.map((answer, j) => {
+                    if (j == index) {
+                        return (answer.answerID,
+                            answer.answer,
+                            answer.anonymous2,
+                            answer.answerer,
+                            answer.comment_count2,
+                            answer.hasLiked = 1,
+                            answer.like_count2 = likeCount,
+                            answer.postID2,
+                            answer.time2)
+                    } else {
+                        return answer;
+                    }
+                });
+
+                return {
+                    answers,
+                };
+            })
+            const data = {
+                postID: this.props.match.params.id,
+                username: this.state.user,
+                answerID: id,
+            };
+            console.log("postID", data.postID)
+            console.log("username", data.username)
+            axios
+                .post('http://localhost:5000/like/answer', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            if (!liked) {
+                likeCount = likeCount + 1;
+                this.setState(state => {
+                    const answers = state.answers.map((answer, j) => {
+                        if (j == index) {
+                            return (answer.answerID,
+                                answer.answer,
+                                answer.anonymous2,
+                                answer.answerer,
+                                answer.comment_count2,
+                                answer.hasLiked = 1,
+                                answer.like_count2 = likeCount,
+                                answer.postID2,
+                                answer.time2)
+                        } else {
+                            return answer;
+                        }
+                    });
+
+                    return {
+                        answers,
+                    };
+                })
+                const data = {
+                    postID: this.props.match.params.id,
+                    username: this.state.user,
+                    answerID: id,
+                };
+                axios
+                    .post('http://localhost:5000/unlike/answer', data)
+                    .then(
+                        res => {
+                            console.log(res);
+                        })
+                    .catch(err => console.log(err));
+            }
+        }
+    }
+
     handleSubmitCommentPost = e => {
         e.preventDefault();
         const { id } = this.props.match.params;
@@ -390,7 +477,7 @@ export class Thread extends Component {
                     window.location.reload(false);
                 })
             .catch(err => console.log(err));
-    }
+    };
 
     handleEditPost = e => {
         e.preventDefault();
@@ -407,7 +494,7 @@ export class Thread extends Component {
                     window.location.reload(false);
                 })
             .catch(err => console.log(err));
-    }
+    };
 
     saveThread() {
         const data = {
@@ -434,7 +521,7 @@ export class Thread extends Component {
                     })
                 .catch(err => console.log(err));
         }
-    }
+    };
 
     getUserPost = () => { //get the user who post the question/post
         const postId = this.props.match.params.id; //get post id
@@ -683,7 +770,12 @@ export class Thread extends Component {
                                                             </li>
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">
-                                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" />{answers.like_count2}</button>
+                                                                    {answers.hasLiked == "1" &&
+                                                                        <button class="btn btn-icon like pr-1 pl-2 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLiked, answers.answerID)} />{answers.like_count2}</button>
+                                                                    }
+                                                                    {!answers.hasLiked &&
+                                                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLiked, answers.answerID)} />{answers.like_count2}</button>
+                                                                    }
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                                     {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down" /> 0</button> */}

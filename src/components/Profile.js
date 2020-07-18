@@ -20,11 +20,12 @@ export class Profile extends Component {
             this.setState({ name: decoded.result.username });
         }
         trackPromise(
-            fetch('http://localhost:5000/save/' + `${this.state.username}`)
+            fetch('http://localhost:5000/save/' + `${this.state.name}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ saved: res.data });
-                }))
+                    console.log(res.data)
+                })) 
     }
 
 

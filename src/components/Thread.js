@@ -73,8 +73,8 @@ export class Thread extends Component {
             fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res.data[0] });
-                    console.log('Feeds fetched', res.data[0]);
+                    this.setState({ feeds: res });
+                    console.log('Feeds fetched', res);
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')

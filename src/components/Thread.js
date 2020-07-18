@@ -230,7 +230,8 @@ export class Thread extends Component {
                     time: this.state.feeds.time,
                     title: this.state.feeds.title,
                     type_post: this.state.feeds.type_post,
-                    hasLiked: true,
+                    hasLiked: 1,
+                    hasSave: this.state.feeds.hasSave,
                 }
             })
             const data = {
@@ -261,7 +262,8 @@ export class Thread extends Component {
                     time: this.state.feeds.time,
                     title: this.state.feeds.title,
                     type_post: this.state.feeds.type_post,
-                    hasLiked: false,
+                    hasLiked: null,
+                    hasSave: this.state.feeds.hasSave,
                 }
             })
             const data = {
@@ -502,7 +504,24 @@ export class Thread extends Component {
             postID: this.props.match.params.id,
         };
         if (!this.state.feeds.hasSave) {
-            console.log("saved!")
+            console.log("saved!");
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: this.state.feeds.like_count,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type_post: this.state.feeds.type_post,
+                    hasLiked: this.state.feeds.hasLiked,
+                    hasSave: 1,
+                }
+            })
             axios
                 .post('http://localhost:5000/save', data)
                 .then(
@@ -512,6 +531,23 @@ export class Thread extends Component {
                 .catch(err => console.log(err));
         } else {
             console.log("unsaved!")
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: this.state.feeds.like_count,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type_post: this.state.feeds.type_post,
+                    hasLiked: this.state.feeds.hasLiked,
+                    hasSave: null,
+                }
+            })
             axios
                 .post('http://localhost:5000/unsave', data)
                 .then(
@@ -628,7 +664,7 @@ export class Thread extends Component {
                                                     < button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
                                                 }
                                                 {this.state.feeds.hasSave == "1" &&
-                                                    < button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
+                                                    < button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark" /></button>
                                                 }
                                                 <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                                 {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}

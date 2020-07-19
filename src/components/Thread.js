@@ -42,7 +42,8 @@ export class Thread extends Component {
             answerEdit: "",
             questionEdit: "",
             postEdit: "",
-
+            commentEdit: "",
+            commentID: "",
             // post_content: "",
             anonymous: "1",
             // asker: "",
@@ -70,10 +71,10 @@ export class Thread extends Component {
                     console.log('Answers fetched', res.data);
                 }))
         trackPromise(
-            fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
+            fetch('http://localhost:5000/thread/' + `${this.props.match.params.id}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res.data[0] });
+                    this.setState({ feeds: res.data });
                     this.checkHasLike();
                     console.log('Feeds fetched', this.state.feeds);
                 }))
@@ -89,31 +90,27 @@ export class Thread extends Component {
 
     checkHasLike() {
         trackPromise(
-        axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
-        ).then(res => {
-            this.setState({
-                feeds: {
-                    anonymous: this.state.feeds.anonymous,
-                    asker: this.state.feeds.asker,
-                    category: this.state.feeds.category,
-                    comment_count: this.state.feeds.comment_count,
-                    like_count: this.state.feeds.like_count,
-                    postID: this.state.feeds.postID,
-                    post_content: this.state.feeds.post_content,
-                    question: this.state.feeds.question,
-                    time: this.state.feeds.time,
-                    title: this.state.feeds.title,
-                    type_post: this.state.feeds.type_post,
-                    hasLiked: res.data.data[0].hasLiked,
-                    hasSave: this.state.feeds.hasSave,
-                }
-            })
-            console.log("hereee", this.state.feeds)
-        }, () => {
-            //handle rejection
-        }).catch(() => {
-            //handle errors
-        }))
+            axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
+            ).then(res => {
+                this.setState({
+                    feeds: {
+                        anonymous: this.state.feeds.anonymous,
+                        asker: this.state.feeds.asker,
+                        category: this.state.feeds.category,
+                        comment_count: this.state.feeds.comment_count,
+                        like_count: this.state.feeds.like_count,
+                        postID: this.state.feeds.postID,
+                        post_content: this.state.feeds.post_content,
+                        question: this.state.feeds.question,
+                        time: this.state.feeds.time,
+                        title: this.state.feeds.title,
+                        type_post: this.state.feeds.type_post,
+                        hasLiked: res.data.data[0].hasLiked,
+                        hasSave: this.state.feeds.hasSave,
+                    }
+                })
+            }).catch(err => console.log(err)
+            ))
     }
 
 
@@ -183,6 +180,12 @@ export class Thread extends Component {
         });
     };
 
+    onCommentEditChange = e => {
+        this.setState({
+            commentEdit: e.target.value,
+        });
+    };
+
     onCommentChange = e => {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
@@ -204,6 +207,23 @@ export class Thread extends Component {
                 anonymous: 1,
             })
         }
+    }
+
+    setCommentID(id) {
+        this.setState({
+            commentID: id,
+        })
+    }
+
+    setComment(com) {
+        this.setState({
+            commentEdit: com,
+        })
+    }
+
+    setCommentAndID(id, ans) {
+        this.setCommentID(id);
+        this.setComment(ans);
     }
 
     setAnswerID(id) {
@@ -457,6 +477,42 @@ export class Thread extends Component {
 
         axios
             .post('http://localhost:5000/edit/answer', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    }
+
+    handleDeleteComment = e => { //deleting answer
+        const id_del = this.state.commentID;
+        const id = this.props.match.params.id;
+
+        e.preventDefault();
+
+        console.log("iddel", id_del);
+
+        axios
+            .delete('http://localhost:5000/delete/comment/' + id_del) //delete answer with id id_del
+            .then(res => {
+                console.log(res);
+                this.props.history.push(`/thread/` + id);
+                window.location.reload(false);
+                console.log("Answer deleted");
+            })
+            .catch(err => console.log(err));
+    };
+
+    handleEditComment = e => {
+        e.preventDefault();
+        const data = {
+            content: this.state.commentEdit,
+            answerID: this.state.commentID,
+        };
+
+        axios
+            .post('http://localhost:5000/edit/comment', data)
             .then(
                 res => {
                     console.log(res);
@@ -926,12 +982,12 @@ export class Thread extends Component {
                                                 {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                 {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                 {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
-                                                {/* {localStorage.usertoken && this.state.user == `${comment.user}` &&
+                                                {localStorage.usertoken && this.state.username == `${comment.username}` &&
                                                     <li>
-                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Answer" data-target="#deleteAnswerModal" onClick={() => this.setAnswerID(`${answers.answerID}`)}><i class="fa fa-trash like" /></button>
-                                                        <button class="btn btn-icon float-right" title="Edit Answer" data-toggle="modal" data-target="#editAnswerModal" onClick={() => this.setAnswerAndID(`${answers.answerID}`, `${answers.answer}`)}><i class="fa fa-pencil comment" /></button>
+                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
+                                                        <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
                                                     </li>
-                                                } */}
+                                                }
                                             </li>
                                             <hr class="mt-0 mb-4" />
                                         </div>
@@ -1012,7 +1068,7 @@ export class Thread extends Component {
                     </div>
                     {/* end of modal comments */}
 
-                    {/* delete modal */}
+                    {/* delete post/question modal */}
                     <div id="deleteModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -1030,7 +1086,7 @@ export class Thread extends Component {
                             </div>
                         </div>
                     </div>
-                    {/* end of delete modal */}
+                    {/* end of delete post/question modal */}
 
 
                     {/* start of edit answer modal */}
@@ -1139,6 +1195,54 @@ export class Thread extends Component {
                         </div>
                     </div>
 
+                    {/* start of delete comment modal */}
+                    <div id="deleteCommentModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Delete Comment</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <div class="modal-body text-left pt-3 pb-3">
+                                    Are you sure you want to delete your comment?
+                                    <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
+                                        <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
+                                        <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of delete comment modal */}
+
+                     {/* start of edit post modal */}
+                     <div id="editCommentModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Edit My Comment</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <form onSubmit={this.handleEditComment}>
+                                    <ul class="row content">
+                                        <li class="col-sm-9 mt-3">
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                class="form-control"
+                                                value={this.state.commentEdit}
+                                                onChange={this.onCommentEditChange}
+                                                required
+                                            />
+                                        </li>
+                                        <li class="col-sm-2 mt-3">
+                                            <button type="submit" class="btn btn-orange">Edit Comment</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of edit post modal */}
                 </div>
             </div >
         )

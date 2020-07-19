@@ -68,6 +68,7 @@ export class Thread extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ answers: res.data });
+                    this.checkHasLikeAns();
                     console.log('Answers fetched', res.data);
                 }))
         trackPromise(
@@ -76,6 +77,7 @@ export class Thread extends Component {
                 .then(res => {
                     this.setState({ feeds: res.data });
                     this.checkHasLike();
+                    this.checkSaved();
                     console.log('Feeds fetched', this.state.feeds);
                 }))
         trackPromise(
@@ -87,6 +89,30 @@ export class Thread extends Component {
 
     };
 
+    checkSaved() {
+        trackPromise(
+            axios.get('http://localhost:5000/hasSave/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
+            ).then(res => {
+                this.setState({
+                    feeds: {
+                        anonymous: this.state.feeds.anonymous,
+                        asker: this.state.feeds.asker,
+                        category: this.state.feeds.category,
+                        comment_count: this.state.feeds.comment_count,
+                        like_count: this.state.feeds.like_count,
+                        postID: this.state.feeds.postID,
+                        post_content: this.state.feeds.post_content,
+                        question: this.state.feeds.question,
+                        time: this.state.feeds.time,
+                        title: this.state.feeds.title,
+                        type_post: this.state.feeds.type_post,
+                        hasLiked: this.state.feeds.hasLiked,
+                        hasSave: res.data.data[0].hasSave,
+                    }
+                })
+            }).catch(err => console.log(err)
+            ))
+    }
 
     checkHasLike() {
         trackPromise(
@@ -113,6 +139,17 @@ export class Thread extends Component {
             ))
     }
 
+    checkHasLikeAns() {
+        this.state.answers.map(answer => {
+            axios.get('http://localhost:5000/hasLiked/answer/' + `${answer.answerID}` + "/" + `${this.state.username}`
+            ).then(res => {
+                answer.hasLikedAns = res.data.data[0].hasLikedAns;
+            }
+            ).catch(err => console.log(err))
+
+            console.log("elloo", answer)
+        })
+    }
 
     getCommentsAns(id) {
         console.log("answerid", id);
@@ -345,7 +382,7 @@ export class Thread extends Component {
         if (!liked) {
             likeCount = likeCount + 1;
             this.state.answers[index].like_count2 = likeCount;
-            this.state.answers[index].hasLiked = 1;
+            this.state.answers[index].hasLikedAns = 1;
 
             this.setState({
                 answers: this.state.answers,
@@ -367,7 +404,7 @@ export class Thread extends Component {
         } else {
             likeCount = likeCount - 1;
             this.state.answers[index].like_count2 = likeCount;
-            this.state.answers[index].hasLiked = null;
+            this.state.answers[index].hasLikedAns = null;
 
             this.setState({
                 answers: this.state.answers,
@@ -863,11 +900,11 @@ export class Thread extends Component {
                                                             </li>
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">
-                                                                    {answers.hasLiked == "1" &&
-                                                                        <button class="btn btn-icon like pr-1 pl-2 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLiked, answers.answerID)} />{answers.like_count2}</button>
+                                                                    {answers.hasLikedAns == "1" &&
+                                                                        <button class="btn btn-icon like pr-1 pl-2 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLikedAns, answers.answerID)} />{answers.like_count2}</button>
                                                                     }
-                                                                    {!answers.hasLiked &&
-                                                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLiked, answers.answerID)} />{answers.like_count2}</button>
+                                                                    {!answers.hasLikedAns &&
+                                                                        <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLikeAns(answers.hasLikedAns, answers.answerID)} />{answers.like_count2}</button>
                                                                     }
                                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(`${answers.answerID}`)}><i class="fa fa-comment-o pr-1" />{answers.comment_count2}</button>
                                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
@@ -942,28 +979,28 @@ export class Thread extends Component {
                                     <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body text-left pt-0">
-                                    <div class="row content mb-0 greyBg pt-4 pb-3">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    {localStorage.usertoken &&
+                                        <div class="row content mb-0 greyBg pt-4 pb-3">
+                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            </div>
+                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                                <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
+                                                <form onSubmit={this.handleSubmitCommentAns}>
+                                                    <TextareaAutosize
+                                                        class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                        placeholder="Add a comment..."
+                                                        value={this.state.comment}
+                                                        onChange={this.onCommentChange}
+                                                        maxRows="5"
+                                                        minRows="1"
+                                                        required
+                                                    ></TextareaAutosize>
+                                                    <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
-                                            <form onSubmit={this.handleSubmitCommentAns}>
-                                                <TextareaAutosize
-                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                                    placeholder="Add a comment..."
-                                                    value={this.state.comment}
-                                                    onChange={this.onCommentChange}
-                                                    maxRows="5"
-                                                    minRows="1"
-                                                    required
-                                                ></TextareaAutosize>
-                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
-                                            </form>
-                                        </div>
-
-                                    </div>
-
+                                    }
                                     <hr class="mt-0 mb-4" />
 
                                     {this.state.commentsAns && this.state.commentsAns.map(comment =>
@@ -1013,28 +1050,28 @@ export class Thread extends Component {
                                     <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body text-left pt-0">
-                                    <div class="row content mb-0 greyBg pt-4 pb-3">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                    {localStorage.usertoken &&
+                                        <div class="row content mb-0 greyBg pt-4 pb-3">
+                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            </div>
+                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                                <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
+                                                <form onSubmit={this.handleSubmitCommentPost}>
+                                                    <TextareaAutosize
+                                                        class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                        placeholder="Add a comment..."
+                                                        value={this.state.comment}
+                                                        onChange={this.onCommentChange}
+                                                        maxRows="5"
+                                                        minRows="1"
+                                                        required
+                                                    ></TextareaAutosize>
+                                                    <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.username}</p>
-                                            <form onSubmit={this.handleSubmitCommentPost}>
-                                                <TextareaAutosize
-                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                                    placeholder="Add a comment..."
-                                                    value={this.state.comment}
-                                                    onChange={this.onCommentChange}
-                                                    maxRows="5"
-                                                    minRows="1"
-                                                    required
-                                                ></TextareaAutosize>
-                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
-                                            </form>
-                                        </div>
-
-                                    </div>
-
+                                    }
                                     <hr class="mt-0 mb-4" />
 
                                     {this.state.commentsPost && this.state.commentsPost.map(comment =>
@@ -1215,8 +1252,8 @@ export class Thread extends Component {
                     </div>
                     {/* end of delete comment modal */}
 
-                     {/* start of edit post modal */}
-                     <div id="editCommentModal" class="modal fade" role="dialog">
+                    {/* start of edit post modal */}
+                    <div id="editCommentModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">

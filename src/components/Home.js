@@ -30,7 +30,6 @@ export class Home extends Component {
         this.state = {
             feeds: [],
             name: '',
-            answers: [],
             unanswered: [],
             answerID: "",
             commentsAns: "",
@@ -51,23 +50,42 @@ export class Home extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
+                    this.checkHasLike();
+                    this.checkHasLikeAns();
                     if (localStorage.usertoken) {
                         const token = localStorage.usertoken;
                         const decoded = jwt_decode(token);
                         this.setState({ name: decoded.result.username });
                     }
                 }));
-        fetch('http://localhost:5000/answers')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ answers: res.data }, () => console.log('Answers fetched', res.data));
-            });
         fetch('http://localhost:5000/unanswered')
             .then(res => res.json())
             .then(res => {
                 this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
             });
     };
+
+    checkHasLike() {
+        this.state.feeds.map(feeds => {
+            axios.get('http://localhost:5000/hasLiked/post/' + `${feeds.postID}` + "/" + `${this.state.name}`
+            ).then(res => {
+                feeds.hasLiked = res.data.data[0].hasLiked;
+            }
+            ).catch(err => console.log(err))
+            console.log("eeyyyyy", this.state.feeds)
+        })
+    }
+
+    checkHasLikeAns() {
+        this.state.feeds.map(feeds => {
+            axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
+            ).then(res => {
+                feeds.hasLikedAns = res.data.data[0].hasLikedAns;
+            }
+            ).catch(err => console.log(err))
+            console.log("eeyyyyy", this.state.feeds)
+        })
+    }
 
     componentDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -129,6 +147,111 @@ export class Home extends Component {
         })
     }
 
+    handleLike = (liked, id) => {
+        var index;
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            if (this.state.feeds[i].postID === id) {
+                index = i;
+                break;
+            }
+        }
+
+        var likeCount = this.state.feeds[index].like_count;
+        if (!liked) {
+            likeCount = likeCount + 1;
+            this.state.feeds[index].like_count = likeCount;
+            this.state.feeds[index].hasLiked = 1;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            const data = {
+                postID: id,
+                username: this.state.name,
+            };
+            axios
+                .post('http://localhost:5000/like/post', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            likeCount = likeCount - 1;
+            this.state.feeds[index].like_count = likeCount;
+            this.state.feeds[index].hasLiked = null;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            const data = {
+                postID: id,
+                username: this.state.name,
+            };
+            axios
+                .post('http://localhost:5000/unlike/post', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+
+        }
+    }
+
+    handleLikeAns = (liked, id, postid) => {
+        var index;
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            if (this.state.feeds[i].answerID === id) {
+                index = i;
+                break;
+            }
+        }
+
+        var likeCount = this.state.feeds[index].like_count2;
+        if (!liked) {
+            likeCount = likeCount + 1;
+            this.state.feeds[index].like_count2 = likeCount;
+            this.state.feeds[index].hasLikedAns = 1;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            const data = {
+                postID: postid,
+                username: this.state.name,
+                answerID: id,
+            };
+            axios
+                .post('http://localhost:5000/like/answer', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            likeCount = likeCount - 1;
+            this.state.feeds[index].like_count2 = likeCount;
+            this.state.feeds[index].hasLikedAns = null;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            const data = {
+                postID: postid,
+                username: this.state.name,
+                answerID: id,
+            };
+            axios
+                .post('http://localhost:5000/unlike/answer', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+
+        }
+    }
 
     handleSubmitCommentPost = e => {
         e.preventDefault();
@@ -280,44 +403,93 @@ export class Home extends Component {
                                                 </div>
                                             </Linkify>
                                         </li>
-                                        <li class="feeds-footer">
-                                            {feeds.type_post == "1" &&
-                                                <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
-                                            }
-                                            {feeds.type_post == "1" &&
-                                                <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
-                                            }
-                                            {feeds.type_post == "2" &&
-                                                <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
-                                            }
-                                            {feeds.type_post == "2" &&
-                                                <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
-                                            }
-                                            <div class="btn-group dropright">
-                                                <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
-                                                <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
-                                                    <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
-                                                    <div class="dropdown-divider mt-0"></div>
-                                                    <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
-                                                    ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
-                                                    <div class="dropdown-divider"></div>
-                                                    <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
-                                                    <div class="dropdown-divider"></div>
-                                                    <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
-                                                    <div class="dropdown-divider"></div>
-                                                    <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
-                                                    <div class="dropdown-divider"></div>
-                                                    <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
-                                                    <div class="dropdown-divider"></div>
-                                                    <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
-                                                    <div class="dropdown-divider"></div>
-                                                    <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                        {localStorage.usertoken &&
+                                            <li class="feeds-footer">
+                                                {feeds.hasLiked == "1" && feeds.type_post == "1" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                }
+                                                {!feeds.hasLiked && feeds.type_post == "1" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                }
+                                                {feeds.type_post == "1" &&
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                                }
+                                                {feeds.hasLikedAns == "1" && feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
+                                                }
+                                                {!feeds.hasLikedAns && feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
+                                                }
+                                                {feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
+                                                }
+                                                <div class="btn-group dropright">
+                                                    <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
+                                                    <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
+                                                        <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
+                                                        <div class="dropdown-divider mt-0"></div>
+                                                        <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                        ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
+                                                        <div class="dropdown-divider"></div>
+                                                        <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <button class="btn btn-icon pl-3 save" title="Save thread"><i class="fa fa-bookmark-o" /></button>
-                                            {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}
-                                        </li>
+                                                {!this.state.feeds.hasSave &&
+                                                    <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
+                                                }
+                                                {this.state.feeds.hasSave == "1" &&
+                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark" /></button>
+                                                }
+                                            </li>
+                                        }
+                                        {!localStorage.usertoken &&
+                                            <li class="feeds-footer">
+                                                {feeds.type_post == "1" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                }
+                                                {feeds.type_post == "1" &&
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                                }
+                                                {feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
+                                                }
+                                                {feeds.type_post == "2" &&
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
+                                                }
+                                                <div class="btn-group dropright">
+                                                    <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
+                                                    <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
+                                                        <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
+                                                        <div class="dropdown-divider mt-0"></div>
+                                                        <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                        ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
+                                                        <div class="dropdown-divider"></div>
+                                                        <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                        <div class="dropdown-divider"></div>
+                                                        <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+
                                     </ul>
                                 </div>
                             </div>
@@ -326,7 +498,7 @@ export class Home extends Component {
                     </div>
 
                     {/* unanswered questions */}
-                    <div class="col-sm-2">
+                    < div class="col-sm-2" >
                         <div class="card d-none d-xl-block text-left" style={{ width: '13rem' }}>
                             <div class="card-header">
                                 Unanswered Questions
@@ -358,28 +530,28 @@ export class Home extends Component {
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-0">
-                                <div class="row content mb-0 greyBg pt-4 pb-3">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                {localStorage.usertoken &&
+                                    <div class="row content mb-0 greyBg pt-4 pb-3">
+                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                        </div>
+                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                            <form onSubmit={this.handleSubmitCommentAns}>
+                                                <TextareaAutosize
+                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                    placeholder="Add a comment..."
+                                                    value={this.state.comment}
+                                                    onChange={this.onCommentChange}
+                                                    maxRows="5"
+                                                    minRows="1"
+                                                    required
+                                                ></TextareaAutosize>
+                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
-                                        <form onSubmit={this.handleSubmitCommentAns}>
-                                            <TextareaAutosize
-                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                                placeholder="Add a comment..."
-                                                value={this.state.comment}
-                                                onChange={this.onCommentChange}
-                                                maxRows="5"
-                                                minRows="1"
-                                                required
-                                            ></TextareaAutosize>
-                                            <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
-                                        </form>
-                                    </div>
-
-                                </div>
-
+                                }
                                 <hr class="mt-0 mb-4" />
 
                                 {this.state.commentsAns && this.state.commentsAns.map(comment =>
@@ -423,28 +595,28 @@ export class Home extends Component {
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-0">
-                                <div class="row content mb-0 greyBg pt-4 pb-3">
-                                    <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                        <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                {localStorage.usertoken &&
+                                    <div class="row content mb-0 greyBg pt-4 pb-3">
+                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                        </div>
+                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                            <form onSubmit={this.handleSubmitCommentPost}>
+                                                <TextareaAutosize
+                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                    placeholder="Add a comment..."
+                                                    value={this.state.comment}
+                                                    onChange={this.onCommentChange}
+                                                    maxRows="5"
+                                                    minRows="1"
+                                                    required
+                                                ></TextareaAutosize>
+                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                        <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
-                                        <form onSubmit={this.handleSubmitCommentPost}>
-                                            <TextareaAutosize
-                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                                placeholder="Add a comment..."
-                                                value={this.state.comment}
-                                                onChange={this.onCommentChange}
-                                                maxRows="5"
-                                                minRows="1"
-                                                required
-                                            ></TextareaAutosize>
-                                            <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
-                                        </form>
-                                    </div>
-
-                                </div>
-
+                                }
                                 <hr class="mt-0 mb-4" />
 
                                 {this.state.commentsPost && this.state.commentsPost.map(comment =>

@@ -354,7 +354,7 @@ export class Home extends Component {
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header blueBg">
-                                <h4 class="modal-title text-white">Comments (4)</h4>
+                                <h4 class="modal-title text-white">Comments</h4>
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-0">
@@ -419,7 +419,7 @@ export class Home extends Component {
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header blueBg">
-                                <h4 class="modal-title text-white">Comments (4)</h4>
+                                <h4 class="modal-title text-white">Comments</h4>
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-0">

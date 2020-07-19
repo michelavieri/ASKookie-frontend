@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import NavigationRouter2 from './Navigation'
 import axios from 'axios';
@@ -35,6 +35,7 @@ export class Thread extends Component {
             commentPostCount: [],
             answerID: "",
             commentsAns: [],
+            commentsAnsCount: "",
             commentsPost: [],
             comment: "",
             answer: "",
@@ -73,8 +74,9 @@ export class Thread extends Component {
             fetch('http://localhost:5000/comments/count/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res });
-                    console.log('Feeds fetched', res);
+                    this.setState({ feeds: res.data[0] });
+                    this.checkHasLike();
+                    console.log('Feeds fetched', this.state.feeds);
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')
@@ -82,8 +84,40 @@ export class Thread extends Component {
                 .then(res => {
                     this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
                 }))
+        // this.checkHasLike();
 
+    };
+
+
+    checkHasLike() {
+        trackPromise(
+        axios.get('http://localhost:5000/hasLiked/post/' + `14/` + `miki`
+        ).then(res => {
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: this.state.feeds.like_count,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type_post: this.state.feeds.type_post,
+                    hasLiked: res.data.data[0].hasLiked,
+                    hasSave: this.state.feeds.hasSave,
+                }
+            })
+            console.log("hereee", this.state.feeds)
+        }, () => {
+            //handle rejection
+        }).catch(() => {
+            //handle errors
+        }))
     }
+
 
     getCommentsAns(id) {
         console.log("answerid", id);
@@ -644,7 +678,7 @@ export class Thread extends Component {
                                             <li class="feeds-footer pb-3">
                                                 <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
                                                 {this.state.feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.commentPostCount.count}</button>
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.feeds.comment_count}</button>
                                                 }
                                                 <div class="btn-group dropright">
                                                     <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
@@ -817,8 +851,6 @@ export class Thread extends Component {
                                                 </div>
                                             </div>
                                         }
-
-
                                     </Linkify>
                                 </div>
                             }
@@ -852,7 +884,7 @@ export class Thread extends Component {
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header blueBg">
-                                    <h4 class="modal-title text-white">Comments (4)</h4>
+                                    <h4 class="modal-title text-white">Comments</h4>
                                     <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body text-left pt-0">
@@ -893,9 +925,15 @@ export class Thread extends Component {
                                                 <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                             </div>
                                             <li class="feeds-footer">
-                                                <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                 {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                 {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                                {/* {localStorage.usertoken && this.state.user == `${comment.user}` &&
+                                                    <li>
+                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Answer" data-target="#deleteAnswerModal" onClick={() => this.setAnswerID(`${answers.answerID}`)}><i class="fa fa-trash like" /></button>
+                                                        <button class="btn btn-icon float-right" title="Edit Answer" data-toggle="modal" data-target="#editAnswerModal" onClick={() => this.setAnswerAndID(`${answers.answerID}`, `${answers.answer}`)}><i class="fa fa-pencil comment" /></button>
+                                                    </li>
+                                                } */}
                                             </li>
                                             <hr class="mt-0 mb-4" />
                                         </div>
@@ -917,7 +955,7 @@ export class Thread extends Component {
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header blueBg">
-                                    <h4 class="modal-title text-white">Comments (4)</h4>
+                                    <h4 class="modal-title text-white">Comments</h4>
                                     <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body text-left pt-0">
@@ -958,8 +996,8 @@ export class Thread extends Component {
                                                 <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                             </div>
                                             <li class="feeds-footer">
-                                                <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
-                                                <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
+                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                {/* <button class="btn btn-icon pull-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                                 {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                             </li>
                                             <hr class="mt-0 mb-4" />

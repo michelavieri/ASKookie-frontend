@@ -51,7 +51,6 @@ export class Thread extends Component {
         };
 
         this.getUserPost = this.getUserPost.bind(this);
-        // this.getPost = this.getPost.bind(this);
     }
     componentDidMount() {
         // this.getPost();
@@ -84,14 +83,13 @@ export class Thread extends Component {
                 .then(res => {
                     this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
                 }))
-        // this.checkHasLike();
 
     };
 
 
     checkHasLike() {
         trackPromise(
-        axios.get('http://localhost:5000/hasLiked/post/' + `14/` + `miki`
+        axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
         ).then(res => {
             this.setState({
                 feeds: {

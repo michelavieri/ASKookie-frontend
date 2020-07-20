@@ -36,6 +36,7 @@ export class Home extends Component {
             commentsPost: "",
             user: "",
             postID: "",
+            op: "",
         };
     }
     componentDidMount() {
@@ -56,30 +57,39 @@ export class Home extends Component {
                         this.setState({ name: decoded.result.username });
                     }
                     this.checkHasLike();
-                    console.log('Data fetched', this.state.feeds)
+                    console.log('Data fetched', this.state.feeds);
                 }));
-        fetch('http://localhost:5000/unanswered')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
-            });
+        trackPromise(
+            fetch('http://localhost:5000/unanswered')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
+                }));
     };
 
     checkHasLike() {
-        this.state.feeds.filter(feeds => feeds.answerID == null).map(feeds => {
-            axios.get('http://localhost:5000/hasLiked/post/' + `${feeds.postID}` + "/" + `${this.state.name}`
-            ).then(res => {
-                feeds.hasLiked = res.data.data[0].hasLiked;
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            console.log("STUPID", this.state.feeds[i])
+            if (this.state.feeds[i].answerID == null) {
+                trackPromise(
+                    axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds[i].postID}` + "/" + `${this.state.name}`
+                    ).then(res => {
+                        console.log("DEBUH", this.state.feeds[i])
+                        this.state.feeds[i].hasLiked = res.data.data[0].hasLiked;
+                        this.setState({ feeds: this.state.feeds })
+                    }
+                    ).catch(err => console.log(err)))
+            } else {
+                trackPromise(
+                    axios.get('http://localhost:5000/hasLiked/answer/' + `${this.state.feeds[i].answerID}` + "/" + `${this.state.name}`
+                    ).then(res => {
+                        this.state.feeds[i].hasLiked = res.data.data[0].hasLikedAns;
+                        this.setState({ feeds: this.state.feeds })
+                    }
+                    ).catch(err => console.log(err)))
             }
-            ).catch(err => console.log(err))
-        })
-        this.state.feeds.filter(feeds => feeds.answerID != null).map(feeds => {
-            axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
-            ).then(res => {
-                feeds.hasLiked = res.data.data[0].hasLikedAns;
-            }
-            ).catch(err => console.log(err))
-        })
+        }
+        console.log("fklnf", this.state.feeds)
     }
 
     // checkHasLikeAns() {
@@ -375,7 +385,6 @@ export class Home extends Component {
     render() {
         var shuffledPosts = this.shuffleArray();
         var mostRecentPosts = this.mostRecent();
-
         return (
             <div class="container-fluid text-center margin-top">
                 <NavigationRouter2 />
@@ -417,11 +426,12 @@ export class Home extends Component {
                         </div>
 
                         {/* feeds */}
-                        {mostRecentPosts && mostRecentPosts.map((feeds, index) => (
+                        {mostRecentPosts && mostRecentPosts.map(feeds => (
                             <div class="card mb-3">
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
                                         <li>
+                                            {console.log("hasliked", `${feeds.hasLiked}`)}
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
                                                 <div class="sub-text">
                                                     <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
@@ -615,7 +625,7 @@ export class Home extends Component {
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         <li class="feeds-footer">
-                                            <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                            {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                             {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
                                             {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                         </li>
@@ -680,7 +690,7 @@ export class Home extends Component {
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         <li class="feeds-footer">
-                                            <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button>
+                                            {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                             <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                             {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                         </li>

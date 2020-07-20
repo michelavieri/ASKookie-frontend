@@ -66,7 +66,7 @@ export class Home extends Component {
     };
 
     checkHasLike() {
-        this.state.feeds.map(feeds => {
+        this.state.feeds.filter(feeds => feeds.answerID == null).map(feeds => {
             axios.get('http://localhost:5000/hasLiked/post/' + `${feeds.postID}` + "/" + `${this.state.name}`
             ).then(res => {
                 feeds.hasLiked = res.data.data[0].hasLiked;
@@ -76,10 +76,9 @@ export class Home extends Component {
         this.state.feeds.filter(feeds => feeds.answerID != null).map(feeds => {
             axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
             ).then(res => {
-                feeds.hasLiked = res.data.data[0].hasLiked;
+                feeds.hasLiked = res.data.data[0].hasLikedAns;
             }
             ).catch(err => console.log(err))
-            console.log("eeyyyyy", this.state.feeds)
         })
     }
 

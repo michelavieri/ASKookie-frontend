@@ -70,24 +70,29 @@ export class Home extends Component {
     checkHasLike() {
         for (var i = 0; i < this.state.feeds.length; i++) {
             console.log("STUPID", this.state.feeds[i])
+            var feedsArr = this.state.feeds[i];
+            var hasLikedTemp;
             if (this.state.feeds[i].answerID == null) {
                 trackPromise(
-                    axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds[i].postID}` + "/" + `${this.state.name}`
+                    axios.get('http://localhost:5000/hasLiked/post/' + `${feedsArr.postID}` + "/" + `${this.state.name}`
                     ).then(res => {
-                        console.log("DEBUH", this.state.feeds[i])
-                        this.state.feeds[i].hasLiked = res.data.data[0].hasLiked;
-                        this.setState({ feeds: this.state.feeds })
+                        
+                        hasLikedTemp = res.data.data[0].hasLiked;
+                        console.log("DEBUH", hasLikedTemp)
                     }
                     ).catch(err => console.log(err)))
+                    console.log("DEBUdfsdf", hasLikedTemp)
             } else {
                 trackPromise(
-                    axios.get('http://localhost:5000/hasLiked/answer/' + `${this.state.feeds[i].answerID}` + "/" + `${this.state.name}`
+                    axios.get('http://localhost:5000/hasLiked/answer/' + `${feedsArr.answerID}` + "/" + `${this.state.name}`
                     ).then(res => {
-                        this.state.feeds[i].hasLiked = res.data.data[0].hasLikedAns;
-                        this.setState({ feeds: this.state.feeds })
+                        hasLikedTemp = res.data.data[0].hasLikedAns;
                     }
                     ).catch(err => console.log(err)))
             }
+            this.state.feeds[i].hasLiked = hasLikedTemp;
+            this.setState({ feeds: this.state.feeds })
+            console.log("apa", hasLikedTemp)
         }
         console.log("fklnf", this.state.feeds)
     }

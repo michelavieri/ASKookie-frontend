@@ -647,7 +647,6 @@ export class Thread extends Component {
                 .then(
                     res => {
                         console.log(res);
-                        window.location.reload(false);
                     })
                 .catch(err => console.log(err));
         }

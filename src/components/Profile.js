@@ -21,7 +21,7 @@ export class Profile extends Component {
             decoded = jwt_decode(token);
             this.setState({ name: decoded.result.username });
         }
-        
+
         trackPromise(
             fetch('http://localhost:5000/save/' + `${decoded.result.username}`)
                 .then(res => res.json())
@@ -86,6 +86,11 @@ export class Profile extends Component {
                                 {this.state.saved && this.state.saved.map((saved) => (
                                     <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{saved.title}{saved.question}</p> </li></NavLink>
                                 ))}
+                                {!this.state.saved || this.state.saved.length == 0 &&
+                                    <div class="muted-text mt-3 pl-4 pb-3">
+                                        No saved threads yet!
+                                    </div>
+                                }
                             </ul>
                         </div>
                     </div>

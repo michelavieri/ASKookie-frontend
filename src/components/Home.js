@@ -49,14 +49,14 @@ export class Home extends Component {
             fetch('http://localhost:5000/answered')
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ feeds: res.data }, () => console.log('Data fetched', res));
-                    this.checkHasLike();
-                    this.checkHasLikeAns();
+                    this.setState({ feeds: res.data });
                     if (localStorage.usertoken) {
                         const token = localStorage.usertoken;
                         const decoded = jwt_decode(token);
                         this.setState({ name: decoded.result.username });
                     }
+                    this.checkHasLike();
+                    console.log('Data fetched', this.state.feeds)
                 }));
         fetch('http://localhost:5000/unanswered')
             .then(res => res.json())
@@ -72,20 +72,27 @@ export class Home extends Component {
                 feeds.hasLiked = res.data.data[0].hasLiked;
             }
             ).catch(err => console.log(err))
-            console.log("eeyyyyy", this.state.feeds)
         })
-    }
-
-    checkHasLikeAns() {
-        this.state.feeds.map(feeds => {
+        this.state.feeds.filter(feeds => feeds.answerID != null).map(feeds => {
             axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
             ).then(res => {
-                feeds.hasLikedAns = res.data.data[0].hasLikedAns;
+                feeds.hasLiked = res.data.data[0].hasLiked;
             }
             ).catch(err => console.log(err))
             console.log("eeyyyyy", this.state.feeds)
         })
     }
+
+    // checkHasLikeAns() {
+    //     this.state.feeds.filter(feeds.answerID != null)map(feeds => {
+    //         axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
+    //         ).then(res => {
+    //             feeds.hasLiked = res.data.data[0].hasLiked;
+    //         }
+    //         ).catch(err => console.log(err))
+    //         console.log("eeyyyyy", this.state.feeds)
+    //     })
+    // }
 
     componentDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -212,7 +219,7 @@ export class Home extends Component {
         if (!liked) {
             likeCount = likeCount + 1;
             this.state.feeds[index].like_count2 = likeCount;
-            this.state.feeds[index].hasLikedAns = 1;
+            this.state.feeds[index].hasLiked = 1;
 
             this.setState({
                 feeds: this.state.feeds,
@@ -232,7 +239,7 @@ export class Home extends Component {
         } else {
             likeCount = likeCount - 1;
             this.state.feeds[index].like_count2 = likeCount;
-            this.state.feeds[index].hasLikedAns = null;
+            this.state.feeds[index].hasLiked = null;
 
             this.setState({
                 feeds: this.state.feeds,
@@ -252,6 +259,48 @@ export class Home extends Component {
 
         }
     }
+
+    saveThread(id) {
+        const data = {
+            username: this.state.username,
+            postID: id,
+        };
+        var index;
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            if (this.state.feeds[i].postID === id) {
+                index = i;
+                break;
+            }
+        }
+        if (!this.state.feeds[index].hasSave) {
+            console.log("saved!");
+            this.state.feeds[index].hasSave = 1;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+                .post('http://localhost:5000/save', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            console.log("unsaved!")
+            this.state.feeds[index].hasSave = null;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            axios
+                .post('http://localhost:5000/unsave', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        }
+    };
 
     handleSubmitCommentPost = e => {
         e.preventDefault();
@@ -414,10 +463,10 @@ export class Home extends Component {
                                                 {feeds.type_post == "1" &&
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                                 }
-                                                {feeds.hasLikedAns == "1" && feeds.type_post == "2" &&
+                                                {feeds.hasLiked == "1" && feeds.type_post == "2" &&
                                                     <button class="btn btn-icon like pr-1 pl-0 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
                                                 }
-                                                {!feeds.hasLikedAns && feeds.type_post == "2" &&
+                                                {!feeds.hasLiked && feeds.type_post == "2" &&
                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
                                                 }
                                                 {feeds.type_post == "2" &&
@@ -445,10 +494,10 @@ export class Home extends Component {
                                                     </div>
                                                 </div>
                                                 {!this.state.feeds.hasSave &&
-                                                    <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark-o" /></button>
+                                                    <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark-o" /></button>
                                                 }
                                                 {this.state.feeds.hasSave == "1" &&
-                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark" /></button>
+                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark" /></button>
                                                 }
                                             </li>
                                         }

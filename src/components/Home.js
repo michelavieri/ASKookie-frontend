@@ -56,6 +56,7 @@ export class Home extends Component {
                         this.setState({ name: decoded.result.username });
                     }
                     this.checkHasLike();
+                    this.checkHasSave();
                     console.log('Data fetched', this.state.feeds);
                 }));
         trackPromise(
@@ -73,7 +74,6 @@ export class Home extends Component {
             } else {
                 var hasLikedTemp = await this.getHasLikedAns(this.state.feeds[i].answerID)
             }
-            console.log("hasLikedTemp", hasLikedTemp)
             this.state.feeds[i].hasLiked = hasLikedTemp
         }
         this.setState({ feeds: this.state.feeds })
@@ -95,16 +95,22 @@ export class Home extends Component {
         ).catch(err => console.log(err))
     }
 
-    // checkHasLikeAns() {
-    //     this.state.feeds.filter(feeds.answerID != null)map(feeds => {
-    //         axios.get('http://localhost:5000/hasLiked/answer/' + `${feeds.answerID}` + "/" + `${this.state.name}`
-    //         ).then(res => {
-    //             feeds.hasLiked = res.data.data[0].hasLiked;
-    //         }
-    //         ).catch(err => console.log(err))
-    //         console.log("eeyyyyy", this.state.feeds)
-    //     })
-    // }
+    async checkHasSave() {
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            var hasSaveTemp = await this.getHasSave(this.state.feeds[i].postID)
+
+            this.state.feeds[i].hasSave = hasSaveTemp
+        }
+        this.setState({ feeds: this.state.feeds })
+    }
+
+    getHasSave(id) {
+        return axios.get('http://localhost:5000/hasSave/post/' + `${id}` + "/" + `${this.state.name}`
+        ).then(res => {
+            return res.data.data[0].hasSave;
+        }
+        ).catch(err => console.log(err))
+    }
 
     componentDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -274,7 +280,7 @@ export class Home extends Component {
 
     saveThread(id) {
         const data = {
-            username: this.state.username,
+            username: this.state.name,
             postID: id,
         };
         var index;
@@ -291,7 +297,7 @@ export class Home extends Component {
             this.setState({
                 feeds: this.state.feeds,
             })
-                .post('http://localhost:5000/save', data)
+            axios.post('http://localhost:5000/save', data)
                 .then(
                     res => {
                         console.log(res);
@@ -434,7 +440,6 @@ export class Home extends Component {
                                 <div class="card-body pb-1">
                                     <ul class="list-group">
                                         <li>
-                                            {console.log("hasliked", `${feeds.hasLiked}`)}
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
                                                 <div class="sub-text">
                                                     <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
@@ -505,10 +510,10 @@ export class Home extends Component {
                                                         <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
-                                                {!this.state.feeds.hasSave &&
+                                                {!feeds.hasSave &&
                                                     <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark-o" /></button>
                                                 }
-                                                {this.state.feeds.hasSave == "1" &&
+                                                {feeds.hasSave == "1" &&
                                                     <button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark" /></button>
                                                 }
                                             </li>

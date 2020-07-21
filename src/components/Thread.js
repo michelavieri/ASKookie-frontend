@@ -108,6 +108,7 @@ export class Thread extends Component {
                         type_post: this.state.feeds.type_post,
                         hasLiked: this.state.feeds.hasLiked,
                         hasSave: res.data.data[0].hasSave,
+                        hasFollow: this.state.feeds.hasFollow,
                     }
                 })
             }).catch(err => console.log(err)
@@ -133,6 +134,33 @@ export class Thread extends Component {
                         type_post: this.state.feeds.type_post,
                         hasLiked: res.data.data[0].hasLiked,
                         hasSave: this.state.feeds.hasSave,
+                        hasFollow: this.state.feeds.hasFollow,
+                    }
+                })
+            }).catch(err => console.log(err)
+            ))
+    }
+
+    checkHasFollow() {
+        trackPromise(
+            axios.get('http://localhost:5000/hasFollow/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
+            ).then(res => {
+                this.setState({
+                    feeds: {
+                        anonymous: this.state.feeds.anonymous,
+                        asker: this.state.feeds.asker,
+                        category: this.state.feeds.category,
+                        comment_count: this.state.feeds.comment_count,
+                        like_count: this.state.feeds.like_count,
+                        postID: this.state.feeds.postID,
+                        post_content: this.state.feeds.post_content,
+                        question: this.state.feeds.question,
+                        time: this.state.feeds.time,
+                        title: this.state.feeds.title,
+                        type_post: this.state.feeds.type_post,
+                        hasLiked: this.state.hasLiked,
+                        hasSave: this.state.feeds.hasSave,
+                        hasFollow: res.data.data[0].hasFollow,
                     }
                 })
             }).catch(err => console.log(err)
@@ -321,6 +349,7 @@ export class Thread extends Component {
                     type_post: this.state.feeds.type_post,
                     hasLiked: 1,
                     hasSave: this.state.feeds.hasSave,
+                    hasFollow: this.state.feeds.hasFollow,
                 }
             })
             const data = {
@@ -353,6 +382,7 @@ export class Thread extends Component {
                     type_post: this.state.feeds.type_post,
                     hasLiked: null,
                     hasSave: this.state.feeds.hasSave,
+                    hasFollow: this.state.feeds.hasFollow,
                 }
             })
             const data = {
@@ -614,6 +644,7 @@ export class Thread extends Component {
                     type_post: this.state.feeds.type_post,
                     hasLiked: this.state.feeds.hasLiked,
                     hasSave: 1,
+                    hasFollow: this.state.feeds.hasFollow,
                 }
             })
             axios
@@ -640,10 +671,73 @@ export class Thread extends Component {
                     type_post: this.state.feeds.type_post,
                     hasLiked: this.state.feeds.hasLiked,
                     hasSave: null,
+                    hasFollow: this.state.feeds.hasFollow,
                 }
             })
             axios
                 .post('http://localhost:5000/unsave', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        }
+    };
+
+    followThread() {
+        const data = {
+            username: this.state.username,
+            postID: this.props.match.params.id,
+        };
+        if (!this.state.feeds.hasFollow) {
+            console.log("folowed!");
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: this.state.feeds.like_count,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type_post: this.state.feeds.type_post,
+                    hasLiked: this.state.feeds.hasLiked,
+                    hasSave: this.state.feeds.hasSave,
+                    hasFollow: 1,
+                }
+            })
+            axios
+                .post('http://localhost:5000/follow', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            console.log("unsaved!")
+            this.setState({
+                feeds: {
+                    anonymous: this.state.feeds.anonymous,
+                    asker: this.state.feeds.asker,
+                    category: this.state.feeds.category,
+                    comment_count: this.state.feeds.comment_count,
+                    like_count: this.state.feeds.like_count,
+                    postID: this.state.feeds.postID,
+                    post_content: this.state.feeds.post_content,
+                    question: this.state.feeds.question,
+                    time: this.state.feeds.time,
+                    title: this.state.feeds.title,
+                    type_post: this.state.feeds.type_post,
+                    hasLiked: this.state.feeds.hasLiked,
+                    hasSave: this.state.feeds.hasSave,
+                    hasFollow: null,
+                }
+            })
+            axios
+                .post('http://localhost:5000/unfollow', data)
                 .then(
                     res => {
                         console.log(res);
@@ -758,6 +852,12 @@ export class Thread extends Component {
                                                 }
                                                 {this.state.feeds.hasSave == "1" &&
                                                     < button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread()}><i class="fa fa-bookmark" /></button>
+                                                }
+                                                {!this.state.feeds.hasFollow &&
+                                                    <button class="btn btn-icon pl-2 save" type="button" title="Follow thread" onClick={() => this.followThread()}><i class="fa fa-user-plus" /></button>
+                                                }
+                                                {this.state.feeds.hasFollow == "1" &&
+                                                    <button class="btn btn-icon pl-2 save blue" type="button" title="Unfollow thread" onClick={() => this.followThread()}><i class="fa fa-user-plus" /></button>
                                                 }
                                                 <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
                                                 {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 2</button> */}

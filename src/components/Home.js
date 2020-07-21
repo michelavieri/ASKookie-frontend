@@ -57,6 +57,7 @@ export class Home extends Component {
                     }
                     this.checkHasLike();
                     this.checkHasSave();
+                    this.checkHasFollow();
                     console.log('Data fetched', this.state.feeds);
                 }));
         trackPromise(
@@ -108,6 +109,23 @@ export class Home extends Component {
         return axios.get('http://localhost:5000/hasSave/post/' + `${id}` + "/" + `${this.state.name}`
         ).then(res => {
             return res.data.data[0].hasSave;
+        }
+        ).catch(err => console.log(err))
+    }
+
+    async checkHasFollow() {
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            var hasFollowTemp = await this.getHasFollow(this.state.feeds[i].postID)
+
+            this.state.feeds[i].hasFollow = hasFollowTemp
+        }
+        this.setState({ feeds: this.state.feeds })
+    }
+
+    getHasFollow(id) {
+        return axios.get('http://localhost:5000/hasFollow/post/' + `${id}` + "/" + `${this.state.name}`
+        ).then(res => {
+            return res.data.data[0].hasFollow;
         }
         ).catch(err => console.log(err))
     }
@@ -320,6 +338,48 @@ export class Home extends Component {
         }
     };
 
+    followThread(id) {
+        const data = {
+            username: this.state.name,
+            postID: id,
+        };
+        var index;
+        for (var i = 0; i < this.state.feeds.length; i++) {
+            if (this.state.feeds[i].postID === id) {
+                index = i;
+                break;
+            }
+        }
+        if (!this.state.feeds[index].hasFollow) {
+            console.log("saved!");
+            this.state.feeds[index].hasFollow = 1;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            axios.post('http://localhost:5000/follow', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        } else {
+            console.log("unsaved!")
+            this.state.feeds[index].hasFollow = null;
+
+            this.setState({
+                feeds: this.state.feeds,
+            })
+            axios
+                .post('http://localhost:5000/unfollow', data)
+                .then(
+                    res => {
+                        console.log(res);
+                    })
+                .catch(err => console.log(err));
+        }
+    };
+
     handleSubmitCommentPost = e => {
         e.preventDefault();
 
@@ -472,7 +532,7 @@ export class Home extends Component {
                                         {localStorage.usertoken &&
                                             <li class="feeds-footer">
                                                 {feeds.hasLiked == "1" && feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Unlike" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                                 }
                                                 {!feeds.hasLiked && feeds.type_post == "1" &&
                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
@@ -481,7 +541,7 @@ export class Home extends Component {
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                                 }
                                                 {feeds.hasLiked == "1" && feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
+                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Unlike"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
                                                 }
                                                 {!feeds.hasLiked && feeds.type_post == "2" &&
                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
@@ -514,7 +574,13 @@ export class Home extends Component {
                                                     <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark-o" /></button>
                                                 }
                                                 {feeds.hasSave == "1" &&
-                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark" /></button>
+                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Unsave thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark" /></button>
+                                                }
+                                                {!feeds.hasFollow &&
+                                                    <button class="btn btn-icon pl-2 save" type="button" title="Follow thread" onClick={() => this.followThread(feeds.postID)}><i class="fa fa-user-plus" /></button>
+                                                }
+                                                {feeds.hasFollow == "1" &&
+                                                    <button class="btn btn-icon pl-2 save blue" type="button" title="Unfollow thread" onClick={() => this.followThread(feeds.postID)}><i class="fa fa-user-plus" /></button>
                                                 }
                                             </li>
                                         }

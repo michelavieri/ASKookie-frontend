@@ -11,6 +11,7 @@ export class Profile extends Component {
         this.state = {
             name: "",
             saved: [],
+            followed: [],
         };
     }
     componentDidMount() {
@@ -22,6 +23,13 @@ export class Profile extends Component {
             this.setState({ name: decoded.result.username });
         }
 
+        trackPromise(
+            fetch('http://localhost:5000/follow/' + `${decoded.result.username}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ followed: res.data });
+                    console.log(res.data)
+                }))
         trackPromise(
             fetch('http://localhost:5000/save/' + `${decoded.result.username}`)
                 .then(res => res.json())

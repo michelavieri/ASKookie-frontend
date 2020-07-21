@@ -632,11 +632,17 @@ export class Home extends Component {
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
-                                        <li class="feeds-footer">
-                                            {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                            {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
-                                        </li>
+                                        {localStorage.usertoken && this.state.name == `${comment.username}` &&
+                                                <ul class="feeds-footer mb-5 mt-0">
+                                                    {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                    {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
+                                                    {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                                    <li>
+                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
+                                                        <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                    </li>
+                                                </ul>
+                                            }
                                         <hr class="mt-0 mb-4" />
                                     </div>
                                 )}
@@ -697,11 +703,17 @@ export class Home extends Component {
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
-                                        <li class="feeds-footer">
-                                            {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                            <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button>
-                                            {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
-                                        </li>
+                                        {localStorage.usertoken && this.state.name == `${comment.username}` &&
+                                                <ul class="feeds-footer mb-5 mt-0">
+                                                    {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                    {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
+                                                    {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                                    <li>
+                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
+                                                        <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                    </li>
+                                                </ul>
+                                            }
                                         <hr class="mt-0 mb-4" />
                                     </div>
                                 )}

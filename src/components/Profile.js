@@ -102,6 +102,24 @@ export class Profile extends Component {
                             </ul>
                         </div>
                     </div>
+                     {/* followed posts */}
+                     <div class="col-sm-12 mt-5">
+                        <div class="card d-none d-xl-block text-left">
+                            <div class="card-header">
+                                My Followed Threads
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {this.state.followed && this.state.followed.map((followed) => (
+                                    <NavLink class="btn-category" to={`/thread/${followed.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{followed.title}{followed.question}</p> </li></NavLink>
+                                ))}
+                                {!this.state.followed || this.state.followed.length == 0 &&
+                                    <div class="muted-text mt-3 pl-4 pb-3">
+                                        No followed threads yet!
+                                    </div>
+                                }
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

@@ -36,6 +36,8 @@ export class Home extends Component {
             commentsPost: "",
             user: "",
             postID: "",
+            commentID: "",
+            commentEdit: "",
         };
     }
     componentDidMount() {
@@ -181,6 +183,23 @@ export class Home extends Component {
         return array;
     }
 
+    setCommentID(id) {
+        this.setState({
+            commentID: id,
+        })
+    }
+
+    setComment(com) {
+        this.setState({
+            commentEdit: com,
+        })
+    }
+
+    setCommentAndID(id, ans) {
+        this.setCommentID(id);
+        this.setComment(ans);
+    }
+
     onCommentChange = e => {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
@@ -296,6 +315,12 @@ export class Home extends Component {
         }
     }
 
+    onCommentEditChange = e => {
+        this.setState({
+            commentEdit: e.target.value,
+        });
+    };
+
     saveThread(id) {
         const data = {
             username: this.state.name,
@@ -351,7 +376,7 @@ export class Home extends Component {
             }
         }
         if (!this.state.feeds[index].hasFollow) {
-            console.log("saved!");
+            console.log("followed!");
             this.state.feeds[index].hasFollow = 1;
 
             this.setState({
@@ -364,7 +389,7 @@ export class Home extends Component {
                     })
                 .catch(err => console.log(err));
         } else {
-            console.log("unsaved!")
+            console.log("unfollowed!")
             this.state.feeds[index].hasFollow = null;
 
             this.setState({
@@ -378,6 +403,40 @@ export class Home extends Component {
                     })
                 .catch(err => console.log(err));
         }
+    };
+
+    handleEditComment = e => {
+        e.preventDefault();
+        const data = {
+            content: this.state.commentEdit,
+            commentID: this.state.commentID,
+        };
+
+        axios
+            .post('http://localhost:5000/edit/comment', data)
+            .then(
+                res => {
+                    console.log(res);
+                    window.location.reload(false);
+                })
+            .catch(err => console.log(err));
+    }
+
+    handleDeleteComment = e => { //deleting answer
+        const id_del = this.state.commentID;
+
+        e.preventDefault();
+
+        console.log("iddel", id_del);
+
+        axios
+            .delete('http://localhost:5000/delete/comment/' + id_del) //delete answer with id id_del
+            .then(res => {
+                console.log(res);
+                window.location.reload(false);
+                console.log("Comment deleted");
+            })
+            .catch(err => console.log(err));
     };
 
     handleSubmitCommentPost = e => {
@@ -410,7 +469,7 @@ export class Home extends Component {
             time: new Date().toLocaleDateString(),
             answerID: this.state.answerID,
             anonymous: false,
-            postID: this.props.match.params.id,
+            postID: this.state.postID,
         };
 
         axios
@@ -418,12 +477,13 @@ export class Home extends Component {
             .then(
                 res => {
                     console.log(res);
+                    this.props.history.push(`/thread/` + this.state.postID);
                     window.location.reload(false);
                 })
             .catch(err => console.log(err));
     };
 
-    getCommentsAns(id) {
+    getCommentsAns(id, postid) {
         console.log("answerid", id);
         this.setState({
             answerID: id,
@@ -432,7 +492,10 @@ export class Home extends Component {
             fetch('http://localhost:5000/comments/answer/' + id)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ commentsAns: res.data });
+                    this.setState({ 
+                        commentsAns: res.data,
+                        postID: postid,
+                     });
                     console.log('Comments Answer fetched', res.data);
                 }))
     }
@@ -538,7 +601,7 @@ export class Home extends Component {
                                                     <button class="btn btn-icon like pr-1 pl-0" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                                 }
                                                 {feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID, feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                                 }
                                                 {feeds.hasLiked == "1" && feeds.type_post == "2" &&
                                                     <button class="btn btn-icon like pr-1 pl-0 red" title="Unlike"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
@@ -793,6 +856,54 @@ export class Home extends Component {
                     </div>
                 </div>
                 {/* end of modal comments */}
+                {/* start of delete comment modal */}
+                <div id="deleteCommentModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Delete Comment</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <div class="modal-body text-left pt-3 pb-3">
+                                    Are you sure you want to delete your comment?
+                                    <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
+                                        <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
+                                        <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of delete comment modal */}
+
+                    {/* start of edit comment modal */}
+                    <div id="editCommentModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4>Edit My Comment</h4>
+                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                </div >
+                                <form onSubmit={this.handleEditComment}>
+                                    <ul class="row content">
+                                        <li class="col-sm-9 mt-3">
+                                            <TextareaAutosize
+                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                class="form-control"
+                                                value={this.state.commentEdit}
+                                                onChange={this.onCommentEditChange}
+                                                required
+                                            />
+                                        </li>
+                                        <li class="col-sm-2 mt-3">
+                                            <button type="submit" class="btn btn-orange">Edit Comment</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {/* end of edit comment modal */}
             </div >
         )
     }

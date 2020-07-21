@@ -78,6 +78,7 @@ export class Thread extends Component {
                     this.setState({ feeds: res.data });
                     this.checkHasLike();
                     this.checkSaved();
+                    this.checkHasFollow();
                     console.log('Feeds fetched', this.state.feeds);
                 }))
         trackPromise(
@@ -552,21 +553,19 @@ export class Thread extends Component {
             .catch(err => console.log(err));
     }
 
-    handleDeleteComment = e => { //deleting answer
+    handleDeleteComment = e => { //deleting comment
         const id_del = this.state.commentID;
-        const id = this.props.match.params.id;
 
         e.preventDefault();
 
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/comment/' + id_del) //delete answer with id id_del
+            .delete('http://localhost:5000/delete/comment/' + id_del) //delete comment with id id_del
             .then(res => {
                 console.log(res);
-                this.props.history.push(`/thread/` + id);
                 window.location.reload(false);
-                console.log("Answer deleted");
+                console.log("Comment deleted");
             })
             .catch(err => console.log(err));
     };
@@ -575,7 +574,7 @@ export class Thread extends Component {
         e.preventDefault();
         const data = {
             content: this.state.commentEdit,
-            answerID: this.state.commentID,
+            commentID: this.state.commentID,
         };
 
         axios
@@ -717,7 +716,7 @@ export class Thread extends Component {
                     })
                 .catch(err => console.log(err));
         } else {
-            console.log("unsaved!")
+            console.log("unfollowed!")
             this.setState({
                 feeds: {
                     anonymous: this.state.feeds.anonymous,
@@ -1359,7 +1358,7 @@ export class Thread extends Component {
                     </div>
                     {/* end of delete comment modal */}
 
-                    {/* start of edit post modal */}
+                    {/* start of edit comment modal */}
                     <div id="editCommentModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -1386,7 +1385,7 @@ export class Thread extends Component {
                             </div>
                         </div>
                     </div>
-                    {/* end of edit post modal */}
+                    {/* end of edit comment modal */}
                 </div>
             </div >
         )

@@ -36,7 +36,6 @@ export class Home extends Component {
             commentsPost: "",
             user: "",
             postID: "",
-            op: "",
         };
     }
     componentDidMount() {
@@ -67,34 +66,33 @@ export class Home extends Component {
                 }));
     };
 
-    checkHasLike() {
+    async checkHasLike() {
         for (var i = 0; i < this.state.feeds.length; i++) {
-            console.log("STUPID", this.state.feeds[i])
-            var feedsArr = this.state.feeds[i];
-            var hasLikedTemp;
             if (this.state.feeds[i].answerID == null) {
-                trackPromise(
-                    axios.get('http://localhost:5000/hasLiked/post/' + `${feedsArr.postID}` + "/" + `${this.state.name}`
-                    ).then(res => {
-                        
-                        hasLikedTemp = res.data.data[0].hasLiked;
-                        console.log("DEBUH", hasLikedTemp)
-                    }
-                    ).catch(err => console.log(err)))
-                    console.log("DEBUdfsdf", hasLikedTemp)
+                var hasLikedTemp = await this.getHasLikedPost(this.state.feeds[i].postID)
             } else {
-                trackPromise(
-                    axios.get('http://localhost:5000/hasLiked/answer/' + `${feedsArr.answerID}` + "/" + `${this.state.name}`
-                    ).then(res => {
-                        hasLikedTemp = res.data.data[0].hasLikedAns;
-                    }
-                    ).catch(err => console.log(err)))
+                var hasLikedTemp = await this.getHasLikedAns(this.state.feeds[i].answerID)
             }
-            this.state.feeds[i].hasLiked = hasLikedTemp;
-            this.setState({ feeds: this.state.feeds })
-            console.log("apa", hasLikedTemp)
+            console.log("hasLikedTemp", hasLikedTemp)
+            this.state.feeds[i].hasLiked = hasLikedTemp
         }
-        console.log("fklnf", this.state.feeds)
+        this.setState({ feeds: this.state.feeds })
+    }
+
+    getHasLikedPost(id) {
+        return axios.get('http://localhost:5000/hasLiked/post/' + `${id}` + "/" + `${this.state.name}`
+        ).then(res => {
+            return res.data.data[0].hasLiked;
+        }
+        ).catch(err => console.log(err))
+    }
+
+    getHasLikedAns(id) {
+        return axios.get('http://localhost:5000/hasLiked/answer/' + `${id}` + "/" + `${this.state.name}`
+        ).then(res => {
+            return res.data.data[0].hasLikedAns;
+        }
+        ).catch(err => console.log(err))
     }
 
     // checkHasLikeAns() {

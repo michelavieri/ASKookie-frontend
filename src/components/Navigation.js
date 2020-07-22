@@ -305,11 +305,18 @@ class Navigation extends Component {
                     <div class="collapse navbar-collapse" id="navbarText">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <Link class="nav-link px-lg-5" to="/"><i class="fa fa-fw fa-home fa-lg d-none d-xl-inline"></i> Home <span class="sr-only">(current)</span></Link>
+                                <NavLink class="nav-link px-lg-5" to="/" exact activeStyle={{
+                                    color: 'white',
+                                    borderBottom: '3px solid #4D60A5',
+                                }}><i class="fa fa-fw fa-home fa-lg d-none d-xl-inline"></i> Home <span class="sr-only">(current)</span></NavLink>
                             </li>
                             <li class="nav-item">
-                                <Link class="nav-link px-lg-5" to="/answer">
-                                    <i class="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg d-none d-xl-inline"></i>Answer</Link>
+                                <NavLink class="nav-link px-lg-5" to="/answer"
+                                    activeStyle={{
+                                        color: 'white',
+                                        borderBottom: '3px solid #4D60A5',
+                                    }}>
+                                    <i class="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg d-none d-xl-inline"></i>Answer</NavLink>
                             </li>
 
                         </ul>

@@ -314,20 +314,24 @@ class Navigation extends Component {
 
                         </ul>
 
-                        <div style={{ width: 300 }}>
-                            {/* <form onSubmit={() => this.handleSearch}> */}
-                                <input type="text" id="searchSelect"
-                                    onChange={this.handleInputChange}
-                                    placeholder="Search..."
-                                />
-                                <Link to={`/search/${this.state.query}`}><button>search</button></Link>
-                            {/* </form> */}
+                        <div style={{ width: 300 }} class="form-inline">
+                            <input type="text" id="searchSelect"
+                                onChange={this.handleInputChange}
+                                placeholder="Search..."
+                                autoComplete="off"
+                                class="form-control"
+                                style={{ width: 250 }}
+                                required
+                            />
+                            {this.state.query != "" &&
+                                <Link to={`/search/${this.state.query}`}><button class="btn"><i class="fa fa-search mb-2 blue"></i></button></Link>
+                            }
                         </div>
-                    </div>
 
 
 
-                    {/* <div style={{ width: 300 }}>
+
+                        {/* <div style={{ width: 300 }}>
                             <Autocomplete
                                 // freeSolo
                                 disableClearable
@@ -362,47 +366,48 @@ class Navigation extends Component {
                             {console.log("filteredd", this.state.filteredData)}
                         </div> */}
 
-                    {/* modal button */}
-                    <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
+                        {/* modal button */}
+                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
 
 
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown nav-icon">
-                            <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
-                            <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
-                                <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
-                                <div class="dropdown-divider"></div>
-                                <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
-                                <div class="dropdown-divider"></div>
-                                <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
-                            </div>
-                        </li>
-                        {localStorage.usertoken &&
+                        <ul class="navbar-nav">
                             <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="/profile" >
-                                        Signed in as <br /> {this.getUsername()}
-                                    </NavLink>
+                                    <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
+                                <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
+                                    <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
                                     <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item content-dropdown" to="/profile" >
-                                        My Saved Threads
-                                    </NavLink>
+                                    <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
-                                    <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                    <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
                                 </div>
                             </li>
-                        }
-                        {!localStorage.usertoken &&
-                            <li class="mr-3 btn-group">
-                                <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
-                                <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
-                            </li>
-                        }
-                    </ul>
+                            {localStorage.usertoken &&
+                                <li class="nav-item dropdown nav-icon">
+                                    <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
+                                        <NavLink class="dropdown-item" to="/profile" >
+                                            Signed in as <br /> {this.getUsername()}
+                                        </NavLink>
+                                        <div class="dropdown-divider"></div>
+                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                            My Saved Threads
+                                    </NavLink>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
+                                        <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                    </div>
+                                </li>
+                            }
+                            {!localStorage.usertoken &&
+                                <li class="mr-3 btn-group">
+                                    <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
+                                    <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </nav>
                 {/* modal ask  */}
                 {

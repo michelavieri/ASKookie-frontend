@@ -86,7 +86,7 @@ export class Profile extends Component {
 
                     {/* saved posts */}
                     <div class="col-sm-12 mt-5">
-                        <div class="card d-none d-xl-block text-left">
+                        <div class="card d-xl-block text-left">
                             <div class="card-header">
                                 My Saved Threads
                             </div>
@@ -104,7 +104,7 @@ export class Profile extends Component {
                     </div>
                      {/* followed posts */}
                      <div class="col-sm-12 mt-5">
-                        <div class="card d-none d-xl-block text-left">
+                        <div class="card d-xl-block text-left">
                             <div class="card-header">
                                 My Followed Threads
                             </div>

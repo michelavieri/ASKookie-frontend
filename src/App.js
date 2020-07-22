@@ -15,6 +15,7 @@ import {Job_Intern} from './components/Job_Intern'
 import {Exchange_Noc} from './components/Exchange_Noc'
 import {Others} from './components/Others'
 import {Profile} from './components/Profile'
+import {Search} from './components/Search'
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
@@ -37,6 +38,7 @@ function App() {
           <Route path='/exchange_noc' component={Exchange_Noc} />
           <Route path='/others' component={Others} />
           <Route path='/profile' component={Profile} />
+          <Route path='/search/:query' component={Search} />
         </Switch>
       </div>
     </BrowserRouter>

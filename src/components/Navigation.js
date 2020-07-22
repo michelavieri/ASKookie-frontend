@@ -214,52 +214,63 @@ class Navigation extends Component {
     // };
 
     handleInputChange = e => {
-        console.log("query", e.target.value)
-        this.toggleOpen();
-
         this.setState({
             query: e.target.value
         });
-
-        axios.get('http://localhost:5000/search/' + `${this.state.query}`)
-            .then(res => {
-                const filtered_Data = res.data;
-                console.log("filteredData", res.data)
-                // .then(response => response.json())
-                // .then(feeds_nav => {
-                //     const { query } = this.state;
-                //     const filteredData = feeds_nav && feeds_nav.filter(element => {
-                //         return element.question.toLowerCase().includes(query.toLowerCase()) 
-                //         || element.title.toLowerCase().includes(query.toLowerCase());
-                //     });
-                //     console.log("filteredData", filteredData);
-
-                this.setState({
-                    filteredData: filtered_Data,
-                });
-            });
+        console.log("query", this.state.query)
     }
 
-    search = () => {
-        axios.get('http://localhost:5000/search' + `${this.state.query}`)
-            .then(res => res.json())
-            .then(res => {
-                const filtered_Data = res.data.data;
-                console.log("filteredData", res.data.data)
-                // .then(response => response.json())
-                // .then(feeds_nav => {
-                //     const { query } = this.state;
-                //     const filteredData = feeds_nav && feeds_nav.filter(element => {
-                //         return element.question.toLowerCase().includes(query.toLowerCase()) 
-                //         || element.title.toLowerCase().includes(query.toLowerCase());
-                //     });
-                //     console.log("filteredData", filteredData);
+    handleSearch() {
+        this.props.history.push(`/signinform`)
+    }
 
-                this.setState({
-                    filteredData: filtered_Data,
-                });
-            });
-    };
+    // handleInputChange = e => {
+    //     console.log("query", e.target.value)
+    //     this.toggleOpen();
+
+    //     this.setState({
+    //         query: e.target.value
+    //     });
+
+    //     axios.get('http://localhost:5000/search/' + `${this.state.query}`)
+    //         .then(res => {
+    //             const filtered_Data = res.data;
+    //             console.log("filteredData", res.data)
+    //             // .then(response => response.json())
+    //             // .then(feeds_nav => {
+    //             //     const { query } = this.state;
+    //             //     const filteredData = feeds_nav && feeds_nav.filter(element => {
+    //             //         return element.question.toLowerCase().includes(query.toLowerCase()) 
+    //             //         || element.title.toLowerCase().includes(query.toLowerCase());
+    //             //     });
+    //             //     console.log("filteredData", filteredData);
+
+    //             this.setState({
+    //                 filteredData: filtered_Data,
+    //             });
+    //         });
+    // }
+
+    // search = () => {
+    //     axios.get('http://localhost:5000/search' + `${this.state.query}`)
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             const filtered_Data = res.data.data;
+    //             console.log("filteredData", res.data.data)
+    //             // .then(response => response.json())
+    //             // .then(feeds_nav => {
+    //             //     const { query } = this.state;
+    //             //     const filteredData = feeds_nav && feeds_nav.filter(element => {
+    //             //         return element.question.toLowerCase().includes(query.toLowerCase()) 
+    //             //         || element.title.toLowerCase().includes(query.toLowerCase());
+    //             //     });
+    //             //     console.log("filteredData", filteredData);
+
+    //             this.setState({
+    //                 filteredData: filtered_Data,
+    //             });
+    //         });
+    // };
 
     getUsername() {
         const token = localStorage.usertoken
@@ -303,43 +314,17 @@ class Navigation extends Component {
 
                         </ul>
 
-                        {/* <div style={{ width: 300 }}>
+                        <div style={{ width: 300 }}>
+                            {/* <form onSubmit={() => this.handleSearch}> */}
                                 <input type="text" id="searchSelect"
                                     onChange={this.handleInputChange}
                                     placeholder="Search..."
                                 />
-                            
-                        </div> */}
+                                <Link to={`/search/${this.state.query}`}><button>search</button></Link>
+                            {/* </form> */}
+                        </div>
                     </div>
-                    <Dropdown
-                        isOpen={isOpen}
-                        onClose={this.toggleOpen}
-                        target={
-                            <Button
-                                iconAfter={<ChevronDown />}
-                                onClick={this.toggleOpen}
-                                isSelected={isOpen}
-                            >
-                                {value ? `State: ${value.label}` : 'Select a State'}
-                            </Button>
-                        }
-                    >
-                        <Select
-                            autoFocus
-                            backspaceRemovesValue={false}
-                            components={{ DropdownIndicator, IndicatorSeparator: null }}
-                            controlShouldRenderValue={false}
-                            hideSelectedOptions={false}
-                            isClearable={false}
-                            menuIsOpen
-                            onChange={this.handleInputChange}
-                            options={this.state.filteredData}
-                            placeholder="Search..."
-                            styles={selectStyles}
-                            tabSelectsValue={false}
-                            // value={this.state.query}
-                        />
-                    </Dropdown>
+
 
 
                     {/* <div style={{ width: 300 }}>

@@ -10,7 +10,7 @@ export class Temp_Sign_In extends Component {
         this.state = {
             username: '',
             password: '',
-            success: '0'
+            success: '2'
         };
 
         this.handleUserChange = this.handleUserChange.bind(this);
@@ -38,7 +38,6 @@ export class Temp_Sign_In extends Component {
         axios
             .post('http://localhost:5000/login', user)
             .then(res => {
-                console.log(user);
                 if (res.data.token) {
                     console.log(res.token);
                     localStorage.setItem('usertoken', res.data.token);
@@ -47,7 +46,7 @@ export class Temp_Sign_In extends Component {
                 } else {
                     this.setState({ success: res.success });
                 }
-                console.log(res.data);
+                this.setState({ success: res.data.success });
             })
             .catch(err => {
                 console.log(err);
@@ -109,10 +108,18 @@ export class Temp_Sign_In extends Component {
                         <div className="alert alert-danger" role="alert">
                             Invalid username
                         </div>*/}
-                            {this.state.success != 0 &&
+                            {this.state.success == 0 &&
                                 <div className="alert alert-danger" role="alert">
-                                    Invalid username or password
+                                    Username does not exist
                         </div>}
+                            {this.state.success == 1 &&
+                                <div className="alert alert-danger" role="alert">
+                                    Email has not been verified, please verify your email
+                        </div>}
+                            {this.state.success == 3 &&
+                                <div className="alert alert-danger" role="alert">
+                                    Incorrect password
+                        </div>} 
                             <div class="position-fixed row ml-0">
                                 <ul class="pl-2">
                                     <li class="row">

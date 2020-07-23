@@ -16,6 +16,7 @@ import {Exchange_Noc} from './components/Exchange_Noc'
 import {Others} from './components/Others'
 import {Profile} from './components/Profile'
 import {Search} from './components/Search'
+import {Confirmation} from './components/Confirmation'
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/others' component={Others} />
           <Route path='/profile' component={Profile} />
           <Route path='/search/:query' component={Search} />
+          <Route path='/confirmation' component={Confirmation} />
         </Switch>
       </div>
     </BrowserRouter>

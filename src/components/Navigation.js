@@ -240,7 +240,7 @@ class Navigation extends Component {
                                 required
                             />
                             {this.state.query != "" &&
-                                <Link to={`/search/${this.state.query}`}><button class="btn"><i class="fa fa-search mb-2 blue"></i></button></Link>
+                                <a href={`/search/${this.state.query}`}><button class="btn"><i class="fa fa-search mb-2 blue"></i></button></a>
                             }
                         </div>
 

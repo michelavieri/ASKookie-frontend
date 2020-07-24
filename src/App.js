@@ -17,6 +17,7 @@ import {Others} from './components/Others'
 import {Profile} from './components/Profile'
 import {Search} from './components/Search'
 import {Confirmation} from './components/Confirmation'
+import {Image_Upload} from './components/Image_Upload'
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/profile' component={Profile} />
           <Route path='/search/:query' component={Search} />
           <Route path='/confirmation' component={Confirmation} />
+          <Route path='/upload' component={Image_Upload} />
         </Switch>
       </div>
     </BrowserRouter>

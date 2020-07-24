@@ -12,6 +12,7 @@
     "animate.css": "^4.1.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
+    "cloudinary-react": "^1.6.2",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "debug": "^4.1.1",

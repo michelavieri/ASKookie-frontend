@@ -47,9 +47,13 @@ export class Thread extends Component {
             anonymous: "1",
             member_type: "",
             isLoading: true,
+            fileInput: "",
+            previewSource: '',
+            selectedFile: ''
         };
 
         this.getUserPost = this.getUserPost.bind(this);
+        this.handleFileInputChange = this.handleFileInputChange.bind(this);
     }
     async componentDidMount() {
         this.getCommentsPost();
@@ -312,7 +316,20 @@ export class Thread extends Component {
         this.setAnswer(ans);
     }
 
-    handleSubmitPost = e => {
+    handleFileInputChange = e => {
+        const file = e.target.files[0];
+        this.previewFile(file);
+    }
+
+    previewFile = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            this.setState({previewSource: reader.result})
+        }
+    }; 
+
+    handleSubmitPost = async(e) => {
         const { id } = this.props.match.params;
 
         e.preventDefault();
@@ -320,18 +337,36 @@ export class Thread extends Component {
         const data = {
             postID2: id,
             answer: this.state.answer,
+            image: this.state.previewSource,
             answerer: this.state.answerer,
             time: new Date().toLocaleDateString(),
             anonymous: this.state.anonymous,
         };
-        axios
-            .post('http://localhost:5000/answer', data)
-            .then(
-                res => {
-                    console.log(res);
-                    window.location.reload(false);
-                })
-            .catch(err => console.log(err));
+        try {
+            await fetch('http://localhost:5000/answer', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {'Content-type': 'application/json'},
+                });
+                this.setState({fileInput: ''});
+                this.setState({previewSource: ''});
+                window.location.reload(false);
+            } catch (error) {
+                console.error(error);
+            }
+        // axios
+        //     .post('http://localhost:5000/answer', data)
+        //     .then(
+        //         res => {
+        //             this.setState({fileInput: ''});
+        //             this.setState({previewSource: ''});
+        //         })
+        //     .then(
+        //         res => {
+        //             console.log(res);
+        //             window.location.reload(false);
+        //         })
+        //     .catch(err => console.log(err));
     };
 
     handleLike = (liked) => {
@@ -920,7 +955,13 @@ export class Thread extends Component {
                                                                 </small>
                                                         </div>
                                                         <div class="form-row align-items-left row">
-                                                            <NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>
+                                                        <input type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
+                                                        className="form-input"/>
+                                                        {this.state.previewSource && (
+                                                        <img src={this.state.previewSource} alt="chosen"
+                                                        style={{height: '300px'}}/>
+                                                        )}
+                                                            {/*<NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>*/}
                                                         </div>
                                                         <div class="form-check row pull-left ml-3">
                                                             <input class="form-check-input" type="checkbox" defaultChecked={false} onChange={this.onAnonChange} id="anonymousCheck" />

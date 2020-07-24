@@ -912,8 +912,9 @@ export class Thread extends Component {
                                                                 Inappropriate or irrelevant answers will be filtered accordingly.
                                                                 </small>
                                                         </div>
-
-
+                                                        <div class="form-row align-items-left row">
+                                                            <NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>
+                                                        </div>
                                                         <div class="form-check row pull-left ml-3">
                                                             <input class="form-check-input" type="checkbox" defaultChecked={false} onChange={this.onAnonChange} id="anonymousCheck" />
                                                             <label class="form-check-label" for="anonymousCheck">

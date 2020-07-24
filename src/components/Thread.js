@@ -44,23 +44,23 @@ export class Thread extends Component {
             postEdit: "",
             commentEdit: "",
             commentID: "",
-            // post_content: "",
             anonymous: "1",
-            // asker: "",
-            // question: "",
-            // type: ""
+            member_type: "",
+            isLoading: true,
         };
 
         this.getUserPost = this.getUserPost.bind(this);
     }
-    componentDidMount() {
-        // this.getPost();
+    async componentDidMount() {
         this.getCommentsPost();
         if (localStorage.usertoken) {
             this.getUserPost();
             const token = localStorage.usertoken;
             const decoded = jwt_decode(token);
-            this.setState({ username: decoded.result.username });
+            this.setState({
+                username: decoded.result.username,
+                member_type: decoded.result.member_type,
+            });
 
         }
         trackPromise(
@@ -79,7 +79,10 @@ export class Thread extends Component {
                     this.checkHasLike();
                     this.checkSaved();
                     this.checkHasFollow();
+                }).then(res => {
+                    this.setState({ isLoading: false })
                     console.log('Feeds fetched', this.state.feeds);
+
                 }))
         trackPromise(
             fetch('http://localhost:5000/unanswered')
@@ -90,7 +93,7 @@ export class Thread extends Component {
 
     };
 
-    checkSaved() {
+    async checkSaved() {
         trackPromise(
             axios.get('http://localhost:5000/hasSave/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
             ).then(res => {
@@ -110,13 +113,13 @@ export class Thread extends Component {
                         hasLiked: this.state.feeds.hasLiked,
                         hasSave: res.data.data[0].hasSave,
                         hasFollow: this.state.feeds.hasFollow,
-                    }
+                    },
                 })
             }).catch(err => console.log(err)
             ))
     }
 
-    checkHasLike() {
+    async checkHasLike() {
         trackPromise(
             axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
             ).then(res => {
@@ -142,7 +145,7 @@ export class Thread extends Component {
             ))
     }
 
-    checkHasFollow() {
+    async checkHasFollow() {
         trackPromise(
             axios.get('http://localhost:5000/hasFollow/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
             ).then(res => {
@@ -775,6 +778,10 @@ export class Thread extends Component {
 
 
     render() {
+        if (this.state.isLoading) {
+            console.log("here")
+            return null;
+        }
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
@@ -898,7 +905,7 @@ export class Thread extends Component {
                                         {this.state.feeds.type_post != "2" &&
 
                                             <li>
-                                                {localStorage.usertoken &&
+                                                {localStorage.usertoken && (this.state.member_type == 1 || this.state.member_type == 2) &&
                                                     <form className="post pb-4" onSubmit={this.handleSubmitPost}>
                                                         <div class="form-row align-items-left mb-3 ml-3">
                                                             <textarea
@@ -928,6 +935,28 @@ export class Thread extends Component {
                                                     </form>
                                                 }
 
+                                                {localStorage.usertoken && this.state.member_type == 3 &&
+                                                    <form>
+                                                        <div class="form-row align-items-left mb-3 ml-3">
+                                                            <textarea
+                                                                disabled
+                                                                rows="5"
+                                                                class="form-control col-sm-9"
+                                                                placeholder="What are your thoughts? "
+                                                                value={this.state.answer}
+                                                                onChange={this.onAnswerChange}
+                                                                required />
+                                                            <small class="form-text text-muted col-sm-11">
+                                                                Inappropriate or irrelevant answers will be filtered accordingly.
+                                                        </small>
+                                                        </div>
+                                                        <div className="alert alert-danger" role="alert">
+                                                            <span class="fa fa-exclamation-triangle mr-2" />
+                                                                Sorry your member type (Non-NUS member) is not supported to answer questions here. <br /> Please register with your NUS account to answer.
+                                                        </div>
+                                                    </form>
+                                                }
+
                                                 {!localStorage.usertoken &&
                                                     <form>
                                                         <div class="form-row align-items-left mb-3 ml-3">
@@ -952,7 +981,7 @@ export class Thread extends Component {
                                             </li>
                                         }
 
-                                        {localStorage.usertoken && this.state.user == this.state.user_post &&
+                                        {localStorage.usertoken && (this.state.member_type == 1 || this.state.user == this.state.user_post) &&
                                             <div>
                                                 {this.state.feeds.type_post == "1" &&
                                                     <button class="btn btn-outline-secondary mb-2" style={{ width: 100 }} type="button" data-toggle="modal" data-target="#editQuestionModal" onClick={() => this.setQuestion(`${this.state.feeds.question}`)}><i class="fa fa-pencil mr-2" />Edit</button>
@@ -1017,7 +1046,7 @@ export class Thread extends Component {
                                                                     {/* <button class="btn btn-icon dislike float-right disabled" title="Dislikes"><i class="fa fa-thumbs-o-down" /> 0</button> */}
                                                                 </li>
                                                             }
-                                                            {localStorage.usertoken && this.state.user == `${answers.answerer}` &&
+                                                            {localStorage.usertoken && (this.state.member_type == 1 || this.state.user == `${answers.answerer}`) &&
                                                                 <li>
                                                                     <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Answer" data-target="#deleteAnswerModal" onClick={() => this.setAnswerID(`${answers.answerID}`)}><i class="fa fa-trash like" /></button>
                                                                     <button class="btn btn-icon float-right" title="Edit Answer" data-toggle="modal" data-target="#editAnswerModal" onClick={() => this.setAnswerAndID(`${answers.answerID}`, `${answers.answer}`)}><i class="fa fa-pencil comment" /></button>
@@ -1114,7 +1143,7 @@ export class Thread extends Component {
                                                 </div>
                                                 <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                             </div>
-                                            {localStorage.usertoken && this.state.username == `${comment.username}` &&
+                                            {localStorage.usertoken && (this.state.member_type == 1 || this.state.username == `${comment.username}`) &&
                                                 <ul class="feeds-footer mb-5 mt-0">
                                                     {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
@@ -1186,7 +1215,7 @@ export class Thread extends Component {
                                                 </div>
                                                 <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                             </div>
-                                            {localStorage.usertoken && this.state.username == `${comment.username}` &&
+                                            {localStorage.usertoken && (this.state.member_type == 1 || this.state.username == `${comment.username}`) &&
                                                 <ul class="feeds-footer mb-5 mt-0">
                                                     {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}

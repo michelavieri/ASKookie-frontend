@@ -42,6 +42,24 @@ class Navigation extends Component {
         this.handleSubmitPost = this.handleSubmitPost.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.usertoken) {
+            const token = localStorage.usertoken;
+            const decoded = jwt_decode(token);
+            var type;
+            if (decoded.result.member_type == 1) {
+                type = "Administrator"
+            } else if (decoded.result.member_type == 2) {
+                type = "NUS Member"
+            } else if (decoded.result.member_type == 3) {
+                type = "Non-NUS Member"
+            }
+            this.setState({
+                member_type: type,
+            })
+        }
+    }
+
     onPostChange = e => {
         const token = localStorage.usertoken;
         const decoded = jwt_decode(token);
@@ -305,6 +323,9 @@ class Navigation extends Component {
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <NavLink class="dropdown-item" to="/profile" >
                                             Signed in as <br /> {this.getUsername()}
+
+                                            {/* <div class="dropdown-divider"></div> */}
+                                            <p class="red"><b><i>{this.state.member_type}</i></b></p>
                                         </NavLink>
                                         <div class="dropdown-divider"></div>
                                         <NavLink class="dropdown-item content-dropdown" to="/profile" >
@@ -326,8 +347,7 @@ class Navigation extends Component {
                     </div>
                 </nav>
                 {/* modal ask  */}
-                {
-                    localStorage.usertoken &&
+                {localStorage.usertoken &&
                     <div id="askModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -441,8 +461,7 @@ class Navigation extends Component {
                         </div>
                     </div>
                 }
-                {
-                    !localStorage.usertoken &&
+                {!localStorage.usertoken &&
                     <div id="askModal" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">

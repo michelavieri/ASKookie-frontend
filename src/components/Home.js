@@ -44,8 +44,10 @@ export class Home extends Component {
         if (localStorage.usertoken) {
             const token = localStorage.usertoken;
             const decoded = jwt_decode(token);
-            this.setState({ user: decoded.result.username });
-
+            this.setState({ 
+                user: decoded.result.username,
+                member_type: decoded.result.member_type
+             });
         }
         trackPromise(
             fetch('http://localhost:5000/answered')
@@ -761,7 +763,7 @@ export class Home extends Component {
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
-                                        {localStorage.usertoken && this.state.name == `${comment.username}` &&
+                                        {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
                                                 <ul class="feeds-footer mb-5 mt-0">
                                                     {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
@@ -832,7 +834,7 @@ export class Home extends Component {
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
-                                        {localStorage.usertoken && this.state.name == `${comment.username}` &&
+                                        {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
                                                 <ul class="feeds-footer mb-5 mt-0">
                                                     {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
                                                     {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}

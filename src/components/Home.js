@@ -563,7 +563,7 @@ export class Home extends Component {
                         {/* feeds */}
                         {mostRecentPosts && mostRecentPosts.map(feeds => (
                             <div class="card mb-3">
-                                <div class="card-body pb-1">
+                                <div class="card-body pb-1 card-thread">
                                     <ul class="list-group">
                                         <li>
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
@@ -592,7 +592,7 @@ export class Home extends Component {
                                             <Linkify componentDecorator={this.componentDecorator}>
                                                 <div class="show-more" data-type="text" data-number="80">
                                                     <p class="whiteSpace">{feeds.post_content}{feeds.answer}</p>
-                                                    <Image cloudName="askookie" publicId={feeds.publicID} width="300" crop="scale" />
+                                                    <Image cloudName="askookie" publicId={feeds.publicID} class="img-feeds pl-2 pr-2 pb-2" crop="scale" />
                                                 </div>
                                             </Linkify>
                                         </li>

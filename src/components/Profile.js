@@ -12,6 +12,7 @@ export class Profile extends Component {
             name: "",
             saved: [],
             followed: [],
+            posted: [],
         };
     }
     componentDidMount() {
@@ -35,6 +36,13 @@ export class Profile extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ saved: res.data });
+                    console.log(res.data)
+                }))
+        trackPromise(
+            fetch('http://localhost:5000/post/' + `${decoded.result.username}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ posted: res.data });
                     console.log(res.data)
                 }))
     }
@@ -118,7 +126,14 @@ export class Profile extends Component {
                             }
                         </div>
                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                            posts
+                            {this.state.posted && this.state.posted.map((posted) => (
+                                <NavLink class="btn-category" to={`/thread/${posted.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{posted.title}{posted.question}</p> </li></NavLink>
+                            ))}
+                            {!this.state.posted || this.state.posted.length == 0 &&
+                                <div class="muted-text mt-3 pl-4 pb-3">
+                                    You never posted or asked a question before!
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

@@ -330,7 +330,13 @@ class Navigation extends Component {
                                         <div class="dropdown-divider"></div>
                                         <NavLink class="dropdown-item content-dropdown" to="/profile" >
                                             My Saved Threads
-                                    </NavLink>
+                                        </NavLink>
+                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                            My Followed Threads
+                                        </NavLink>
+                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                            My Posts/Questions
+                                        </NavLink>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
                                         <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>

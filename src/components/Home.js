@@ -8,6 +8,7 @@ import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
+import {Image} from "cloudinary-react";
 import {
     EmailShareButton,
     EmailIcon,
@@ -591,6 +592,7 @@ export class Home extends Component {
                                             <Linkify componentDecorator={this.componentDecorator}>
                                                 <div class="show-more" data-type="text" data-number="80">
                                                     <p class="whiteSpace">{feeds.post_content}{feeds.answer}</p>
+                                                    <Image cloudName="askookie" publicId={feeds.publicID} width="300" crop="scale" />
                                                 </div>
                                             </Linkify>
                                         </li>

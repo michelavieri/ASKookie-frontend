@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode';
 import NavigationRouter2 from './Navigation';
 import profilePicture from '../default_pp.png';
 import { trackPromise } from 'react-promise-tracker';
+import AvatarEditor from 'react-avatar-editor'
 
 export class Profile extends Component {
     constructor() {
@@ -92,7 +93,7 @@ export class Profile extends Component {
                         }
                     </div>
                 </div>
-                <div class="mt-4 tabs-profile">
+                <div class="mt-4">
                     <ul class="nav nav-tabs tab-profile-link pinkBg pl-5 pr-5 pt-3 pb-0" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link tab-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">My Saved Threads</a>

@@ -21,6 +21,7 @@
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
+    "react-avatar-editor": "^11.0.10",
     "react-bootstrap": "^0.33.1",
     "react-bootstrap-typeahead": "^5.0.0-rc.3",
     "react-bootstrap-validation": "^0.1.11",

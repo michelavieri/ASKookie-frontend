@@ -408,6 +408,20 @@ li {
   height: 100%;
 }
 
+.tabs-profile {
+  left: 0px;
+  position: fixed;
+  right: 0px;
+}
+
+@media (max-width:768px) {
+  .tab-profile-link > li {
+      display:block;
+      width: 100%;
+      float:none;
+  }
+}
+
 .left-half {
   position: fixed;
   left: 0px;

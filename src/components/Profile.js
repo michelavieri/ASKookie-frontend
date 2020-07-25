@@ -83,41 +83,42 @@ export class Profile extends Component {
                             </div>
                         }
                     </div>
-
-                    {/* saved posts */}
-                    <div class="col-sm-12 mt-5">
-                        <div class="card d-xl-block text-left">
-                            <div class="card-header">
-                                My Saved Threads
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                {this.state.saved && this.state.saved.map((saved) => (
-                                    <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{saved.title}{saved.question}</p> </li></NavLink>
-                                ))}
-                                {!this.state.saved || this.state.saved.length == 0 &&
-                                    <div class="muted-text mt-3 pl-4 pb-3">
-                                        No saved threads yet!
+                </div>
+                <div class="mt-4 tabs-profile">
+                    <ul class="nav nav-tabs tab-profile-link pinkBg pl-5 pr-5 pt-3 pb-0" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link tab-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">My Saved Threads</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">My Followed Threads</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">My Posts/Questions</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mb-5 ml-3 mt-3 pr-5 pl-5" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            {this.state.saved && this.state.saved.map((saved) => (
+                                <NavLink class="btn-category" to={`/thread/${saved.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{saved.title}{saved.question}</p> </li></NavLink>
+                            ))}
+                            {!this.state.saved || this.state.saved.length == 0 &&
+                                <div class="muted-text mt-3 pl-4 pb-3">
+                                    No saved threads yet!
                                     </div>
-                                }
-                            </ul>
+                            }
                         </div>
-                    </div>
-                     {/* followed posts */}
-                     <div class="col-sm-12 mt-5">
-                        <div class="card d-xl-block text-left">
-                            <div class="card-header">
-                                My Followed Threads
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                {this.state.followed && this.state.followed.map((followed) => (
-                                    <NavLink class="btn-category" to={`/thread/${followed.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{followed.title}{followed.question}</p> </li></NavLink>
-                                ))}
-                                {!this.state.followed || this.state.followed.length == 0 &&
-                                    <div class="muted-text mt-3 pl-4 pb-3">
-                                        No followed threads yet!
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            {this.state.followed && this.state.followed.map((followed) => (
+                                <NavLink class="btn-category" to={`/thread/${followed.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{followed.title}{followed.question}</p> </li></NavLink>
+                            ))}
+                            {!this.state.followed || this.state.followed.length == 0 &&
+                                <div class="muted-text mt-3 pl-4 pb-3">
+                                    No followed threads yet!
                                     </div>
-                                }
-                            </ul>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                            posts
                         </div>
                     </div>
                 </div>

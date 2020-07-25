@@ -7,6 +7,7 @@ import Linkify from 'react-linkify';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
+import {Image} from "cloudinary-react";
 import {
     EmailShareButton,
     EmailIcon,
@@ -74,6 +75,7 @@ export class Thread extends Component {
                     this.setState({ answers: res.data });
                     this.checkHasLikeAns();
                     console.log('Answers fetched', res.data);
+                    console.log('image', this.state.answers.publicID);
                 }))
         trackPromise(
             fetch('http://localhost:5000/thread/' + `${this.props.match.params.id}`)
@@ -1066,6 +1068,7 @@ export class Thread extends Component {
                                                             </li>
                                                             <li>
                                                                 <p class="whiteSpace">{answers.answer}</p>
+                                                                <Image cloudName="askookie" publicId={answers.publicID} width="300" crop="scale" />
                                                             </li>
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">

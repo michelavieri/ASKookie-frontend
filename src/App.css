@@ -349,6 +349,15 @@ li {
   max-height: 50px;
 }
 
+.img-feeds {
+  min-width: 100%;
+  max-width: 600px;
+}
+
+.card-thread {
+  overflow:hidden;
+}
+
 .dropdown-menu {
   padding: 0px;
   width: 200px;

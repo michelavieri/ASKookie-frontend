@@ -919,13 +919,16 @@ export class Thread extends Component {
                                                         </div>
                                                         <div class="form-row align-items-left row">
                                                             <input type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
-                                                                className="form-input" />
+                                                                className="form-input ml-3 mb-3" />
+                                                        </div>
+                                                        <div class="form-row align-items-left row">
                                                             {this.state.previewSource && (
                                                                 <img src={this.state.previewSource} alt="chosen"
-                                                                    style={{ height: '300px' }} />
+                                                                    style={{ width: '600px' }} class="ml-3 mb-3 mt-3" />
                                                             )}
-                                                            {/*<NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>*/}
                                                         </div>
+                                                        {/*<NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>*/}
+
                                                         <div class="form-check row pull-left ml-3">
                                                             <input class="form-check-input" type="checkbox" defaultChecked={false} onChange={this.onAnonChange} id="anonymousCheck" />
                                                             <label class="form-check-label" for="anonymousCheck">
@@ -1006,7 +1009,7 @@ export class Thread extends Component {
                                     < Linkify >
                                         {this.state.answers && this.state.answers.map((answers) =>
                                             <div>
-                                                <div class="card mb-3">
+                                                <div class="card mb-3 card-thread">
                                                     <div class="card-body mr-4 pb-0">
                                                         <ul>
                                                             <li>
@@ -1027,9 +1030,11 @@ export class Thread extends Component {
                                                                     </div>
                                                                 }
                                                             </li>
-                                                            <li>
+                                                            <li class="row ml-0">
                                                                 <p class="whiteSpace">{answers.answer}</p>
-                                                                <Image cloudName="askookie" publicId={answers.publicID} width="300" crop="scale" />
+                                                            </li>
+                                                            <li class="row mb-3 mt-3 ml-0 mr-0">
+                                                                <Image cloudName="askookie" class="img-feeds" publicId={answers.publicID} crop="scale" />
                                                             </li>
                                                             {localStorage.usertoken &&
                                                                 <li class="feeds-footer">

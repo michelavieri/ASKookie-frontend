@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import NavigationRouter2 from './Navigation';
 import profilePicture from '../default_pp.png';
 import { trackPromise } from 'react-promise-tracker';
-// import AvatarEditor from 'react-avatar-editor'
+import Avatar from 'react-avatar-edit';
 
 export class Profile extends Component {
     constructor() {
@@ -14,6 +14,8 @@ export class Profile extends Component {
             saved: [],
             followed: [],
             posted: [],
+            preview: null,
+            src: "",
         };
     }
     componentDidMount() {
@@ -46,6 +48,8 @@ export class Profile extends Component {
                     this.setState({ posted: res.data });
                     console.log(res.data)
                 }))
+        this.onCrop = this.onCrop.bind(this)
+        this.onClose = this.onClose.bind(this)
     }
 
 
@@ -62,12 +66,20 @@ export class Profile extends Component {
         window.location.reload(false);
     }
 
+    onClose() {
+        this.setState({ preview: null })
+    }
+
+    onCrop(preview) {
+        this.setState({ preview })
+    }
+
     render() {
         return (
             <div className="container-fluid">
                 <NavigationRouter2 />
                 <div class="row content">
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 profile-img">
                         <img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />
                     </div>
                     <div class="col-sm-6 profile-content">
@@ -79,6 +91,11 @@ export class Profile extends Component {
                                 <li>
                                     <button class="btn btn-logout">
                                         <NavLink class="link-logout stretched-link" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="file btn btn-lg btn-outline-secondary mt-3" type="button" data-toggle="modal" data-target="#ppModal" >
+                                        Change Photo
                                     </button>
                                 </li>
                                 <li class="mt-3">
@@ -135,6 +152,32 @@ export class Profile extends Component {
                                     You never posted or asked a question before!
                                 </div>
                             }
+                        </div>
+                    </div>
+                </div>
+                <div id="ppModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header blueBg">
+                                <h4 class="modal-title text-white">Change Profile Picture</h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body text-left pt-0">
+                                <div class="col-sm-6">
+                                    <Avatar
+                                        width={390}
+                                        height={295}
+                                        onCrop={this.onCrop}
+                                        onClose={this.onClose}
+                                        src={this.state.src}
+                                    />
+                                    
+                                <img src={this.state.preview} alt="Preview" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-outline-success" >Change Profile Picture</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

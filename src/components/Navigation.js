@@ -31,7 +31,9 @@ class Navigation extends Component {
             post_content: "",
             report: "",
             isOpen: false,
-            value: undefined
+            value: undefined,
+            notifications: [],
+            name: "",
         };
 
         this.onPostChange = this.onPostChange.bind(this);
@@ -56,7 +58,16 @@ class Navigation extends Component {
             }
             this.setState({
                 member_type: type,
+                name: decoded.result.username
             })
+
+            fetch('http://localhost:5000/notification/' + `${decoded.result.username}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ notifications: res.data });
+
+                    console.log('Notifications fetched', res.data);
+                });
         }
     }
 
@@ -175,23 +186,6 @@ class Navigation extends Component {
             });
     };
 
-
-    // componentDidMount() {
-    //     trackPromise(
-    //         fetch('http://localhost:5000/home')
-    //             .then(res => res.json())
-    //             .then(res => this.setState({ feeds: res.data }, () => console.log('Data fetched', res)))
-    //     )
-    // }
-
-    // handleInputChange = (event, value, reason) => {
-    //     console.log("value", value, event, reason);
-    //     if (reason === 'select-option') {
-    //         this.props.history.push(`/thread/${value.postID}`);
-    //         window.location.reload(false);
-    //     }
-    // };
-
     handleInputChange = e => {
         this.setState({
             query: e.target.value
@@ -217,6 +211,16 @@ class Navigation extends Component {
     scrollToTop = () => {
         scroll.scrollToTop();
     };
+
+    readNotif = (id) => {
+        axios
+            .post('http://localhost:5000/read/' + `${id}`)
+            .then(
+                res => {
+                    console.log(res);
+                })
+            .catch(err => console.log(err));
+    }
 
     render() {
         const { isOpen, value } = this.state;
@@ -307,13 +311,34 @@ class Navigation extends Component {
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown nav-icon">
                                 <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-fw fa-bell fa-lg mt-2"></i></NavLink>
+                                    {this.state.notifications.length == 0 &&
+                                        <i class="fa fa-fw fa-bell fa-lg mt-2"></i>
+                                    }
+                                    {this.state.notifications.length != 0 &&
+                                        <i class="fa fa-fw fa-bell fa-lg mt-2">
+                                            <span class="fa fa-circle"></span>
+                                        </i>
+                                    }
+                                    </NavLink>
                                 <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
-                                    <NavLink class="dropdown-item" to="#">Someone answered your question in @1311!</NavLink>
-                                    <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Your followed thread @2200 posted something new!</NavLink>
-                                    <div class="dropdown-divider"></div>
-                                    <NavLink class="dropdown-item" to="#">Someone commented on your answer in @1412!</NavLink>
+                                    {this.state.notifications && this.state.notifications.map(notifications =>
+                                        <div>
+                                            <a onClick={() => this.readNotif(`${notifications.notificationID}`)} class="dropdown-item mt-2" href={`/thread/${notifications.postID}`}>
+                                                {notifications.type == 1 &&
+                                                    <div>
+                                                        Someone has answered a question from thread @{notifications.postID} : <i>"{notifications.question}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 2 &&
+                                                    <div>
+                                                        Someone has commented on post @{notifications.postID} : <i>"{notifications.title}"</i>
+                                                    </div>
+                                                }
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                    )}
+
                                 </div>
                             </li>
                             {localStorage.usertoken &&

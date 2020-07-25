@@ -421,6 +421,19 @@ li {
       float:none;
   }
 }
+i.fa-bell {
+  position: relative;
+  font-size: 2em;
+  cursor: pointer;
+}
+span.fa-circle {
+  position: absolute;
+  font-size: 0.5em;
+  top: -3px;
+  color: #FC5D42;
+  right: 4px;
+}
+
 
 .left-half {
   position: fixed;

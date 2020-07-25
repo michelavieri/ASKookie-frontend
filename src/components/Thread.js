@@ -7,7 +7,7 @@ import Linkify from 'react-linkify';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
-import {Image} from "cloudinary-react";
+import { Image } from "cloudinary-react";
 import {
     EmailShareButton,
     EmailIcon,
@@ -47,7 +47,6 @@ export class Thread extends Component {
             commentID: "",
             anonymous: "1",
             member_type: "",
-            isLoading: true,
             fileInput: "",
             previewSource: '',
             selectedFile: ''
@@ -83,10 +82,9 @@ export class Thread extends Component {
                 .then(res => {
                     this.setState({ feeds: res.data });
                     this.checkHasLike();
-                    this.checkSaved();
+                    this.checkHasSave();
                     this.checkHasFollow();
                 }).then(res => {
-                    this.setState({ isLoading: false })
                     console.log('Feeds fetched', this.state.feeds);
 
                 }))
@@ -99,82 +97,49 @@ export class Thread extends Component {
 
     };
 
-    async checkSaved() {
-        trackPromise(
-            axios.get('http://localhost:5000/hasSave/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
-            ).then(res => {
-                this.setState({
-                    feeds: {
-                        anonymous: this.state.feeds.anonymous,
-                        asker: this.state.feeds.asker,
-                        category: this.state.feeds.category,
-                        comment_count: this.state.feeds.comment_count,
-                        like_count: this.state.feeds.like_count,
-                        postID: this.state.feeds.postID,
-                        post_content: this.state.feeds.post_content,
-                        question: this.state.feeds.question,
-                        time: this.state.feeds.time,
-                        title: this.state.feeds.title,
-                        type_post: this.state.feeds.type_post,
-                        hasLiked: this.state.feeds.hasLiked,
-                        hasSave: res.data.data[0].hasSave,
-                        hasFollow: this.state.feeds.hasFollow,
-                    },
-                })
-            }).catch(err => console.log(err)
-            ))
+    async checkHasLike() {
+        var hasLikedTemp = await this.getHasLikedPost();
+        this.state.feeds.hasLiked = hasLikedTemp
+
+        this.setState({ feeds: this.state.feeds })
     }
 
-    async checkHasLike() {
-        trackPromise(
-            axios.get('http://localhost:5000/hasLiked/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
-            ).then(res => {
-                this.setState({
-                    feeds: {
-                        anonymous: this.state.feeds.anonymous,
-                        asker: this.state.feeds.asker,
-                        category: this.state.feeds.category,
-                        comment_count: this.state.feeds.comment_count,
-                        like_count: this.state.feeds.like_count,
-                        postID: this.state.feeds.postID,
-                        post_content: this.state.feeds.post_content,
-                        question: this.state.feeds.question,
-                        time: this.state.feeds.time,
-                        title: this.state.feeds.title,
-                        type_post: this.state.feeds.type_post,
-                        hasLiked: res.data.data[0].hasLiked,
-                        hasSave: this.state.feeds.hasSave,
-                        hasFollow: this.state.feeds.hasFollow,
-                    }
-                })
-            }).catch(err => console.log(err)
-            ))
+    getHasLikedPost() {
+        return axios.get('http://localhost:5000/hasLiked/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`
+        ).then(res => {
+            return res.data.data[0].hasLiked;
+        }
+        ).catch(err => console.log(err))
+    }
+
+    async checkHasSave() {
+        var hasSaveTemp = await this.getHasSave(this.props.match.params.id)
+        this.state.feeds.hasSave = hasSaveTemp
+
+        this.setState({ feeds: this.state.feeds })
+    }
+
+    getHasSave(id) {
+        return axios.get('http://localhost:5000/hasSave/post/' + `${id}` + "/" + `${this.state.username}`
+        ).then(res => {
+            return res.data.data[0].hasSave;
+        }
+        ).catch(err => console.log(err))
     }
 
     async checkHasFollow() {
-        trackPromise(
-            axios.get('http://localhost:5000/hasFollow/post/' + `${this.state.feeds.postID}` + "/" + `${this.state.username}`
-            ).then(res => {
-                this.setState({
-                    feeds: {
-                        anonymous: this.state.feeds.anonymous,
-                        asker: this.state.feeds.asker,
-                        category: this.state.feeds.category,
-                        comment_count: this.state.feeds.comment_count,
-                        like_count: this.state.feeds.like_count,
-                        postID: this.state.feeds.postID,
-                        post_content: this.state.feeds.post_content,
-                        question: this.state.feeds.question,
-                        time: this.state.feeds.time,
-                        title: this.state.feeds.title,
-                        type_post: this.state.feeds.type_post,
-                        hasLiked: this.state.hasLiked,
-                        hasSave: this.state.feeds.hasSave,
-                        hasFollow: res.data.data[0].hasFollow,
-                    }
-                })
-            }).catch(err => console.log(err)
-            ))
+        var hasFollowTemp = await this.getHasFollow(this.props.match.params.id)
+        this.state.feeds.hasFollow = hasFollowTemp
+
+        this.setState({ feeds: this.state.feeds })
+    }
+
+    getHasFollow(id) {
+        return axios.get('http://localhost:5000/hasFollow/post/' + `${id}` + "/" + `${this.state.username}`
+        ).then(res => {
+            return res.data.data[0].hasFollow;
+        }
+        ).catch(err => console.log(err))
     }
 
     checkHasLikeAns() {
@@ -327,11 +292,11 @@ export class Thread extends Component {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            this.setState({previewSource: reader.result})
+            this.setState({ previewSource: reader.result })
         }
-    }; 
+    };
 
-    handleSubmitPost = async(e) => {
+    handleSubmitPost = async (e) => {
         const { id } = this.props.match.params;
 
         e.preventDefault();
@@ -348,14 +313,14 @@ export class Thread extends Component {
             await fetch('http://localhost:5000/answer', {
                 method: 'POST',
                 body: JSON.stringify(data),
-                headers: {'Content-type': 'application/json'},
-                });
-                this.setState({fileInput: ''});
-                this.setState({previewSource: ''});
-                window.location.reload(false);
-            } catch (error) {
-                console.error(error);
-            }
+                headers: { 'Content-type': 'application/json' },
+            });
+            this.setState({ fileInput: '' });
+            this.setState({ previewSource: '' });
+            window.location.reload(false);
+        } catch (error) {
+            console.error(error);
+        }
         // axios
         //     .post('http://localhost:5000/answer', data)
         //     .then(
@@ -815,10 +780,6 @@ export class Thread extends Component {
 
 
     render() {
-        if (this.state.isLoading) {
-            console.log("here")
-            return null;
-        }
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
@@ -957,12 +918,12 @@ export class Thread extends Component {
                                                                 </small>
                                                         </div>
                                                         <div class="form-row align-items-left row">
-                                                        <input type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
-                                                        className="form-input"/>
-                                                        {this.state.previewSource && (
-                                                        <img src={this.state.previewSource} alt="chosen"
-                                                        style={{height: '300px'}}/>
-                                                        )}
+                                                            <input type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
+                                                                className="form-input" />
+                                                            {this.state.previewSource && (
+                                                                <img src={this.state.previewSource} alt="chosen"
+                                                                    style={{ height: '300px' }} />
+                                                            )}
                                                             {/*<NavLink to='/upload'><button class="btn mb-3 btn-icon ml-3 btn-outline-secondary"><i class="fa fa-file-image-o mr-2" />Upload image</button></NavLink>*/}
                                                         </div>
                                                         <div class="form-check row pull-left ml-3">

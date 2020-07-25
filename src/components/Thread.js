@@ -870,7 +870,7 @@ export class Thread extends Component {
 
                                         {!localStorage.usertoken &&
                                             <li class="feeds-footer pb-3">
-                                                <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> 256</button>
+                                                <button class="btn btn-icon like pr-1 pl-2 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {this.state.feeds.like_count}</button>
                                                 {this.state.feeds.type_post == "2" &&
                                                     <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal"><i class="fa fa-comment-o pr-1" />{this.state.feeds.comment_count}</button>
                                                 }

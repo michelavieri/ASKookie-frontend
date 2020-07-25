@@ -365,6 +365,7 @@ li {
 
 .notif {
   width: 300px !important;
+  overflow-y: scroll;
 }
 
 .dropdown-item {

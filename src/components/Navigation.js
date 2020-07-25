@@ -115,7 +115,7 @@ class Navigation extends Component {
             type_post: 1,
             anonymous: true,
             post_content: this.state.post_content,
-            title: this.state.title,
+            title: "",
             time: new Date().toLocaleDateString(),
         };
         console.log(data);
@@ -218,6 +218,17 @@ class Navigation extends Component {
             .then(
                 res => {
                     console.log(res);
+                    var array = [...this.state.notifications]; // make a separate copy of the array
+                    var index;
+                    for (var i = 0; i < array.length; i++) {
+                        if (array[i].notificationID == id) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    array.splice(index, 1);
+                    this.setState({ notifications: array });
+
                 })
             .catch(err => console.log(err));
     }
@@ -319,8 +330,8 @@ class Navigation extends Component {
                                             <span class="fa fa-circle"></span>
                                         </i>
                                     }
-                                    </NavLink>
-                                <div class="dropdown-menu notif dropdown-menu-right" aria-labelledby="notifDropdown">
+                                </NavLink>
+                                <div class="dropdown-menu notif dropdown-menu-right" style={{ maxHeight: 280 }} aria-labelledby="notifDropdown">
                                     {this.state.notifications && this.state.notifications.map(notifications =>
                                         <div>
                                             <a onClick={() => this.readNotif(`${notifications.notificationID}`)} class="dropdown-item mt-2" href={`/thread/${notifications.postID}`}>
@@ -334,7 +345,38 @@ class Navigation extends Component {
                                                         Someone has commented on post @{notifications.postID} : <i>"{notifications.title}"</i>
                                                     </div>
                                                 }
+                                                {notifications.type == 3 &&
+                                                    <div class="font-weight-bold">
+                                                        Someone has answered your question @{notifications.postID} : <i>"{notifications.question}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 4 &&
+                                                    <div>
+                                                        Someone has liked your post @{notifications.postID} : <i>"{notifications.title}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 5 &&
+                                                    <div>
+                                                        Someone has liked your answer on thread @{notifications.postID} : <i>"{notifications.question}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 6 &&
+                                                    <div>
+                                                        Someone has liked your comment on thread @{notifications.postID} : <i>"{notifications.question}{notifications.title}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 7 &&
+                                                    <div>
+                                                        Someone has commented on your post @{notifications.postID} : <i>"{notifications.title}"</i>
+                                                    </div>
+                                                }
+                                                {notifications.type == 8 &&
+                                                    <div>
+                                                        Someone has commented on your answer at thread @{notifications.postID} : <i>"{notifications.question}"</i>
+                                                    </div>
+                                                }
                                             </a>
+                                            <button class="btn red" onClick={() => this.readNotif(`${notifications.notificationID}`)} style={{ fontSize: 12 }}>DISMISS</button>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                     )}

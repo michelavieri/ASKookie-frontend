@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import NavigationRouter2 from './Navigation';
 import profilePicture from '../default_pp.png';
 import { trackPromise } from 'react-promise-tracker';
-import AvatarEditor from 'react-avatar-editor'
+// import AvatarEditor from 'react-avatar-editor'
 
 export class Profile extends Component {
     constructor() {

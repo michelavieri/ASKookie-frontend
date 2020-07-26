@@ -5,6 +5,7 @@ import NavigationRouter2 from './Navigation';
 import profilePicture from '../default_pp.png';
 import { trackPromise } from 'react-promise-tracker';
 import Avatar from 'react-avatar-edit';
+import { Image } from "cloudinary-react";
 
 export class Profile extends Component {
     constructor() {
@@ -16,7 +17,13 @@ export class Profile extends Component {
             posted: [],
             preview: null,
             src: "",
+            image: "",
+            fileInput: "",
+            previewSource: '',
+            selectedFile: ''
         };
+
+        this.handleFileInputChange = this.handleFileInputChange.bind(this);
     }
     componentDidMount() {
         var token;
@@ -48,10 +55,55 @@ export class Profile extends Component {
                     this.setState({ posted: res.data });
                     console.log(res.data)
                 }))
+        trackPromise(
+            fetch('http://localhost:5000/profile/' + `${decoded.result.username}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({ image: res.data[0].publicID });
+                }))
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
     }
 
+    handleFileInputChange = e => {
+        const file = e.target.files[0];
+        this.previewFile(file);
+    }
+
+    previewFile = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            this.setState({ previewSource: reader.result })
+        }
+    };
+
+    handleSubmitPicture = async (e) => {
+        var token;
+        var decoded;
+        if (localStorage.usertoken) {
+            token = localStorage.usertoken;
+            decoded = jwt_decode(token);
+            this.setState({ name: decoded.result.username });
+        }
+
+        console.log(this.state.previewSource);
+
+        e.preventDefault();
+
+        try {
+            await fetch('http://localhost:5000/upload/profile/' + `${decoded.result.username}`, {
+                method: 'POST',
+                body: JSON.stringify({data: this.state.previewSource}),
+                headers: { 'Content-type': 'application/json' },
+            });
+            this.setState({ fileInput: '' });
+            this.setState({ previewSource: '' });
+            window.location.reload(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     componentDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -80,7 +132,8 @@ export class Profile extends Component {
                 <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-3 profile-img">
-                        <img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />
+                         <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
+                        {/*<img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />*/}
                     </div>
                     <div class="col-sm-6 profile-content">
                         {localStorage.usertoken &&
@@ -94,9 +147,25 @@ export class Profile extends Component {
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="file btn btn-lg btn-outline-secondary mt-3" type="button" data-toggle="modal" data-target="#ppModal" >
+                                <form className="post pb-4" onSubmit={this.handleSubmitPicture}>
+                                    <label for="files" class="btn">Change Profile Picture</label>
+                                    <input id="files" type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
+                                                                className="form-input ml-3 mb-3" />
+                                    {/*<button class="file btn btn-lg btn-outline-secondary mt-3" type="button" data-toggle="modal" data-target="#ppModal" >
                                         Change Photo
-                                    </button>
+                        </button>*/}
+                                    <div class="form-row align-items-left row">
+                                        {this.state.previewSource && (
+                                            <img src={this.state.previewSource} alt="chosen"
+                                            style={{ width: '600px' }} class="ml-3 mb-3 mt-3" />
+                                        )}
+                                        {this.state.previewSource && (
+                                           <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right">
+                                           Submit
+                                            </button>
+                                        )}
+                                    </div>
+                                </form>
                                 </li>
                                 <li class="mt-3">
                                     <NavLink class="btn-back-home" to="/"><i class="fa fa-fw fa-angle-left fa-lg" />Back to Home</NavLink>

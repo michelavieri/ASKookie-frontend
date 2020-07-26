@@ -91,14 +91,17 @@ export class Profile extends Component {
 
         e.preventDefault();
 
-        await fetch('https://whispering-hamlet-08619.herokuapp.com/upload/profile/' + `${decoded.result.username}`, {
+        fetch('https://whispering-hamlet-08619.herokuapp.com/upload/profile/' + `${decoded.result.username}`, {
             method: 'POST',
             body: JSON.stringify({ data: this.state.preview }),
             headers: { 'Content-type': 'application/json' },
         }).catch(error => {
             console.error(error)
         });
-        this.props.history.push('/')
+        setTimeout(() => {
+            window.location.reload(false)
+        }, 1500
+        )
     };
 
 
@@ -137,7 +140,7 @@ export class Profile extends Component {
                             <img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />
                         }
                         {this.state.image != null &&
-                            <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
+                            <Image cloudName="askookie" class="img-feeds rounded-circle profile-picture" publicId={this.state.image} width="250" crop="scale" />
                         }
                     </div>
                     <div class="col-sm-6 profile-content">

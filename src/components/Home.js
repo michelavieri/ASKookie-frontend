@@ -8,7 +8,7 @@ import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
-import {Image} from "cloudinary-react";
+import { Image } from "cloudinary-react";
 import {
     EmailShareButton,
     EmailIcon,
@@ -39,16 +39,23 @@ export class Home extends Component {
             postID: "",
             commentID: "",
             commentEdit: "",
+            profile: "",
         };
     }
     componentDidMount() {
         if (localStorage.usertoken) {
             const token = localStorage.usertoken;
             const decoded = jwt_decode(token);
-            this.setState({ 
+            this.setState({
                 user: decoded.result.username,
                 member_type: decoded.result.member_type
-             });
+            });
+            trackPromise(
+                fetch('https://whispering-hamlet-08619.herokuapp.com/profile/' + `${decoded.result.username}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        this.setState({ profile: res.data[0].publicID });
+                    }))
         }
         trackPromise(
             fetch('https://whispering-hamlet-08619.herokuapp.com/answered')
@@ -495,10 +502,10 @@ export class Home extends Component {
             fetch('https://whispering-hamlet-08619.herokuapp.com/comments/answer/' + id)
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ 
+                    this.setState({
                         commentsAns: res.data,
                         postID: postid,
-                     });
+                    });
                     console.log('Comments Answer fetched', res.data);
                 }))
     }
@@ -720,6 +727,7 @@ export class Home extends Component {
                 </div>
 
 
+
                 {/* modal for comments ans */}
                 <div id="commentsModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -732,7 +740,12 @@ export class Home extends Component {
                                 {localStorage.usertoken &&
                                     <div class="row content mb-0 greyBg pt-4 pb-3">
                                         <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            {this.state.profile == null &&
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            }
+                                            {this.state.profile != null &&
+                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                            }
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
                                             <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
@@ -756,26 +769,23 @@ export class Home extends Component {
                                 {this.state.commentsAns && this.state.commentsAns.map(comment =>
                                     <div>
                                         <div class="row content">
-                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                            </div>
-                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <div class="col-sm-12 ml-2">
                                                 <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
                                                 <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
-                                                <ul class="feeds-footer mb-5 mt-0">
-                                                    {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                                    {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                    {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
-                                                    <li>
-                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
-                                                        <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
-                                                    </li>
-                                                </ul>
-                                            }
+                                            <ul class="feeds-footer mb-5 mt-0">
+                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
+                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                                <li>
+                                                    <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
+                                                    <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                </li>
+                                            </ul>
+                                        }
                                         <hr class="mt-0 mb-4" />
                                     </div>
                                 )}
@@ -803,7 +813,12 @@ export class Home extends Component {
                                 {localStorage.usertoken &&
                                     <div class="row content mb-0 greyBg pt-4 pb-3">
                                         <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            {this.state.profile == null &&
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            }
+                                            {this.state.profile != null &&
+                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                            }
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
                                             <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
@@ -827,26 +842,23 @@ export class Home extends Component {
                                 {this.state.commentsPost && this.state.commentsPost.map(comment =>
                                     <div>
                                         <div class="row content">
-                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                            </div>
-                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <div class="col-sm-12 ml-2">
                                                 <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
                                                 <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>
                                             <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
-                                                <ul class="feeds-footer mb-5 mt-0">
-                                                    {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                                    {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                    {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
-                                                    <li>
-                                                        <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
-                                                        <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
-                                                    </li>
-                                                </ul>
-                                            }
+                                            <ul class="feeds-footer mb-5 mt-0">
+                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
+                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                                <li>
+                                                    <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
+                                                    <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                </li>
+                                            </ul>
+                                        }
                                         <hr class="mt-0 mb-4" />
                                     </div>
                                 )}
@@ -862,52 +874,52 @@ export class Home extends Component {
                 {/* end of modal comments */}
                 {/* start of delete comment modal */}
                 <div id="deleteCommentModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4>Delete Comment</h4>
-                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
-                                </div >
-                                <div class="modal-body text-left pt-3 pb-3">
-                                    Are you sure you want to delete your comment?
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Delete Comment</h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                            </div >
+                            <div class="modal-body text-left pt-3 pb-3">
+                                Are you sure you want to delete your comment?
                                     <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
-                                        <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
-                                        <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                                    </div>
+                                    <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
+                                    <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* end of delete comment modal */}
+                </div>
+                {/* end of delete comment modal */}
 
-                    {/* start of edit comment modal */}
-                    <div id="editCommentModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4>Edit My Comment</h4>
-                                    <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
-                                </div >
-                                <form onSubmit={this.handleEditComment}>
-                                    <ul class="row content">
-                                        <li class="col-sm-9 mt-3">
-                                            <TextareaAutosize
-                                                class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                                class="form-control"
-                                                value={this.state.commentEdit}
-                                                onChange={this.onCommentEditChange}
-                                                required
-                                            />
-                                        </li>
-                                        <li class="col-sm-2 mt-3">
-                                            <button type="submit" class="btn btn-orange">Edit Comment</button>
-                                        </li>
-                                    </ul>
-                                </form>
-                            </div>
+                {/* start of edit comment modal */}
+                <div id="editCommentModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Edit My Comment</h4>
+                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                            </div >
+                            <form onSubmit={this.handleEditComment}>
+                                <ul class="row content">
+                                    <li class="col-sm-9 mt-3">
+                                        <TextareaAutosize
+                                            class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                            class="form-control"
+                                            value={this.state.commentEdit}
+                                            onChange={this.onCommentEditChange}
+                                            required
+                                        />
+                                    </li>
+                                    <li class="col-sm-2 mt-3">
+                                        <button type="submit" class="btn btn-orange">Edit Comment</button>
+                                    </li>
+                                </ul>
+                            </form>
                         </div>
                     </div>
-                    {/* end of edit comment modal */}
+                </div>
+                {/* end of edit comment modal */}
             </div >
         )
     }

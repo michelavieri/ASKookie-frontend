@@ -8,6 +8,7 @@ import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 import profilePicture from '../default_pp.png';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Image } from "cloudinary-react";
 import {
     EmailShareButton,
     EmailIcon,
@@ -39,17 +40,23 @@ export class Exchange_Noc extends Component {
             commentID: "",
             commentEdit: "",
             member_type: "",
+            profile: "",
         };
     }
     componentDidMount() {
         if (localStorage.usertoken) {
             const token = localStorage.usertoken;
             const decoded = jwt_decode(token);
-            this.setState({ 
+            this.setState({
                 user: decoded.result.username,
                 member_type: decoded.result.member_type
-             });
-
+            });
+            trackPromise(
+                fetch('https://whispering-hamlet-08619.herokuapp.com/profile/' + `${decoded.result.username}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        this.setState({ profile: res.data[0].publicID });
+                    }))
         }
         trackPromise(
             fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/exchange_noc')
@@ -737,7 +744,12 @@ export class Exchange_Noc extends Component {
                                 {localStorage.usertoken &&
                                     <div class="row content mb-0 greyBg pt-4 pb-3">
                                         <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            {this.state.profile == null &&
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            }
+                                            {this.state.profile != null &&
+                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                            }
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
                                             <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
@@ -761,10 +773,7 @@ export class Exchange_Noc extends Component {
                                 {this.state.commentsAns && this.state.commentsAns.map(comment =>
                                     <div>
                                         <div class="row content">
-                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                            </div>
-                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <div class="col-sm-12 ml-2">
                                                 <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
                                                 <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>
@@ -808,7 +817,12 @@ export class Exchange_Noc extends Component {
                                 {localStorage.usertoken &&
                                     <div class="row content mb-0 greyBg pt-4 pb-3">
                                         <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
-                                            <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            {this.state.profile == null &&
+                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                            }
+                                            {this.state.profile != null &&
+                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                            }
                                         </div>
                                         <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
                                             <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
@@ -832,10 +846,7 @@ export class Exchange_Noc extends Component {
                                 {this.state.commentsPost && this.state.commentsPost.map(comment =>
                                     <div>
                                         <div class="row content">
-                                            <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2">
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
-                                            </div>
-                                            <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <div class="col-sm-12 ml-2">
                                                 <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
                                                 <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>

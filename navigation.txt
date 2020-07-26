@@ -5,8 +5,6 @@ import logo from '../logo.png';
 import profilePicture from '../default_pp.png';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { Image } from "cloudinary-react";
-import { trackPromise } from 'react-promise-tracker';
 
 class Navigation extends Component {
     logOut(e) {
@@ -36,7 +34,6 @@ class Navigation extends Component {
             value: undefined,
             notifications: [],
             name: "",
-            image: "",
         };
 
         this.onPostChange = this.onPostChange.bind(this);
@@ -71,26 +68,7 @@ class Navigation extends Component {
 
                     console.log('Notifications fetched', res.data);
                 });
-            trackPromise(
-                fetch('https://whispering-hamlet-08619.herokuapp.com/profile/' + `${decoded.result.username}`)
-                    .then(res => res.json())
-                    .then(res => {
-                        this.setState({ image: res.data[0].publicID });
-                    }))
         }
-    }
-
-    mostRecent = () => {
-        let i = this.state.notifications.length - 1;
-        var array = this.state.notifications.slice();
-        var j = 0;
-        for (; i > j; i--) {
-            const temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            j++;
-        }
-        return array;
     }
 
     onPostChange = e => {
@@ -257,7 +235,6 @@ class Navigation extends Component {
 
     render() {
         const { isOpen, value } = this.state;
-        var mostRecentNotif = this.mostRecent();
         return (
             <div class="container-fluid">
                 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-yellow">
@@ -355,7 +332,7 @@ class Navigation extends Component {
                                     }
                                 </NavLink>
                                 <div class="dropdown-menu notif dropdown-menu-right" style={{ maxHeight: 280 }} aria-labelledby="notifDropdown">
-                                    {mostRecentNotif && mostRecentNotif.map(notifications =>
+                                    {this.state.notifications && this.state.notifications.map(notifications =>
                                         <div>
                                             <a onClick={() => this.readNotif(`${notifications.notificationID}`)} class="dropdown-item mt-2" href={`/thread/${notifications.postID}`}>
                                                 {notifications.type == 1 &&
@@ -375,7 +352,7 @@ class Navigation extends Component {
                                                 }
                                                 {notifications.type == 4 &&
                                                     <div>
-                                                        Someone has liked your post @{notifications.postID}
+                                                        Someone has liked your post @{notifications.postID} : <i>"{notifications.title}"</i>
                                                     </div>
                                                 }
                                                 {notifications.type == 5 &&
@@ -403,25 +380,13 @@ class Navigation extends Component {
                                             <div class="dropdown-divider"></div>
                                         </div>
                                     )}
-                                    {this.state.notifications.length == 0 &&
-                                    <div class="dropdown-item mt-2 mb-2 muted-text disabled">
-                                        No Notifications for now!
-                                    </div>
-                                    }
 
                                 </div>
                             </li>
                             {localStorage.usertoken &&
                                 <li class="nav-item dropdown nav-icon">
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {/* <img src={profilePicture} alt="" width="38" class="rounded-circle" /> */}
-                                        {this.state.image == null &&
-                                            <img src={profilePicture} alt="" width="38" class="rounded-circle profile-picture" />
-                                        }
-                                        {this.state.image != null &&
-                                            <Image cloudName="askookie" class="rounded-circle" publicId={this.state.image} width="38" crop="scale" />
-                                        }
-                                    </NavLink>
+                                        <img src={profilePicture} alt="" width="38" class="rounded-circle" /></NavLink>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
                                         <NavLink class="dropdown-item" to="/profile" >
                                             Signed in as <br /> {this.getUsername()}

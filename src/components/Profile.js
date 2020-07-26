@@ -78,7 +78,7 @@ export class Profile extends Component {
     //     }
     // };
 
-    handleSubmitPicture = async(e) => {
+    handleSubmitPicture = async (e) => {
         var token;
         var decoded;
         if (localStorage.usertoken) {
@@ -133,8 +133,12 @@ export class Profile extends Component {
                 <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-3 profile-img">
-                        <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
-                        {/*<img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />*/}
+                        {this.state.image == null &&
+                            <img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />
+                        }
+                        {this.state.image != null &&
+                            <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
+                        }
                     </div>
                     <div class="col-sm-6 profile-content">
                         {localStorage.usertoken &&

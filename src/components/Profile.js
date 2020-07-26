@@ -23,7 +23,7 @@ export class Profile extends Component {
             selectedFile: ''
         };
 
-        this.handleFileInputChange = this.handleFileInputChange.bind(this);
+        //this.handleFileInputChange = this.handleFileInputChange.bind(this);
     }
     componentDidMount() {
         var token;
@@ -65,18 +65,18 @@ export class Profile extends Component {
         this.onClose = this.onClose.bind(this)
     }
 
-    handleFileInputChange = e => {
-        const file = e.target.files[0];
-        this.previewFile(file);
-    }
+    // handleFileInputChange = e => {
+    //     const file = e.target.files[0];
+    //     this.previewFile(file);
+    // }
 
-    previewFile = (file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            this.setState({ previewSource: reader.result })
-        }
-    };
+    // previewFile = (file) => {
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onloadend = () => {
+    //         this.setState({ previewSource: reader.result })
+    //     }
+    // };
 
     handleSubmitPicture = async (e) => {
         var token;
@@ -87,18 +87,18 @@ export class Profile extends Component {
             this.setState({ name: decoded.result.username });
         }
 
-        console.log(this.state.previewSource);
+        console.log(this.state.preview);
 
         e.preventDefault();
 
         try {
             await fetch('https://whispering-hamlet-08619.herokuapp.com/upload/profile/' + `${decoded.result.username}`, {
                 method: 'POST',
-                body: JSON.stringify({data: this.state.previewSource}),
+                body: JSON.stringify({ data: this.state.preview }),
                 headers: { 'Content-type': 'application/json' },
             });
-            this.setState({ fileInput: '' });
-            this.setState({ previewSource: '' });
+            // this.setState({ fileInput: '' });
+            // this.setState({ previewSource: '' });
             window.location.reload(false);
         } catch (error) {
             console.error(error);
@@ -132,7 +132,7 @@ export class Profile extends Component {
                 <NavigationRouter2 />
                 <div class="row content">
                     <div class="col-sm-3 profile-img">
-                         <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
+                        <Image cloudName="askookie" class="img-feeds" publicId={this.state.image} width="250" crop="scale" />
                         {/*<img src={profilePicture} alt="" width="200" class="rounded-circle profile-picture" />*/}
                     </div>
                     <div class="col-sm-6 profile-content">
@@ -147,15 +147,14 @@ export class Profile extends Component {
                                     </button>
                                 </li>
                                 <li>
-                                <form className="post pb-4" onSubmit={this.handleSubmitPicture}>
-                                    <label for="files" class="btn">Change Profile Picture</label>
+                                    {/*<label for="files" class="btn">Change Profile Picture</label>
                                     <input id="files" type="file" name="image" onChange={this.handleFileInputChange} value={this.state.fileInput}
-                                                                className="form-input ml-3 mb-3" />
-                                    {/*<button class="file btn btn-lg btn-outline-secondary mt-3" type="button" data-toggle="modal" data-target="#ppModal" >
+                        className="form-input ml-3 mb-3" />*/}
+                                    <button class="file btn btn-lg btn-outline-secondary mt-3" type="button" data-toggle="modal" data-target="#ppModal" >
                                         Change Photo
-                        </button>*/}
+                        </button>
                                     <div class="form-row align-items-left row">
-                                        {this.state.previewSource && (
+                                        {/*{this.state.previewSource && (
                                             <img src={this.state.previewSource} alt="chosen"
                                             style={{ width: '600px' }} class="ml-3 mb-3 mt-3" />
                                         )}
@@ -163,9 +162,8 @@ export class Profile extends Component {
                                            <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml-2 bottom-right">
                                            Submit
                                             </button>
-                                        )}
+                                        )}*/}
                                     </div>
-                                </form>
                                 </li>
                                 <li class="mt-3">
                                     <NavLink class="btn-back-home" to="/"><i class="fa fa-fw fa-angle-left fa-lg" />Back to Home</NavLink>
@@ -232,20 +230,22 @@ export class Profile extends Component {
                                 <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body text-left pt-0">
-                                <div class="col-sm-6">
-                                    <Avatar
-                                        width={390}
-                                        height={295}
-                                        onCrop={this.onCrop}
-                                        onClose={this.onClose}
-                                        src={this.state.src}
-                                    />
-                                    
-                                <img src={this.state.preview} alt="Preview" />
-                                </div>
-                                <div class="col-sm-6">
-                                    <button class="btn btn-outline-success" >Change Profile Picture</button>
-                                </div>
+                                <form className="post pb-4" onSubmit={this.handleSubmitPicture}>
+                                    <div class="col-sm-6">
+                                        <Avatar
+                                            width={390}
+                                            height={295}
+                                            onCrop={this.onCrop}
+                                            onClose={this.onClose}
+                                            src={this.state.src}
+                                        />
+
+                                        <img src={this.state.preview} alt="Preview" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-outline-success" >Change Profile Picture</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

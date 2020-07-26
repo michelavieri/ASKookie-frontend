@@ -68,7 +68,7 @@ export class Thread extends Component {
 
         }
         trackPromise(
-            fetch('http://localhost:5000/comments/count/answer/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/comments/count/answer/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ answers: res.data });
@@ -77,7 +77,7 @@ export class Thread extends Component {
                     console.log('image', this.state.answers.publicID);
                 }))
         trackPromise(
-            fetch('http://localhost:5000/thread/' + `${this.props.match.params.id}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/thread/' + `${this.props.match.params.id}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data });
@@ -89,7 +89,7 @@ export class Thread extends Component {
 
                 }))
         trackPromise(
-            fetch('http://localhost:5000/unanswered')
+            fetch('https://whispering-hamlet-08619.herokuapp.com/unanswered')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
@@ -105,7 +105,7 @@ export class Thread extends Component {
     }
 
     getHasLikedPost() {
-        return axios.get('http://localhost:5000/hasLiked/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasLiked/post/' + `${this.props.match.params.id}` + "/" + `${this.state.username}`
         ).then(res => {
             return res.data.data[0].hasLiked;
         }
@@ -120,7 +120,7 @@ export class Thread extends Component {
     }
 
     getHasSave(id) {
-        return axios.get('http://localhost:5000/hasSave/post/' + `${id}` + "/" + `${this.state.username}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasSave/post/' + `${id}` + "/" + `${this.state.username}`
         ).then(res => {
             return res.data.data[0].hasSave;
         }
@@ -135,7 +135,7 @@ export class Thread extends Component {
     }
 
     getHasFollow(id) {
-        return axios.get('http://localhost:5000/hasFollow/post/' + `${id}` + "/" + `${this.state.username}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasFollow/post/' + `${id}` + "/" + `${this.state.username}`
         ).then(res => {
             return res.data.data[0].hasFollow;
         }
@@ -144,7 +144,7 @@ export class Thread extends Component {
 
     checkHasLikeAns() {
         this.state.answers.map(answer => {
-            axios.get('http://localhost:5000/hasLiked/answer/' + `${answer.answerID}` + "/" + `${this.state.username}`
+            axios.get('https://whispering-hamlet-08619.herokuapp.com/hasLiked/answer/' + `${answer.answerID}` + "/" + `${this.state.username}`
             ).then(res => {
                 answer.hasLikedAns = res.data.data[0].hasLikedAns;
             }
@@ -160,7 +160,7 @@ export class Thread extends Component {
             answerID: id,
         })
         trackPromise(
-            fetch('http://localhost:5000/comments/answer/' + id)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/comments/answer/' + id)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ commentsAns: res.data });
@@ -171,7 +171,7 @@ export class Thread extends Component {
     getCommentsPost = () => {
         const { id } = this.props.match.params;
         trackPromise(
-            fetch('http://localhost:5000/comments/post/' + id)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/comments/post/' + id)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ commentsPost: res.data });
@@ -310,7 +310,7 @@ export class Thread extends Component {
             anonymous: this.state.anonymous,
         };
         try {
-            await fetch('http://localhost:5000/answer', {
+            await fetch('https://whispering-hamlet-08619.herokuapp.com/answer', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: { 'Content-type': 'application/json' },
@@ -365,7 +365,7 @@ export class Thread extends Component {
             console.log("postID", data.postID)
             console.log("username", data.username)
             axios
-                .post('http://localhost:5000/like/post', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/like/post', data)
                 .then(
                     res => {
                         console.log(res);
@@ -396,7 +396,7 @@ export class Thread extends Component {
                 username: this.state.user,
             };
             axios
-                .post('http://localhost:5000/unlike/post', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unlike/post', data)
                 .then(
                     res => {
                         console.log(res);
@@ -431,7 +431,7 @@ export class Thread extends Component {
             console.log("postID", data.postID)
             console.log("username", data.username)
             axios
-                .post('http://localhost:5000/like/answer', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/like/answer', data)
                 .then(
                     res => {
                         console.log(res);
@@ -451,7 +451,7 @@ export class Thread extends Component {
                 answerID: id,
             };
             axios
-                .post('http://localhost:5000/unlike/answer', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unlike/answer', data)
                 .then(
                     res => {
                         console.log(res);
@@ -474,7 +474,7 @@ export class Thread extends Component {
             answerID: null,
         };
         axios
-            .post('http://localhost:5000/comment/post', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/comment/post', data)
             .then(
                 res => {
                     console.log(res);
@@ -495,7 +495,7 @@ export class Thread extends Component {
         };
 
         axios
-            .post('http://localhost:5000/comment/answer', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/comment/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -512,7 +512,7 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/post/' + id_del) //delete post with id id_del
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete/post/' + id_del) //delete post with id id_del
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/`); //redirect to home
@@ -531,7 +531,7 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/answer/' + id_del) //delete answer with id id_del
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete/answer/' + id_del) //delete answer with id id_del
             .then(res => {
                 console.log(res);
                 this.props.history.push(`/thread/` + id);
@@ -549,7 +549,7 @@ export class Thread extends Component {
         };
 
         axios
-            .post('http://localhost:5000/edit/answer', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/edit/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -566,7 +566,7 @@ export class Thread extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/comment/' + id_del) //delete comment with id id_del
+            .delete('https://whispering-hamlet-08619.herokuapp.com/delete/comment/' + id_del) //delete comment with id id_del
             .then(res => {
                 console.log(res);
                 window.location.reload(false);
@@ -583,7 +583,7 @@ export class Thread extends Component {
         };
 
         axios
-            .post('http://localhost:5000/edit/comment', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/edit/comment', data)
             .then(
                 res => {
                     console.log(res);
@@ -600,7 +600,7 @@ export class Thread extends Component {
         };
 
         axios
-            .post('http://localhost:5000/edit/question', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/edit/question', data)
             .then(
                 res => {
                     console.log(res);
@@ -617,7 +617,7 @@ export class Thread extends Component {
         };
 
         axios
-            .post('http://localhost:5000/edit/post', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/edit/post', data)
             .then(
                 res => {
                     console.log(res);
@@ -652,7 +652,7 @@ export class Thread extends Component {
                 }
             })
             axios
-                .post('http://localhost:5000/save', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/save', data)
                 .then(
                     res => {
                         console.log(res);
@@ -679,7 +679,7 @@ export class Thread extends Component {
                 }
             })
             axios
-                .post('http://localhost:5000/unsave', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unsave', data)
                 .then(
                     res => {
                         console.log(res);
@@ -714,7 +714,7 @@ export class Thread extends Component {
                 }
             })
             axios
-                .post('http://localhost:5000/follow', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/follow', data)
                 .then(
                     res => {
                         console.log(res);
@@ -741,7 +741,7 @@ export class Thread extends Component {
                 }
             })
             axios
-                .post('http://localhost:5000/unfollow', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unfollow', data)
                 .then(
                     res => {
                         console.log(res);
@@ -757,7 +757,7 @@ export class Thread extends Component {
 
         this.setState({ user: decoded.result.username }); //set current user
         axios
-            .get('http://localhost:5000/user/' + postId) //search user who post the question
+            .get('https://whispering-hamlet-08619.herokuapp.com/user/' + postId) //search user who post the question
             .then(res => {
                 this.setState({ user_post: res.data.data.asker }); //set user_post 
             })

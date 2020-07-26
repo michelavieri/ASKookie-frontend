@@ -17,7 +17,7 @@ export class Answer extends Component {
     }
     componentDidMount() {
         trackPromise(
-            fetch('http://localhost:5000/unanswered')
+            fetch('https://whispering-hamlet-08619.herokuapp.com/unanswered')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ 
@@ -70,7 +70,7 @@ export class Answer extends Component {
     };
 
     getData = () => {
-        fetch('http://localhost:5000/home')
+        fetch('https://whispering-hamlet-08619.herokuapp.com/home')
             .then(response => response.json())
             .then(feeds => {
                 const { category } = this.state;

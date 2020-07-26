@@ -15,7 +15,7 @@ export class Search extends Component {
 
     componentDidMount() {
         trackPromise(
-            fetch('http://localhost:5000/search/' + `${this.props.match.params.query}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/search/' + `${this.props.match.params.query}`)
                 .then(res => res.json())
                 .then(res => {
                     const filtered_Data = res.data;

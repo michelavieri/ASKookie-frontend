@@ -35,28 +35,28 @@ export class Profile extends Component {
         }
 
         trackPromise(
-            fetch('http://localhost:5000/follow/' + `${decoded.result.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/follow/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ followed: res.data });
                     console.log(res.data)
                 }))
         trackPromise(
-            fetch('http://localhost:5000/save/' + `${decoded.result.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/save/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ saved: res.data });
                     console.log(res.data)
                 }))
         trackPromise(
-            fetch('http://localhost:5000/post/' + `${decoded.result.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/post/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ posted: res.data });
                     console.log(res.data)
                 }))
         trackPromise(
-            fetch('http://localhost:5000/profile/' + `${decoded.result.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/profile/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ image: res.data[0].publicID });
@@ -92,7 +92,7 @@ export class Profile extends Component {
         e.preventDefault();
 
         try {
-            await fetch('http://localhost:5000/upload/profile/' + `${decoded.result.username}`, {
+            await fetch('https://whispering-hamlet-08619.herokuapp.com/upload/profile/' + `${decoded.result.username}`, {
                 method: 'POST',
                 body: JSON.stringify({data: this.state.previewSource}),
                 headers: { 'Content-type': 'application/json' },

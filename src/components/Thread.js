@@ -322,7 +322,7 @@ export class Thread extends Component {
             console.error(error);
         }
         // axios
-        //     .post('http://localhost:5000/answer', data)
+        //     .post('https://whispering-hamlet-08619.herokuapp.com/answer', data)
         //     .then(
         //         res => {
         //             this.setState({fileInput: ''});
@@ -766,7 +766,7 @@ export class Thread extends Component {
 
     // getPost = () => {
     //     const postId = this.props.match.params.id; //get post id
-    //     axios.get('http://localhost:5000/thread/' + postId)
+    //     axios.get('https://whispering-hamlet-08619.herokuapp.com/thread/' + postId)
     //         .then(res => {
     //             this.setState({ feeds: res.data.data });
     //             console.log("Feeds fetched", res.data.data)

@@ -52,7 +52,7 @@ export class Accommodation extends Component {
 
         }
         trackPromise(
-            fetch('http://localhost:5000/feeds/accommodation')
+            fetch('https://whispering-hamlet-08619.herokuapp.com/feeds/accommodation')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ feeds: res.data });
@@ -67,7 +67,7 @@ export class Accommodation extends Component {
                     console.log('Data fetched', this.state.feeds);
                 }));
         trackPromise(
-            fetch('http://localhost:5000/unanswered')
+            fetch('https://whispering-hamlet-08619.herokuapp.com/unanswered')
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
@@ -87,7 +87,7 @@ export class Accommodation extends Component {
     }
 
     getHasLikedPost(id) {
-        return axios.get('http://localhost:5000/hasLiked/post/' + `${id}` + "/" + `${this.state.name}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasLiked/post/' + `${id}` + "/" + `${this.state.name}`
         ).then(res => {
             return res.data.data[0].hasLiked;
         }
@@ -95,7 +95,7 @@ export class Accommodation extends Component {
     }
 
     getHasLikedAns(id) {
-        return axios.get('http://localhost:5000/hasLiked/answer/' + `${id}` + "/" + `${this.state.name}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasLiked/answer/' + `${id}` + "/" + `${this.state.name}`
         ).then(res => {
             return res.data.data[0].hasLikedAns;
         }
@@ -112,7 +112,7 @@ export class Accommodation extends Component {
     }
 
     getHasSave(id) {
-        return axios.get('http://localhost:5000/hasSave/post/' + `${id}` + "/" + `${this.state.name}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasSave/post/' + `${id}` + "/" + `${this.state.name}`
         ).then(res => {
             return res.data.data[0].hasSave;
         }
@@ -129,7 +129,7 @@ export class Accommodation extends Component {
     }
 
     getHasFollow(id) {
-        return axios.get('http://localhost:5000/hasFollow/post/' + `${id}` + "/" + `${this.state.name}`
+        return axios.get('https://whispering-hamlet-08619.herokuapp.com/hasFollow/post/' + `${id}` + "/" + `${this.state.name}`
         ).then(res => {
             return res.data.data[0].hasFollow;
         }
@@ -147,7 +147,7 @@ export class Accommodation extends Component {
     };
 
     getAnswers(postID) {
-        axios.get('http://localhost:5000/answers/' + postID)
+        axios.get('https://whispering-hamlet-08619.herokuapp.com/answers/' + postID)
             .then(res => {
                 if (res == null) {
                     return null;
@@ -236,7 +236,7 @@ export class Accommodation extends Component {
                 username: this.state.name,
             };
             axios
-                .post('http://localhost:5000/like/post', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/like/post', data)
                 .then(
                     res => {
                         console.log(res);
@@ -255,7 +255,7 @@ export class Accommodation extends Component {
                 username: this.state.name,
             };
             axios
-                .post('http://localhost:5000/unlike/post', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unlike/post', data)
                 .then(
                     res => {
                         console.log(res);
@@ -289,7 +289,7 @@ export class Accommodation extends Component {
                 answerID: id,
             };
             axios
-                .post('http://localhost:5000/like/answer', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/like/answer', data)
                 .then(
                     res => {
                         console.log(res);
@@ -309,7 +309,7 @@ export class Accommodation extends Component {
                 answerID: id,
             };
             axios
-                .post('http://localhost:5000/unlike/answer', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unlike/answer', data)
                 .then(
                     res => {
                         console.log(res);
@@ -344,7 +344,7 @@ export class Accommodation extends Component {
             this.setState({
                 feeds: this.state.feeds,
             })
-            axios.post('http://localhost:5000/save', data)
+            axios.post('https://whispering-hamlet-08619.herokuapp.com/save', data)
                 .then(
                     res => {
                         console.log(res);
@@ -358,7 +358,7 @@ export class Accommodation extends Component {
                 feeds: this.state.feeds,
             })
             axios
-                .post('http://localhost:5000/unsave', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unsave', data)
                 .then(
                     res => {
                         console.log(res);
@@ -386,7 +386,7 @@ export class Accommodation extends Component {
             this.setState({
                 feeds: this.state.feeds,
             })
-            axios.post('http://localhost:5000/follow', data)
+            axios.post('https://whispering-hamlet-08619.herokuapp.com/follow', data)
                 .then(
                     res => {
                         console.log(res);
@@ -400,7 +400,7 @@ export class Accommodation extends Component {
                 feeds: this.state.feeds,
             })
             axios
-                .post('http://localhost:5000/unfollow', data)
+                .post('https://whispering-hamlet-08619.herokuapp.com/unfollow', data)
                 .then(
                     res => {
                         console.log(res);
@@ -417,7 +417,7 @@ export class Accommodation extends Component {
         };
 
         axios
-            .post('http://localhost:5000/edit/comment', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/edit/comment', data)
             .then(
                 res => {
                     console.log(res);
@@ -434,7 +434,7 @@ export class Accommodation extends Component {
         console.log("iddel", id_del);
 
         axios
-            .delete('http://localhost:5000/delete/comment/' + id_del) //delete answer with id id_del
+            .delete('https://whispering-hamlet-08619.herokuapp.com/comment/' + id_del) //delete answer with id id_del
             .then(res => {
                 console.log(res);
                 window.location.reload(false);
@@ -455,7 +455,7 @@ export class Accommodation extends Component {
             answerID: null,
         };
         axios
-            .post('http://localhost:5000/comment/post', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/comment/post', data)
             .then(
                 res => {
                     console.log(res);
@@ -477,7 +477,7 @@ export class Accommodation extends Component {
         };
 
         axios
-            .post('http://localhost:5000/comment/answer', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/comment/answer', data)
             .then(
                 res => {
                     console.log(res);
@@ -493,7 +493,7 @@ export class Accommodation extends Component {
             answerID: id,
         })
         trackPromise(
-            fetch('http://localhost:5000/comments/answer/' + id)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/comments/answer/' + id)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({
@@ -506,7 +506,7 @@ export class Accommodation extends Component {
 
     getCommentsPost = (id) => {
         trackPromise(
-            fetch('http://localhost:5000/comments/post/' + id)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/comments/post/' + id)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({

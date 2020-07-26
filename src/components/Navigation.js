@@ -61,7 +61,7 @@ class Navigation extends Component {
                 name: decoded.result.username
             })
 
-            fetch('http://localhost:5000/notification/' + `${decoded.result.username}`)
+            fetch('https://whispering-hamlet-08619.herokuapp.com/notification/' + `${decoded.result.username}`)
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ notifications: res.data });
@@ -121,7 +121,7 @@ class Navigation extends Component {
         console.log(data);
 
         axios
-            .post('http://localhost:5000/ask', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -145,7 +145,7 @@ class Navigation extends Component {
         };
         console.log(data);
         axios
-            .post('http://localhost:5000/ask', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -175,7 +175,7 @@ class Navigation extends Component {
         };
         console.log(data);
         axios
-            .post('http://localhost:5000/report', data)
+            .post('https://whispering-hamlet-08619.herokuapp.com/report', data)
             .then(res => {
                 console.log(res);
                 console.log(this.props);
@@ -214,7 +214,7 @@ class Navigation extends Component {
 
     readNotif = (id) => {
         axios
-            .post('http://localhost:5000/read/' + `${id}`)
+            .post('https://whispering-hamlet-08619.herokuapp.com/read/' + `${id}`)
             .then(
                 res => {
                     console.log(res);

@@ -44,7 +44,7 @@ export class Image_Upload extends Component {
         //this.setState({name: decoded.result.username});
         const name = decoded.result.username;
         try {
-            await fetch('http://localhost:5000/upload/profile/' + name, {
+            await fetch('https://whispering-hamlet-08619.herokuapp.com/upload/profile/' + name, {
                 method: 'POST',
                 body: JSON.stringify({data: base64EncodedImage}),
                 headers: {'Content-type': 'application/json'},

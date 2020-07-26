@@ -416,7 +416,7 @@ class Navigation extends Component {
                                     <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {/* <img src={profilePicture} alt="" width="38" class="rounded-circle" /> */}
                                         {this.state.image == null &&
-                                            <img src={profilePicture} alt="" width="38" class="rounded-circle profile-picture" />
+                                            <img src={profilePicture} alt="" width="38" class="rounded-circle" />
                                         }
                                         {this.state.image != null &&
                                             <Image cloudName="askookie" class="rounded-circle" publicId={this.state.image} width="38" crop="scale" />

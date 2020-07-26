@@ -70,7 +70,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://whispering-hamlet-08619.herokuapp.com",
   "styles": [
     "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
     "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",

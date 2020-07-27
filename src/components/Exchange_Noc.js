@@ -570,13 +570,13 @@ export class Exchange_Noc extends Component {
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
                                                 <div className="sub-text">
                                                     <NavLink target="_blank" className="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
-                                                &middot; Posted by {feeds.answerer} on {`${feeds.time2}`}
+                                                &middot; Answered by {feeds.answerer} on {`${feeds.time2}`}
                                                 </div>
                                             }
                                             {feeds.type_post == "1" && feeds.anonymous2 == "0" &&
                                                 <div className="sub-text">
                                                     <NavLink target="_blank" className="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
-                                                &middot; Posted by an anonymous user on {`${feeds.time2}`}
+                                                &middot; Answered by an anonymous user on {`${feeds.time2}`}
                                                 </div>
                                             }
                                             {feeds.type_post == "2" &&

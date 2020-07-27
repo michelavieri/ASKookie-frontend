@@ -93,7 +93,7 @@ export class Temp_Sign_In extends Component {
                                 <div className="col-sm-8">
                                     <PasswordMask
                                         type="password"
-                                        className="form-control form-control-sm"
+                                        class="form-control form-control-sm"
                                         placeholder="Enter Password"
                                         value={this.state.password}
                                         onChange={this.handlePassChange}

@@ -710,13 +710,27 @@ export class Thread extends Component {
         window.location.reload(false);
     }
 
+    shuffleArray = () => {
+        if (this.state.unanswered) {
+            let i = this.state.unanswered.length - 1;
+            var array = this.state.unanswered.slice();
+            for (; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        } else {
+            return this.state.unanswered;
+        }
+    }
 
     render() {
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
-        // var feedsArr = [];
-        // feedsArr = Object.values(this.state.feeds);
+        var shuffledPosts = this.shuffleArray();
 
         return (
             <div className="container-fluid margin-top">
@@ -1025,7 +1039,7 @@ export class Thread extends Component {
                                 Unanswered Questions
                             </div>
                             <ul className="list-group list-group-flush">
-                                {this.state.unanswered && this.state.unanswered.slice(0, 6).map((feeds, index) => (
+                                {shuffledPosts && shuffledPosts.slice(0, 5).map((feeds, index) => (
                                     <a className="btn-category" href={`/thread/${feeds.postID}`}><li className="list-group-item unanswered"><p className="mr-4 mb-0">{feeds.question}</p> <i className="fa fa-fw fa-pencil bottom-right icon"></i></li></a>
                                 ))}
                             </ul>

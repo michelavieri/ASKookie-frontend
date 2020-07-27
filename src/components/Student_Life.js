@@ -163,9 +163,9 @@ export class Student_Life extends Component {
     }
 
     shuffleArray = () => {
-        if (this.state.feeds) {
-            let i = this.state.feeds.length - 1;
-            var array = this.state.feeds.slice();
+        if (this.state.unanswered) {
+            let i = this.state.unanswered.length - 1;
+            var array = this.state.unanswered.slice();
             for (; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 const temp = array[i];
@@ -174,7 +174,7 @@ export class Student_Life extends Component {
             }
             return array;
         } else {
-            return this.state.feeds;
+            return this.state.unanswered;
         }
     }
 
@@ -669,14 +669,12 @@ export class Student_Life extends Component {
                                 Unanswered Questions
                             </div>
                             <ul className="list-group list-group-flush">
-                                {this.state.unanswered && this.state.unanswered.slice(0, 6).map((feeds, index) => (
+                                {shuffledPosts && shuffledPosts.slice(0, 5).map((feeds, index) => (
                                     <NavLink className="btn-category" to={`/thread/${feeds.postID}`}><li className="list-group-item unanswered"><p className="mr-4 mb-0">{feeds.question}</p> <i className="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
                             <div className="card-footer overflow-auto">
                                 <button className="btn refresh-button pull-right">
-                                    {/* <i className="fa fa-fw fa-refresh mx-lg-1 fa-lg" />
-                                    Refresh */}
                                     <NavLink className="listku" to="/answer">See More</NavLink>
                                 </button>
                             </div>

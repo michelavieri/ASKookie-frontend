@@ -68,8 +68,6 @@ class Navigation extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ notifications: res.data });
-
-                    console.log('Notifications fetched', res.data);
                 });
             trackPromise(
                 fetch('https://whispering-hamlet-08619.herokuapp.com/profile/' + `${decoded.result.username}`)
@@ -129,7 +127,6 @@ class Navigation extends Component {
     handleSubmitAsk = e => {
         e.preventDefault();
 
-        console.log("post", this.state.post_content);
         const data = {
             question: this.state.question,
             category: this.state.category,
@@ -140,13 +137,10 @@ class Navigation extends Component {
             title: "",
             time: new Date().toLocaleDateString(),
         };
-        console.log(data);
 
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
-                console.log(res);
-                console.log(this.props);
                 this.props.history.push(`/thread/${res.data.data.insertId}`);
                 window.location.reload(false);
             })
@@ -169,8 +163,6 @@ class Navigation extends Component {
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/ask', data)
             .then(res => {
-                console.log(res);
-                console.log(this.props);
                 this.props.history.push(`/thread/${res.data.data.insertId}`);
                 window.location.reload(false);
             })
@@ -181,7 +173,6 @@ class Navigation extends Component {
         this.setState({
             report: e.target.value,
         })
-        console.log(this.state.report)
     }
 
     handleSubmitReport = e => {
@@ -195,12 +186,9 @@ class Navigation extends Component {
             username: decoded.result.username,
             type: this.state.report,
         };
-        console.log(data);
         axios
             .post('https://whispering-hamlet-08619.herokuapp.com/report', data)
             .then(res => {
-                console.log(res);
-                console.log(this.props);
                 window.location.reload(false);
             })
             .catch(err => {
@@ -212,7 +200,6 @@ class Navigation extends Component {
         this.setState({
             query: e.target.value
         });
-        console.log("query", this.state.query)
     }
 
     getUsername() {
@@ -239,7 +226,6 @@ class Navigation extends Component {
             .post('https://whispering-hamlet-08619.herokuapp.com/read/' + `${id}`)
             .then(
                 res => {
-                    console.log(res);
                     var array = [...this.state.notifications]; // make a separate copy of the array
                     var index;
                     for (var i = 0; i < array.length; i++) {
@@ -259,105 +245,67 @@ class Navigation extends Component {
         const { isOpen, value } = this.state;
         var mostRecentNotif = this.mostRecent();
         return (
-            <div class="container-fluid">
-                <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-yellow">
-                    <NavLink class="navbar-brand smooth-scroll" onClick={() => this.scrollToTop()} to="/">
-                        <img src={logo} class="img-fluid" alt="" />
+            <div className="container-fluid">
+                <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-yellow">
+                    <NavLink className="navbar-brand smooth-scroll" onClick={() => this.scrollToTop()} to="/">
+                        <img src={logo} className="img-fluid" alt="" />
                     </NavLink>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fa fa-bars"></i>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <i className="fa fa-bars"></i>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <NavLink class="nav-link px-lg-5" to="/" exact activeStyle={{
+                    <div className="collapse navbar-collapse" id="navbarText">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item">
+                                <NavLink className="nav-link px-lg-5" to="/" exact activeStyle={{
                                     color: 'white',
                                     borderBottom: '3px solid #4D60A5',
-                                }}><i class="fa fa-fw fa-home fa-lg d-none d-xl-inline"></i> Home <span class="sr-only">(current)</span></NavLink>
+                                }}><i className="fa fa-fw fa-home fa-lg d-none d-xl-inline"></i> Home <span className="sr-only">(current)</span></NavLink>
                             </li>
-                            <li class="nav-item">
-                                <NavLink class="nav-link px-lg-5" to="/answer"
+                            <li className="nav-item">
+                                <NavLink className="nav-link px-lg-5" to="/answer"
                                     activeStyle={{
                                         color: 'white',
                                         borderBottom: '3px solid #4D60A5',
                                     }}>
-                                    <i class="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg d-none d-xl-inline"></i>Answer</NavLink>
+                                    <i className="fa fa-fw fa-pencil-square-o mx-lg-1 fa-lg d-none d-xl-inline"></i>Answer</NavLink>
                             </li>
 
                         </ul>
 
-                        <div style={{ width: 300 }} class="form-inline">
+                        <div style={{ width: 300 }} className="form-inline">
                             <input type="text" id="searchSelect"
                                 onChange={this.handleInputChange}
                                 placeholder="Search..."
                                 autoComplete="off"
-                                class="form-control"
+                                className="form-control"
                                 style={{ width: 250 }}
                                 required
                             />
                             {this.state.query != "" &&
-                                <a href={`/search/${this.state.query}`}><button class="btn"><i class="fa fa-search mb-2 blue"></i></button></a>
+                                <a href={`/search/${this.state.query}`}><button className="btn"><i className="fa fa-search mb-2 blue"></i></button></a>
                             }
                         </div>
 
-
-
-
-                        {/* <div style={{ width: 300 }}>
-                            <Autocomplete
-                                // freeSolo
-                                disableClearable
-                                id="searchSelect"
-                                onChange={this.handleInputChange}
-                                options={this.state.filteredData}
-                                getOptionLabel={(data) => {
-                                    if (typeof data === "string") {
-                                        return data;
-                                    }
-                                    return data.question || data.title;
-                                }}
-                                noOptionsText={'No Posts Match the Keyword'}
-
-                                renderInput={params => (
-                                    <div class="pt-0 pb-2">
-                                        <TextField
-                                            {...params}
-                                            label="Search"
-                                            id="searchBar"
-                                            size="small"
-                                            // value=''
-                                            // autoSelect={true}
-                                            margin="normal"
-                                            variant="outlined"
-                                            fullWidth
-                                            InputProps={{ ...params.InputProps, type: 'search' }}
-                                        />
-                                    </div>
-                                )}
-                            />
-                            {console.log("filteredd", this.state.filteredData)}
-                        </div> */}
-
                         {/* modal button */}
-                        <button class="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
+                        <button className="btn btn-orange my-2 my-sm-0 ml-3" type="button" data-toggle="modal" data-target="#askModal">Ask / Post</button>
 
 
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown nav-icon">
-                                <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <ul className="navbar-nav">
+                            <li className="nav-item dropdown nav-icon">
+                                <NavLink className="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {this.state.notifications.length == 0 &&
-                                        <i class="fa fa-fw fa-bell fa-lg mt-2"></i>
+                                        <i className="fa fa-fw fa-bell fa-lg mt-2"></i>
                                     }
                                     {this.state.notifications.length != 0 &&
-                                        <i class="fa fa-fw fa-bell fa-lg mt-2">
-                                            <span class="fa fa-circle"></span>
+                                        <i className="fa fa-fw fa-bell fa-lg mt-2">
+                                            <span className="fa fa-circle"></span>
                                         </i>
                                     }
                                 </NavLink>
-                                <div class="dropdown-menu notif dropdown-menu-right" style={{ maxHeight: 280 }} aria-labelledby="notifDropdown">
+                                <div className="dropdown-menu notif dropdown-menu-right" style={{ maxHeight: 280 }} aria-labelledby="notifDropdown">
                                     {mostRecentNotif && mostRecentNotif.map(notifications =>
                                         <div>
-                                            <a onClick={() => this.readNotif(`${notifications.notificationID}`)} class="dropdown-item mt-2" href={`/thread/${notifications.postID}`}>
+                                            <a onClick={() => this.readNotif(`${notifications.notificationID}`)} className="dropdown-item mt-2" href={`/thread/${notifications.postID}`}>
                                                 {notifications.type == 1 &&
                                                     <div>
                                                         Someone has answered a question from thread @{notifications.postID} : <i>"{notifications.question}"</i>
@@ -369,7 +317,7 @@ class Navigation extends Component {
                                                     </div>
                                                 }
                                                 {notifications.type == 3 &&
-                                                    <div class="font-weight-bold">
+                                                    <div className="font-weight-bold">
                                                         Someone has answered your question @{notifications.postID} : <i>"{notifications.question}"</i>
                                                     </div>
                                                 }
@@ -399,12 +347,12 @@ class Navigation extends Component {
                                                     </div>
                                                 }
                                             </a>
-                                            <button class="btn red" onClick={() => this.readNotif(`${notifications.notificationID}`)} style={{ fontSize: 12 }}>DISMISS</button>
-                                            <div class="dropdown-divider"></div>
+                                            <button className="btn red" onClick={() => this.readNotif(`${notifications.notificationID}`)} style={{ fontSize: 12 }}>DISMISS</button>
+                                            <div className="dropdown-divider"></div>
                                         </div>
                                     )}
                                     {this.state.notifications.length == 0 &&
-                                    <div class="dropdown-item mt-2 mb-2 muted-text disabled">
+                                    <div className="dropdown-item mt-2 mb-2 muted-text disabled">
                                         No Notifications for now!
                                     </div>
                                     }
@@ -412,43 +360,42 @@ class Navigation extends Component {
                                 </div>
                             </li>
                             {localStorage.usertoken &&
-                                <li class="nav-item dropdown nav-icon">
-                                    <NavLink class="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {/* <img src={profilePicture} alt="" width="38" class="rounded-circle" /> */}
+                                <li className="nav-item dropdown nav-icon">
+                                    <NavLink className="nav-link icon" to="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {this.state.image == null &&
-                                            <img src={profilePicture} alt="" width="38" class="rounded-circle" />
+                                            <img src={profilePicture} alt="" width="38" className="rounded-circle" />
                                         }
                                         {this.state.image != null &&
-                                            <Image cloudName="askookie" class="rounded-circle" publicId={this.state.image} width="38" crop="scale" />
+                                            <Image cloudName="askookie" className="rounded-circle" publicId={this.state.image} width="38" crop="scale" />
                                         }
                                     </NavLink>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
-                                        <NavLink class="dropdown-item" to="/profile" >
+                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="notifDropdown">
+                                        <NavLink className="dropdown-item" to="/profile" >
                                             Signed in as <br /> {this.getUsername()}
 
-                                            {/* <div class="dropdown-divider"></div> */}
-                                            <p class="red"><b><i>{this.state.member_type}</i></b></p>
+                                            {/* <div className="dropdown-divider"></div> */}
+                                            <p className="red"><b><i>{this.state.member_type}</i></b></p>
                                         </NavLink>
-                                        <div class="dropdown-divider"></div>
-                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                        <div className="dropdown-divider"></div>
+                                        <NavLink className="dropdown-item content-dropdown" to="/profile" >
                                             My Saved Threads
                                         </NavLink>
-                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                        <NavLink className="dropdown-item content-dropdown" to="/profile" >
                                             My Followed Threads
                                         </NavLink>
-                                        <NavLink class="dropdown-item content-dropdown" to="/profile" >
+                                        <NavLink className="dropdown-item content-dropdown" to="/profile" >
                                             My Posts/Questions
                                         </NavLink>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
-                                        <NavLink class="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item content-dropdown" href="mailto:askookieforum@gmail.com">Help</a>
+                                        <NavLink className="dropdown-item mb-2 content-dropdown" to={``} onClick={this.logOut.bind(this)}>Logout</NavLink>
                                     </div>
                                 </li>
                             }
                             {!localStorage.usertoken &&
-                                <li class="mr-3 btn-group">
-                                    <button class="btn btn-navbar ml-2 mr-2"><NavLink class="link-navbar" to="/signinform">Sign in</NavLink></button>
-                                    <button class="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink class="link-register" to="/register">Register</NavLink></button>
+                                <li className="mr-3 btn-group">
+                                    <button className="btn btn-navbar ml-2 mr-2"><NavLink className="link-navbar" to="/signinform">Sign in</NavLink></button>
+                                    <button className="btn btn-outline-dark d-xl-inline d-none d-sm-inline"><NavLink className="link-register" to="/register">Register</NavLink></button>
                                 </li>
                             }
                         </ul>
@@ -456,45 +403,45 @@ class Navigation extends Component {
                 </nav>
                 {/* modal ask  */}
                 {localStorage.usertoken &&
-                    <div id="askModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header pinkBg pb-0">
-                                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                                        <a class="nav-link tab-link active" id="nav-ask-tab" data-toggle="tab" href="#nav-ask" role="tab" aria-controls="nav-ask" aria-selected="true">Ask a Question</a>
-                                        <a class="nav-link tab-link" id="nav-post-tab" data-toggle="tab" href="#nav-post" role="tab" aria-controls="nav-post" aria-selected="false">Make a New Post</a>
+                    <div id="askModal" className="modal fade" role="dialog">
+                        <div className="modal-dialog modal-lg">
+                            <div className="modal-content">
+                                <div className="modal-header pinkBg pb-0">
+                                    <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <a className="nav-link tab-link active" id="nav-ask-tab" data-toggle="tab" href="#nav-ask" role="tab" aria-controls="nav-ask" aria-selected="true">Ask a Question</a>
+                                        <a className="nav-link tab-link" id="nav-post-tab" data-toggle="tab" href="#nav-post" role="tab" aria-controls="nav-post" aria-selected="false">Make a New Post</a>
 
                                     </div>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
                                 </div>
 
-                                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-                                    <div class="tab-pane fade show active ml-5 text-left mr-5" id="nav-ask" role="tabpanel" aria-labelledby="nav-ask-tab">
+                                <div className="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                    <div className="tab-pane fade show active ml-5 text-left mr-5" id="nav-ask" role="tabpanel" aria-labelledby="nav-ask-tab">
                                         <form className="ask" onSubmit={this.handleSubmitAsk}>
-                                            <div class="form-row mb-3">
-                                                <div class="form-row mb-3">
-                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Question</label>
+                                            <div className="form-row mb-3">
+                                                <div className="form-row mb-3">
+                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Your Question</label>
                                                     <textarea
                                                         rows="2"
-                                                        class="form-control col-sm-9"
+                                                        className="form-control col-sm-9"
                                                         value={this.state.question}
                                                         onChange={this.onQuestionChange}
                                                         aria-describedby="questionHere"
                                                         placeholder="Start your question with 'What', 'Why', 'How', etc. "
                                                         required
                                                     />
-                                                    <small id="questionTips" class="form-text text-muted col-sm-11">
+                                                    <small id="questionTips" className="form-text text-muted col-sm-11">
                                                         Make sure your question has not been asked already and keep your question short.
                                                         </small>
                                                 </div>
 
-                                                <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                                <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Category</label>
                                                 <select
                                                     onChange={this.onCategoryChange}
                                                     value={this.state.category}
-                                                    class="form-control col-sm-9"
+                                                    className="form-control col-sm-9"
                                                     required>
-                                                    <option value="" selected>Choose one...</option>
+                                                    <option value="">Choose one...</option>
                                                     <option value="1">Faculties</option>
                                                     <option value="2">Accomodation</option>
                                                     <option value="3">Student Life</option>
@@ -502,51 +449,51 @@ class Navigation extends Component {
                                                     <option value="5">Exchange Program/NOC</option>
                                                     <option value="6">Others</option>
                                                 </select>
-                                                <small id="questionWarning" class="form-text text-muted col-sm-11">
+                                                <small id="questionWarning" className="form-text text-muted col-sm-11">
                                                     Your question will be posted anonymously but any inapporpriate content will be filtered.
                                                     </small>
                                             </div>
-                                            <div class="modal-footer mb-0 pb-0">
-                                                <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
+                                            <div className="modal-footer mb-0 pb-0">
+                                                <button type="button" className="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" className="btn btn-orange my-2 my-sm-0 ml-2">Add Question</button>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
+                                    <div className="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
                                         <form className="post" onSubmit={this.handleSubmitPost}>
-                                            <div class="form-row align-items-left mb-3 text-left">
-                                                <div class="form-row align-items-left mb-3">
-                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Post Title</label>
+                                            <div className="form-row align-items-left mb-3 text-left">
+                                                <div className="form-row align-items-left mb-3">
+                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Post Title</label>
                                                     <input
-                                                        class="form-control col-sm-9 font-weight-bold"
+                                                        className="form-control col-sm-9 font-weight-bold"
                                                         value={this.state.title}
                                                         onChange={this.onTitleChange}
                                                         aria-describedby="titleHere"
                                                         placeholder="Give a Meaningful Title to Your Post..."
                                                         required
                                                     />
-                                                    <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Your Post</label>
+                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Your Post</label>
                                                     <textarea
                                                         rows="5"
-                                                        class="form-control col-sm-9 mt-3"
+                                                        className="form-control col-sm-9 mt-3"
                                                         value={this.state.post_contents}
                                                         onChange={this.onPostChange}
                                                         aria-describedby="postHere"
                                                         placeholder="Write your post here..."
                                                         required
                                                     />
-                                                    <small id="passwordHelpBlock" class="form-text text-muted col-sm-11">
+                                                    <small id="passwordHelpBlock" className="form-text text-muted col-sm-11">
                                                         Try to keep your post clear and short to engage readers to read your message.
                                                         </small>
                                                 </div>
 
-                                                <label for="inputQuestion" class="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                                <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Category</label>
                                                 <select
                                                     onChange={this.onCategoryChange}
                                                     value={this.state.category}
-                                                    class="form-control col-sm-9"
+                                                    className="form-control col-sm-9"
                                                     required>
-                                                    <option value="" selected>Choose one...</option>
+                                                    <option value="">Choose one...</option>
                                                     <option value="1">Faculties</option>
                                                     <option value="2">Accommodation</option>
                                                     <option value="3">Student Life</option>
@@ -554,13 +501,13 @@ class Navigation extends Component {
                                                     <option value="5">Exchange Program/NOC</option>
                                                     <option value="6">Others</option>
                                                 </select>
-                                                <small id="postWarning" class="form-text text-muted col-sm-11">
+                                                <small id="postWarning" className="form-text text-muted col-sm-11">
                                                     Your post will not be anonymous and any inapporpriate content will be filtered by us.
                                                     </small>
                                             </div>
-                                            <div class="modal-footer mb-0 pb-0">
-                                                <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
+                                            <div className="modal-footer mb-0 pb-0">
+                                                <button type="button" className="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" className="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
                                             </div>
                                         </form>
                                     </div>
@@ -570,17 +517,17 @@ class Navigation extends Component {
                     </div>
                 }
                 {!localStorage.usertoken &&
-                    <div id="askModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header pinkBg">
-                                    <h4 class="modal-title text-white">Please Sign In to Ask a Question</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="askModal" className="modal fade" role="dialog">
+                        <div className="modal-dialog modal-lg">
+                            <div className="modal-content">
+                                <div className="modal-header pinkBg">
+                                    <h4 className="modal-title text-white">Please Sign In to Ask a Question</h4>
+                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
                                 </div>
-                                <div class="modal-body text-left">
-                                    <p class="font-weight-bold ml-3 mr-3">Only Registered Users are allowed to post or answer a question.</p>
+                                <div className="modal-body text-left">
+                                    <p className="font-weight-bold ml-3 mr-3">Only Registered Users are allowed to post or answer a question.</p>
                                     <div className="alert alert-danger mt-5 ml-2 mr-2" role="alert">
-                                        <span class="fa fa-exclamation-triangle mr-2" />
+                                        <span className="fa fa-exclamation-triangle mr-2" />
                                         Please sign in to ask a question
                                     </div>
                                 </div>
@@ -590,59 +537,59 @@ class Navigation extends Component {
                 }
 
                 {/* modal for report */}
-                <div id="reportModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Report <i class="fa fa-exclamation-circle pl-2" /></h4>
-                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                <div id="reportModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Report <i className="fa fa-exclamation-circle pl-2" /></h4>
+                                <button type="button" className="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
-                            <div class="modal-body text-left pt-2">
+                            <div className="modal-body text-left pt-2">
                                 <form onSubmit={this.handleSubmitReport}>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" value="Spam" onClick={this.onChangeReport} required />
-                                        <label class="custom-control-label" for="customRadio1" >Spam</label>
+                                    <div className="custom-control custom-radio">
+                                        <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="Spam" onClick={this.onChangeReport} required />
+                                        <label className="custom-control-label" for="customRadio1" >Spam</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" value="Harrassment" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio2" >Harrassment</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="Harrassment" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio2" >Harrassment</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" value="Joke_Troll" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio3" >Joke/Troll</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio3" name="customRadio" className="custom-control-input" value="Joke_Troll" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio3" >Joke/Troll</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input" value="Poorly_Written" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio4">Poorly Written</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio4" name="customRadio" className="custom-control-input" value="Poorly_Written" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio4">Poorly Written</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input" value="Plagiarism" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio5">Plagiarism</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio5" name="customRadio" className="custom-control-input" value="Plagiarism" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio5">Plagiarism</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio6" name="customRadio" class="custom-control-input" value="Doesnt_Answer" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio6">Doesn't Answer the Question</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio6" name="customRadio" className="custom-control-input" value="Doesnt_Answer" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio6">Doesn't Answer the Question</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio7" name="customRadio" class="custom-control-input" value="Disturbing_Content" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio7">Disturbing Content</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio7" name="customRadio" className="custom-control-input" value="Disturbing_Content" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio7">Disturbing Content</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" value="False_Info" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio8">Spreading False Information/Inaccurate</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio8" name="customRadio" className="custom-control-input" value="False_Info" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio8">Spreading False Information/Inaccurate</label>
                                     </div>
-                                    <div class="custom-control custom-radio pt-2">
-                                        <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" value="Spread_Hate" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio9">Spreading Hate</label>
+                                    <div className="custom-control custom-radio pt-2">
+                                        <input type="radio" id="customRadio9" name="customRadio" className="custom-control-input" value="Spread_Hate" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio9">Spreading Hate</label>
                                     </div>
-                                    <div class="custom-control custom-radio pb-2 pt-2">
-                                        <input type="radio" id="customRadio10" name="customRadio" class="custom-control-input" value="Adult_Content" onClick={this.onChangeReport} />
-                                        <label class="custom-control-label" for="customRadio10">Adult Content</label>
+                                    <div className="custom-control custom-radio pb-2 pt-2">
+                                        <input type="radio" id="customRadio10" name="customRadio" className="custom-control-input" value="Adult_Content" onClick={this.onChangeReport} />
+                                        <label className="custom-control-label" for="customRadio10">Adult Content</label>
                                     </div>
 
-                                    <div class="modal-footer mb-0 pb-0">
-                                        <button type="button" class="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-orange my-2 my-sm-0 ml-2">Submit</button>
+                                    <div className="modal-footer mb-0 pb-0">
+                                        <button type="button" className="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" className="btn btn-orange my-2 my-sm-0 ml-2">Submit</button>
                                     </div>
                                 </form>
                             </div>

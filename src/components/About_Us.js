@@ -7,12 +7,12 @@ export class About_Us extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <div class="container-sign-in margin-top-none d-none d-xl-block">
-                    <div class="left-half bg-yellow">
-                        <img src={logo} alt="" class="logo-fluid" />
+                <div className="container-sign-in margin-top-none d-none d-xl-block">
+                    <div className="left-half bg-yellow">
+                        <img src={logo} alt="" className="logo-fluid" />
                         <br />
-                        <div class="textRevealContainer">
-                            <div class="textReveal rotateY">
+                        <div className="textRevealContainer">
+                            <div className="textReveal rotateY">
                                 <div>
                                     <div>
                                         Ask Anytime, Anywhere
@@ -23,13 +23,13 @@ export class About_Us extends Component {
                     </div>
                 </div>
 
-                <div class="right-half">
-                    <div class="nav-link text-right mt-3 fixed-top mr-4">
-                        <button class="btn btn-opacity">
-                            <NavLink class="btn-back-home" to="/"><i class="fa fa-fw fa-angle-left fa-lg" />Back to Home 
+                <div className="right-half">
+                    <div className="nav-link text-right mt-3 fixed-top mr-4">
+                        <button className="btn btn-opacity">
+                            <NavLink className="btn-back-home" to="/"><i className="fa fa-fw fa-angle-left fa-lg" />Back to Home 
                         </NavLink></button>
                     </div>
-                    <div class="container-animation mt-5">
+                    <div className="container-animation mt-5">
                        <p> <b>ASKookie</b> is a forum platform specifically designed for NUS Students and Staffs to ask and answer
                        about doubts that we encounter during our time here. The forum is neatly divided into main categories to ease students'
                        experience in searching for the type of question or answers they'd like to read.

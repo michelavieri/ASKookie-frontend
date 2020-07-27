@@ -39,9 +39,7 @@ export class Temp_Sign_In extends Component {
             .post('https://whispering-hamlet-08619.herokuapp.com/login', user)
             .then(res => {
                 if (res.data.token) {
-                    console.log(res.token);
                     localStorage.setItem('usertoken', res.data.token);
-                    console.log(this.props);
                     this.props.history.push(``);
                 } else {
                     this.setState({ success: res.success });
@@ -56,12 +54,12 @@ export class Temp_Sign_In extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <div class="container-sign-in margin-top-none d-none d-xl-block">
-                    <div class="left-half bg-yellow">
-                        <img src={logo} alt="" class="logo-fluid" />
+                <div className="container-sign-in margin-top-none d-none d-xl-block">
+                    <div className="left-half bg-yellow">
+                        <img src={logo} alt="" className="logo-fluid" />
                         <br />
-                        <div class="textRevealContainer">
-                            <div class="textReveal rotateY">
+                        <div className="textRevealContainer">
+                            <div className="textReveal rotateY">
                                 <div>
                                     <div>
                                         Ask Anytime, Anywhere
@@ -72,30 +70,30 @@ export class Temp_Sign_In extends Component {
                     </div>
                 </div>
 
-                <div class="right-half">
-                    <div class="nav-link text-right mt-3 fixed-top mr-4">
-                        <button class="btn btn-opacity">
-                            <NavLink class="btn-back-home" to="/"><i class="fa fa-fw fa-angle-left fa-lg" />Back to Home
+                <div className="right-half">
+                    <div className="nav-link text-right mt-3 fixed-top mr-4">
+                        <button className="btn btn-opacity">
+                            <NavLink className="btn-back-home" to="/"><i className="fa fa-fw fa-angle-left fa-lg" />Back to Home
                         </NavLink></button>
                     </div>
-                    <div class="container-animation">
-                        <h1 class="text-animation">
+                    <div className="container-animation">
+                        <h1 className="text-animation">
                             <span>Sign In</span>
                         </h1>
                         <form noValidate onSubmit={this.handleSubmit}>
-                            <div class="form-group row">
-                                <label for="username" class="col-sm-3 col-form-label col-form-label-sm">Username</label>
-                                <div class="col-sm-8">
-                                    <input class="form-control form-control-sm" placeholder="Enter Username"
+                            <div className="form-group row">
+                                <label for="username" className="col-sm-3 col-form-label col-form-label-sm">Username</label>
+                                <div className="col-sm-8">
+                                    <input className="form-control form-control-sm" placeholder="Enter Username"
                                         value={this.state.username} onChange={this.handleUserChange} />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="password" class="col-sm-3 col-form-label col-form-label-sm">Password</label>
-                                <div class="col-sm-8">
+                            <div className="form-group row">
+                                <label for="password" className="col-sm-3 col-form-label col-form-label-sm">Password</label>
+                                <div className="col-sm-8">
                                     <PasswordMask
                                         type="password"
-                                        class="form-control form-control-sm"
+                                        className="form-control form-control-sm"
                                         placeholder="Enter Password"
                                         value={this.state.password}
                                         onChange={this.handlePassChange}
@@ -120,15 +118,15 @@ export class Temp_Sign_In extends Component {
                                 <div className="alert alert-danger" role="alert">
                                     Incorrect password
                         </div>} 
-                            <div class="position-fixed row ml-0">
-                                <ul class="pl-2">
-                                    <li class="row">
-                                        <button type="submit" class="btn sign-in-btn bg-black">
+                            <div className="position-fixed row ml-0">
+                                <ul className="pl-2">
+                                    <li className="row">
+                                        <button type="submit" className="btn sign-in-btn bg-black">
                                             Sign in
                                     </button>
                                     </li>
-                                    <li class="row mt-3">
-                                        <NavLink class="btn unanswered pl-0" to='/register'>Don't have an account? Register Here</NavLink>
+                                    <li className="row mt-3">
+                                        <NavLink className="btn unanswered pl-0" to='/register'>Don't have an account? Register Here</NavLink>
                                     </li>
                                 </ul>
                             </div>

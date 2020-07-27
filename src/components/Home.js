@@ -70,13 +70,12 @@ export class Home extends Component {
                     this.checkHasLike();
                     this.checkHasSave();
                     this.checkHasFollow();
-                    console.log('Data fetched', this.state.feeds);
                 }));
         trackPromise(
             fetch('https://whispering-hamlet-08619.herokuapp.com/unanswered')
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({ unanswered: res.data }, () => console.log('Unanswered fetched', res.data));
+                    this.setState({ unanswered: res.data });
                 }));
     };
 
@@ -159,8 +158,6 @@ export class Home extends Component {
                     return null;
                 }
             })
-            // this.setState({ answers: res.data.data });
-            // console.log("dataaaaa", res.data.data)
             .catch(err => console.log(err));
     }
 
@@ -344,7 +341,6 @@ export class Home extends Component {
             }
         }
         if (!this.state.feeds[index].hasSave) {
-            console.log("saved!");
             this.state.feeds[index].hasSave = 1;
 
             this.setState({
@@ -357,7 +353,6 @@ export class Home extends Component {
                     })
                 .catch(err => console.log(err));
         } else {
-            console.log("unsaved!")
             this.state.feeds[index].hasSave = null;
 
             this.setState({
@@ -386,7 +381,6 @@ export class Home extends Component {
             }
         }
         if (!this.state.feeds[index].hasFollow) {
-            console.log("followed!");
             this.state.feeds[index].hasFollow = 1;
 
             this.setState({
@@ -399,7 +393,6 @@ export class Home extends Component {
                     })
                 .catch(err => console.log(err));
         } else {
-            console.log("unfollowed!")
             this.state.feeds[index].hasFollow = null;
 
             this.setState({
@@ -437,14 +430,11 @@ export class Home extends Component {
 
         e.preventDefault();
 
-        console.log("iddel", id_del);
-
         axios
             .delete('https://whispering-hamlet-08619.herokuapp.com/delete/comment/' + id_del) //delete answer with id id_del
             .then(res => {
                 console.log(res);
                 window.location.reload(false);
-                console.log("Comment deleted");
             })
             .catch(err => console.log(err));
     };
@@ -494,7 +484,6 @@ export class Home extends Component {
     };
 
     getCommentsAns(id, postid) {
-        console.log("answerid", id);
         this.setState({
             answerID: id,
         })
@@ -506,7 +495,6 @@ export class Home extends Component {
                         commentsAns: res.data,
                         postID: postid,
                     });
-                    console.log('Comments Answer fetched', res.data);
                 }))
     }
 
@@ -519,7 +507,6 @@ export class Home extends Component {
                         commentsPost: res.data,
                         postID: id,
                     });
-                    console.log('Comments Post fetched', res.data);
                 }))
     }
 
@@ -528,169 +515,169 @@ export class Home extends Component {
         var shuffledPosts = this.shuffleArray();
         var mostRecentPosts = this.mostRecent();
         return (
-            <div class="container-fluid text-center margin-top">
+            <div className="container-fluid text-center margin-top">
                 <NavigationRouter2 />
-                <button class="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge d-none d-xl-block" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i class="fa fa-chevron-up"></i></button>
-                <div class="row content">
-                    <div class="col-sm-2 mr-4">
-                        <div class="position-fixed">
-                            <div class="card d-none d-xl-block text-left" style={{ width: '11rem' }}>
-                                <div class="card-header">
+                <button className="bottom-right-fixed btn bg-yellow btn-lg refresh-button rounded-edge d-none d-xl-block" onClick={() => this.scrollToTop()} id="myBtn" title="Scroll to top"><i className="fa fa-chevron-up"></i></button>
+                <div className="row content">
+                    <div className="col-sm-2 mr-4">
+                        <div className="position-fixed">
+                            <div className="card d-none d-xl-block text-left" style={{ width: '11rem' }}>
+                                <div className="card-header">
                                     Categories
                                 </div>
-                                <div class="card-body">
-                                    <ul class="list-group list-group-flush large-space">
-                                        <NavLink class="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
-                                        <NavLink class="listku" to="/accommodation"><li>Accommodation</li></NavLink>
-                                        <NavLink class="listku" to="/student_life"><li>Student Life</li></NavLink>
-                                        <NavLink class="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
-                                        <NavLink class="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
-                                        <NavLink class="listku" to="/others"><li>Others</li></NavLink>
+                                <div className="card-body">
+                                    <ul className="list-group list-group-flush large-space">
+                                        <NavLink className="listku card-link" to="/faculties"><li>Faculties</li></NavLink>
+                                        <NavLink className="listku" to="/accommodation"><li>Accommodation</li></NavLink>
+                                        <NavLink className="listku" to="/student_life"><li>Student Life</li></NavLink>
+                                        <NavLink className="listku" to="/job_intern"><li>Job/Internship</li></NavLink>
+                                        <NavLink className="listku" to="/exchange_noc"><li>Exchange/NOC</li></NavLink>
+                                        <NavLink className="listku" to="/others"><li>Others</li></NavLink>
                                     </ul>
                                 </div>
-                                <div class="card-footer">
-                                    <NavLink class="text-dark small" to="/about_us">About us</NavLink>
+                                <div className="card-footer">
+                                    <NavLink className="text-dark small" to="/about_us">About us</NavLink>
                                     <br />
-                                    <a class="text-dark small" href="mailto:askookieforum@gmail.com">Email us</a>
+                                    <a className="text-dark small" href="mailto:askookieforum@gmail.com">Email us</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-7 col-sm-push-10 text-left">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                {this.state.name != '' && <h7 class="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
-                                {this.state.name == '' && <h7 class="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
+                    <div className="col-xl-7 col-sm-push-10 text-left">
+                        <div className="card mb-3">
+                            <div className="card-body">
+                                {this.state.name != '' && <h7 className="card-title" style={{ opacity: '50%' }}>{this.state.name},</h7>}
+                                {this.state.name == '' && <h7 className="card-title" style={{ opacity: '50%' }}>Hi,</h7>}
                                 <br />
-                                <button class="questionButton" style={{ opacity: '50%' }} type="button" data-toggle="modal" data-target="#askModal">
-                                    <p class="text-decoration-none stretched-link text-dark pb-0" >What is your Question?</p></button>
+                                <button className="questionButton" style={{ opacity: '50%' }} type="button" data-toggle="modal" data-target="#askModal">
+                                    <p className="text-decoration-none stretched-link text-dark pb-0" >What is your Question?</p></button>
                             </div>
                         </div>
 
                         {/* feeds */}
                         {mostRecentPosts && mostRecentPosts.map(feeds => (
-                            <div class="card mb-3">
-                                <div class="card-body pb-1 card-thread">
-                                    <ul class="list-group">
+                            <div className="card mb-3">
+                                <div className="card-body pb-1 card-thread">
+                                    <ul className="list-group">
                                         <li>
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&
-                                                <div class="sub-text">
-                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                <div className="sub-text">
+                                                    <NavLink target="_blank" className="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by {feeds.answerer} on {`${feeds.time2}`}
                                                 </div>
                                             }
                                             {feeds.type_post == "1" && feeds.anonymous2 == "0" &&
-                                                <div class="sub-text">
-                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                <div className="sub-text">
+                                                    <NavLink target="_blank" className="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by an anonymous user on {`${feeds.time2}`}
                                                 </div>
                                             }
                                             {feeds.type_post == "2" &&
-                                                <div class="sub-text">
-                                                    <NavLink target="_blank" class="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
+                                                <div className="sub-text">
+                                                    <NavLink target="_blank" className="sub-link" to={`/thread/${feeds.postID}`}><h8> @{feeds.postID} </h8></NavLink>
                                                 &middot; Posted by {feeds.asker} on {`${feeds.time}`}
                                                 </div>
                                             }
                                         </li>
                                         <li>
-                                            <NavLink target="_blank" class="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}{feeds.title}</NavLink>
+                                            <NavLink target="_blank" className="btn-category unanswered font-weight-bold lead" to={`thread/${feeds.postID}`}>{feeds.question}{feeds.title}</NavLink>
                                         </li>
                                         <li>
                                             <Linkify componentDecorator={this.componentDecorator}>
-                                                <div class="show-more" data-type="text" data-number="80">
-                                                    <p class="whiteSpace">{feeds.post_content}{feeds.answer}</p>
-                                                    <Image cloudName="askookie" publicId={feeds.publicID} class="img-feeds pl-2 pr-2 pb-2" crop="scale" />
+                                                <div className="show-more" data-type="text" data-number="80">
+                                                    <p className="whiteSpace">{feeds.post_content}{feeds.answer}</p>
+                                                    <Image cloudName="askookie" publicId={feeds.publicID} className="img-feeds pl-2 pr-2 pb-2" crop="scale" />
                                                 </div>
                                             </Linkify>
                                         </li>
                                         {localStorage.usertoken &&
-                                            <li class="feeds-footer">
+                                            <li className="feeds-footer">
                                                 {feeds.hasLiked == "1" && feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Unlike" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0 red" title="Unlike" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i className="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                                 }
                                                 {!feeds.hasLiked && feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0" title="Like" onClick={() => this.handleLikeAns(feeds.hasLiked, feeds.answerID, feeds.postID)} ><i className="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                                 }
                                                 {feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID, feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                                    <button className="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID, feeds.postID)}><i className="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                                 }
                                                 {feeds.hasLiked == "1" && feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 red" title="Unlike"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0 red" title="Unlike"><i className="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
                                                 }
                                                 {!feeds.hasLiked && feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0" title="Like"><i class="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0" title="Like"><i className="fa fa-thumbs-o-up pr-1" onClick={() => this.handleLike(feeds.hasLiked, feeds.postID)} /> {feeds.like_count}</button>
                                                 }
                                                 {feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
+                                                    <button className="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i className="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
                                                 }
-                                                <div class="btn-group dropright">
-                                                    <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
-                                                    <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
-                                                        <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
-                                                        <div class="dropdown-divider mt-0"></div>
-                                                        <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
-                                                        ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
-                                                        <div class="dropdown-divider"></div>
-                                                        <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                <div className="btn-group dropright">
+                                                    <button className="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-share" /></button>
+                                                    <div className="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
+                                                        <p className="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i className="fa fa-share pr-2" />Share Thread</p>
+                                                        <div className="dropdown-divider mt-0"></div>
+                                                        <button className="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                        ><i className="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
+                                                        <div className="dropdown-divider"></div>
+                                                        <WhatsappShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon className="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <TwitterShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon className="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <FacebookShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon className="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <EmailShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon className="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <TelegramShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon className="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <LineShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon className="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
                                                 {!feeds.hasSave &&
-                                                    <button class="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark-o" /></button>
+                                                    <button className="btn btn-icon pl-3 save" type="button" title="Save thread" onClick={() => this.saveThread(feeds.postID)}><i className="fa fa-bookmark-o" /></button>
                                                 }
                                                 {feeds.hasSave == "1" &&
-                                                    <button class="btn btn-icon pl-3 save blue" type="button" title="Unsave thread" onClick={() => this.saveThread(feeds.postID)}><i class="fa fa-bookmark" /></button>
+                                                    <button className="btn btn-icon pl-3 save blue" type="button" title="Unsave thread" onClick={() => this.saveThread(feeds.postID)}><i className="fa fa-bookmark" /></button>
                                                 }
                                                 {!feeds.hasFollow &&
-                                                    <button class="btn btn-icon pl-2 save" type="button" title="Follow thread" onClick={() => this.followThread(feeds.postID)}><i class="fa fa-user-plus" /></button>
+                                                    <button className="btn btn-icon pl-2 save" type="button" title="Follow thread" onClick={() => this.followThread(feeds.postID)}><i className="fa fa-user-plus" /></button>
                                                 }
                                                 {feeds.hasFollow == "1" &&
-                                                    <button class="btn btn-icon pl-2 save blue" type="button" title="Unfollow thread" onClick={() => this.followThread(feeds.postID)}><i class="fa fa-user-plus" /></button>
+                                                    <button className="btn btn-icon pl-2 save blue" type="button" title="Unfollow thread" onClick={() => this.followThread(feeds.postID)}><i className="fa fa-user-plus" /></button>
                                                 }
                                             </li>
                                         }
                                         {!localStorage.usertoken &&
-                                            <li class="feeds-footer">
+                                            <li className="feeds-footer">
                                                 {feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i className="fa fa-thumbs-o-up pr-1" /> {feeds.like_count2}</button>
                                                 }
                                                 {feeds.type_post == "1" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
+                                                    <button className="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsModal" onClick={() => this.getCommentsAns(feeds.answerID)}><i className="fa fa-comment-o pr-1" />{feeds.comment_count2}</button>
                                                 }
                                                 {feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i class="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
+                                                    <button className="btn btn-icon like pr-1 pl-0 disabled" title="Likes"><i className="fa fa-thumbs-o-up pr-1" /> {feeds.like_count}</button>
                                                 }
                                                 {feeds.type_post == "2" &&
-                                                    <button class="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i class="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
+                                                    <button className="btn btn-icon pl-3 pr-1 comment" title="View comments" type="button" data-toggle="modal" data-target="#commentsPostModal" onClick={() => this.getCommentsPost(feeds.postID)}><i className="fa fa-comment-o pr-1" />{feeds.comment_count}</button>
                                                 }
-                                                <div class="btn-group dropright">
-                                                    <button class="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share" /></button>
-                                                    <div class="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
-                                                        <p class="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i class="fa fa-share pr-2" />Share Thread</p>
-                                                        <div class="dropdown-divider mt-0"></div>
-                                                        <button class="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
-                                                        ><i class="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
-                                                        <div class="dropdown-divider"></div>
-                                                        <WhatsappShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon class="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <TwitterShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon class="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <FacebookShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon class="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <EmailShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon class="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <TelegramShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon class="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
-                                                        <div class="dropdown-divider"></div>
-                                                        <LineShareButton class="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon class="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
+                                                <div className="btn-group dropright">
+                                                    <button className="btn btn-icon pl-3 pr-1 share" title="Share" id="shareDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-share" /></button>
+                                                    <div className="dropdown-menu dropdown-menu-left pb-2" aria-labelledby="shareDropdown">
+                                                        <p className="dropdown-item greyBg font-weight-bold pb-2 mb-0" to="#"><i className="fa fa-share pr-2" />Share Thread</p>
+                                                        <div className="dropdown-divider mt-0"></div>
+                                                        <button className="dropdown-item pl-3" onClick={() => { navigator.clipboard.writeText(`https://askookie.netlify.app/thread/${feeds.postID}`) }}
+                                                        ><i className="fa fa-files-o pr-3 fa-lg ml-0" />Copy Link</button>
+                                                        <div className="dropdown-divider"></div>
+                                                        <WhatsappShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><WhatsappIcon className="pr-2 pl-2" size={50} round={true} />Whatsapp</WhatsappShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <TwitterShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TwitterIcon className="pr-2 pl-2" size={50} round={true} />Twitter</TwitterShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <FacebookShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} quote={feeds.post} hashtag="#ASKookie"><FacebookIcon className="pr-2 pl-2" size={50} round={true} />Facebook</FacebookShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <EmailShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} subject="Check this thread in ASKookie!" body={feeds.post}><EmailIcon className="pr-2 pl-2" size={50} round={true} />Email</EmailShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <TelegramShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><TelegramIcon className="pr-2 pl-2" size={50} round={true} />Telegram</TelegramShareButton>
+                                                        <div className="dropdown-divider"></div>
+                                                        <LineShareButton className="dropdown-item" url={`https://askookie.netlify.app/thread/${feeds.postID}`} title={feeds.post}><LineIcon className="pr-2 pl-2" size={50} round={true} />Line</LineShareButton>
                                                     </div>
                                                 </div>
                                             </li>
@@ -704,21 +691,21 @@ export class Home extends Component {
                     </div>
 
                     {/* unanswered questions */}
-                    < div class="col-sm-2" >
-                        <div class="card d-none d-xl-block text-left" style={{ width: '13rem' }}>
-                            <div class="card-header">
+                    < div className="col-sm-2" >
+                        <div className="card d-none d-xl-block text-left" style={{ width: '13rem' }}>
+                            <div className="card-header">
                                 Unanswered Questions
                             </div>
-                            <ul class="list-group list-group-flush">
+                            <ul className="list-group list-group-flush">
                                 {this.state.unanswered && this.state.unanswered.slice(0, 6).map((feeds, index) => (
-                                    <NavLink class="btn-category" to={`/thread/${feeds.postID}`}><li class="list-group-item unanswered"><p class="mr-4 mb-0">{feeds.question}</p> <i class="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
+                                    <NavLink className="btn-category" to={`/thread/${feeds.postID}`}><li className="list-group-item unanswered"><p className="mr-4 mb-0">{feeds.question}</p> <i className="fa fa-fw fa-pencil bottom-right icon"></i></li></NavLink>
                                 ))}
                             </ul>
-                            <div class="card-footer overflow-auto">
-                                <button class="btn refresh-button pull-right">
-                                    {/* <i class="fa fa-fw fa-refresh mx-lg-1 fa-lg" />
+                            <div className="card-footer overflow-auto">
+                                <button className="btn refresh-button pull-right">
+                                    {/* <i className="fa fa-fw fa-refresh mx-lg-1 fa-lg" />
                                     Refresh */}
-                                    <NavLink class="listku" to="/answer">See More</NavLink>
+                                    <NavLink className="listku" to="/answer">See More</NavLink>
                                 </button>
                             </div>
                         </div>
@@ -729,29 +716,29 @@ export class Home extends Component {
 
 
                 {/* modal for comments ans */}
-                <div id="commentsModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header blueBg">
-                                <h4 class="modal-title text-white">Comments</h4>
-                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                <div id="commentsModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header blueBg">
+                                <h4 className="modal-title text-white">Comments</h4>
+                                <button type="button" className="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
-                            <div class="modal-body text-left pt-0">
+                            <div className="modal-body text-left pt-0">
                                 {localStorage.usertoken &&
-                                    <div class="row content mb-0 greyBg pt-4 pb-3">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                    <div className="row content mb-0 greyBg pt-4 pb-3">
+                                        <div className="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
                                             {this.state.profile == null &&
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                                <img src={profilePicture} alt="" width="55" className="rounded-circle pl-2 pr-2" />
                                             }
                                             {this.state.profile != null &&
-                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                                <Image cloudName="askookie" className="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
                                             }
                                         </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                        <div className="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <p className="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
                                             <form onSubmit={this.handleSubmitCommentAns}>
                                                 <TextareaAutosize
-                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                    className="col-sm-10 comment-input p-2 pl-4 pr-4"
                                                     placeholder="Add a comment..."
                                                     value={this.state.comment}
                                                     onChange={this.onCommentChange}
@@ -759,39 +746,39 @@ export class Home extends Component {
                                                     minRows="1"
                                                     required
                                                 ></TextareaAutosize>
-                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                                <button type="submit" className="btn btn-comment align-top ml-2">Add Comment</button>
                                             </form>
                                         </div>
                                     </div>
                                 }
-                                <hr class="mt-0 mb-4" />
+                                <hr className="mt-0 mb-4" />
 
                                 {this.state.commentsAns && this.state.commentsAns.map(comment =>
                                     <div>
-                                        <div class="row content">
-                                            <div class="col-sm-12 ml-2">
-                                                <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
-                                                <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
+                                        <div className="row content">
+                                            <div className="col-sm-12 ml-2">
+                                                <p className="font-weight-bold pb-0 mb-0">{comment.username}</p>
+                                                <p className="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>
-                                            <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
+                                            <p className="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
-                                            <ul class="feeds-footer mb-5 mt-0">
-                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                                {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                            <ul className="feeds-footer mb-5 mt-0">
+                                                {/* <button className="btn btn-icon like pr-1 pl-2" title="Like"><i className="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                {/* <button className="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i className="fa fa-exclamation-circle" /></button> */}
+                                                {/* <button className="btn btn-icon dislike float-right" title="Dislike"><i className="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                                 <li>
-                                                    <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
-                                                    <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                    <button className="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i className="fa fa-trash like" /></button>
+                                                    <button className="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i className="fa fa-pencil comment" /></button>
                                                 </li>
                                             </ul>
                                         }
-                                        <hr class="mt-0 mb-4" />
+                                        <hr className="mt-0 mb-4" />
                                     </div>
                                 )}
 
                                 {this.state.commentsAns.length == "0" &&
-                                    <div class="muted-text mt-3 pl-3 pb-3">
+                                    <div className="muted-text mt-3 pl-3 pb-3">
                                         No comments yet!
                                         </div>
                                 }
@@ -802,29 +789,29 @@ export class Home extends Component {
                 {/* end of modal comments */}
 
                 {/* modal for comments post */}
-                <div id="commentsPostModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header blueBg">
-                                <h4 class="modal-title text-white">Comments</h4>
-                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                <div id="commentsPostModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header blueBg">
+                                <h4 className="modal-title text-white">Comments</h4>
+                                <button type="button" className="close pr-4" data-dismiss="modal">&times;</button>
                             </div>
-                            <div class="modal-body text-left pt-0">
+                            <div className="modal-body text-left pt-0">
                                 {localStorage.usertoken &&
-                                    <div class="row content mb-0 greyBg pt-4 pb-3">
-                                        <div class="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
+                                    <div className="row content mb-0 greyBg pt-4 pb-3">
+                                        <div className="col-xl-1 col-md-2 col-sm-2 col-xs-2 pt-3">
                                             {this.state.profile == null &&
-                                                <img src={profilePicture} alt="" width="55" class="rounded-circle pl-2 pr-2" />
+                                                <img src={profilePicture} alt="" width="55" className="rounded-circle pl-2 pr-2" />
                                             }
                                             {this.state.profile != null &&
-                                                <Image cloudName="askookie" class="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
+                                                <Image cloudName="askookie" className="rounded-circle" publicId={this.state.profile} width="55" crop="scale" />
                                             }
                                         </div>
-                                        <div class="col-xl-11 col-md-10 col-sm-10 col-xs-10">
-                                            <p class="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
+                                        <div className="col-xl-11 col-md-10 col-sm-10 col-xs-10">
+                                            <p className="font-italic pb-1 mb-0 pl-2">Commenting as {this.state.user}</p>
                                             <form onSubmit={this.handleSubmitCommentPost}>
                                                 <TextareaAutosize
-                                                    class="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                                    className="col-sm-10 comment-input p-2 pl-4 pr-4"
                                                     placeholder="Add a comment..."
                                                     value={this.state.comment}
                                                     onChange={this.onCommentChange}
@@ -832,38 +819,38 @@ export class Home extends Component {
                                                     minRows="1"
                                                     required
                                                 ></TextareaAutosize>
-                                                <button type="submit" class="btn btn-comment align-top ml-2">Add Comment</button>
+                                                <button type="submit" className="btn btn-comment align-top ml-2">Add Comment</button>
                                             </form>
                                         </div>
                                     </div>
                                 }
-                                <hr class="mt-0 mb-4" />
+                                <hr className="mt-0 mb-4" />
 
                                 {this.state.commentsPost && this.state.commentsPost.map(comment =>
                                     <div>
-                                        <div class="row content">
-                                            <div class="col-sm-12 ml-2">
-                                                <p class="font-weight-bold pb-0 mb-0">{comment.username}</p>
-                                                <p class="sub-text pt-0 mt-0">Commented on {comment.time}</p>
+                                        <div className="row content">
+                                            <div className="col-sm-12 ml-2">
+                                                <p className="font-weight-bold pb-0 mb-0">{comment.username}</p>
+                                                <p className="sub-text pt-0 mt-0">Commented on {comment.time}</p>
                                             </div>
-                                            <p class="mr-3 ml-4 whiteSpace">{comment.comment}</p>
+                                            <p className="mr-3 ml-4 whiteSpace">{comment.comment}</p>
                                         </div>
                                         {localStorage.usertoken && (this.state.member_type == 1 || this.state.name == `${comment.username}`) &&
-                                            <ul class="feeds-footer mb-5 mt-0">
-                                                {/* <button class="btn btn-icon like pr-1 pl-2" title="Like"><i class="fa fa-thumbs-o-up pr-1" /> 2</button> */}
-                                                {/* <button class="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i class="fa fa-exclamation-circle" /></button> */}
-                                                {/* <button class="btn btn-icon dislike float-right" title="Dislike"><i class="fa fa-thumbs-o-down pr-1" /> 1</button> */}
+                                            <ul className="feeds-footer mb-5 mt-0">
+                                                {/* <button className="btn btn-icon like pr-1 pl-2" title="Like"><i className="fa fa-thumbs-o-up pr-1" /> 2</button> */}
+                                                {/* <button className="btn btn-icon float-right report" title="Report" type="button" data-toggle="modal" data-target="#reportModal"><i className="fa fa-exclamation-circle" /></button> */}
+                                                {/* <button className="btn btn-icon dislike float-right" title="Dislike"><i className="fa fa-thumbs-o-down pr-1" /> 1</button> */}
                                                 <li>
-                                                    <button class="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i class="fa fa-trash like" /></button>
-                                                    <button class="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i class="fa fa-pencil comment" /></button>
+                                                    <button className="btn btn-icon float-right" type="button" data-toggle="modal" title="Delete Comment" data-target="#deleteCommentModal" onClick={() => this.setCommentID(`${comment.commentID}`)}><i className="fa fa-trash like" /></button>
+                                                    <button className="btn btn-icon float-right" title="Edit Comment" data-toggle="modal" data-target="#editCommentModal" onClick={() => this.setCommentAndID(`${comment.commentID}`, `${comment.comment}`)}><i className="fa fa-pencil comment" /></button>
                                                 </li>
                                             </ul>
                                         }
-                                        <hr class="mt-0 mb-4" />
+                                        <hr className="mt-0 mb-4" />
                                     </div>
                                 )}
                                 {this.state.commentsPost.length == "0" &&
-                                    <div class="muted-text mt-3 pl-3 pb-3">
+                                    <div className="muted-text mt-3 pl-3 pb-3">
                                         No comments yet!
                                         </div>
                                 }
@@ -873,18 +860,18 @@ export class Home extends Component {
                 </div>
                 {/* end of modal comments */}
                 {/* start of delete comment modal */}
-                <div id="deleteCommentModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                <div id="deleteCommentModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
                                 <h4>Delete Comment</h4>
-                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close pr-4" data-dismiss="modal">&times;</button>
                             </div >
-                            <div class="modal-body text-left pt-3 pb-3">
+                            <div className="modal-body text-left pt-3 pb-3">
                                 Are you sure you want to delete your comment?
-                                    <div class="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
-                                    <button class="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
-                                    <button type="button" class="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                                    <div className="row content ml-1 mr-1 pt-5 d-flex justify-content-center">
+                                    <button className="btn btn-default col-sm-5 btn-outline-danger mr-2" onClick={this.handleDeleteComment}>Delete</button>
+                                    <button type="button" className="btn btn-default col-sm-5 btn-outline-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -893,26 +880,26 @@ export class Home extends Component {
                 {/* end of delete comment modal */}
 
                 {/* start of edit comment modal */}
-                <div id="editCommentModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                <div id="editCommentModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header">
                                 <h4>Edit My Comment</h4>
-                                <button type="button" class="close pr-4" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close pr-4" data-dismiss="modal">&times;</button>
                             </div >
                             <form onSubmit={this.handleEditComment}>
-                                <ul class="row content">
-                                    <li class="col-sm-9 mt-3">
+                                <ul className="row content">
+                                    <li className="col-sm-9 mt-3">
                                         <TextareaAutosize
-                                            class="col-sm-10 comment-input p-2 pl-4 pr-4"
-                                            class="form-control"
+                                            className="col-sm-10 comment-input p-2 pl-4 pr-4"
+                                            className="form-control"
                                             value={this.state.commentEdit}
                                             onChange={this.onCommentEditChange}
                                             required
                                         />
                                     </li>
-                                    <li class="col-sm-2 mt-3">
-                                        <button type="submit" class="btn btn-orange">Edit Comment</button>
+                                    <li className="col-sm-2 mt-3">
+                                        <button type="submit" className="btn btn-orange">Edit Comment</button>
                                     </li>
                                 </ul>
                             </form>

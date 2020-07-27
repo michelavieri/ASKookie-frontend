@@ -97,6 +97,7 @@ export class Thread extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ unanswered: res.data });
+                    this.shuffleArray();
                 }))
 
     };
@@ -710,7 +711,7 @@ export class Thread extends Component {
         window.location.reload(false);
     }
 
-    shuffleArray = () => {
+    async shuffleArray() {
         if (this.state.unanswered) {
             let i = this.state.unanswered.length - 1;
             var array = this.state.unanswered.slice();
@@ -720,9 +721,9 @@ export class Thread extends Component {
                 array[i] = array[j];
                 array[j] = temp;
             }
-            return array;
-        } else {
-            return this.state.unanswered;
+            await this.setState({
+                unanswered: array
+            })
         }
     }
 
@@ -730,7 +731,7 @@ export class Thread extends Component {
         var urlArray = [];
         var myURL = window.location.href;
         urlArray = myURL.split('/');
-        var shuffledPosts = this.shuffleArray();
+        var shuffledPosts = this.state.unanswered;
 
         return (
             <div className="container-fluid margin-top">

@@ -77,6 +77,7 @@ export class Student_Life extends Component {
                 .then(res => res.json())
                 .then(res => {
                     this.setState({ unanswered: res.data });
+                    this.shuffleArray();
                 }));
     };
 
@@ -162,7 +163,7 @@ export class Student_Life extends Component {
             .catch(err => console.log(err));
     }
 
-    shuffleArray = () => {
+    async shuffleArray() {
         if (this.state.unanswered) {
             let i = this.state.unanswered.length - 1;
             var array = this.state.unanswered.slice();
@@ -172,9 +173,9 @@ export class Student_Life extends Component {
                 array[i] = array[j];
                 array[j] = temp;
             }
-            return array;
-        } else {
-            return this.state.unanswered;
+            await this.setState({
+                unanswered: array
+            })
         }
     }
 
@@ -480,7 +481,7 @@ export class Student_Life extends Component {
 
 
     render() {
-        var shuffledPosts = this.shuffleArray();
+        var shuffledPosts = this.state.unanswered;
         var mostRecentPosts = this.mostRecent();
         return (
             <div className="container-fluid text-center margin-top">

@@ -101,6 +101,8 @@ export class Temp_Sign_In extends Component {
                                         inputClassName="passForm"
                                     />
                                 </div>
+                                <small className="ml-3 mt-3">Tip: Use your NUS email to answer questions in ASKookie. 
+                                <br /> Otherwise, public accounts can still unlock other features such as like and comment!</small>
                             </div>
                             {/*this.state.success === 0 &&
                         <div className="alert alert-danger" role="alert">

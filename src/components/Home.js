@@ -587,7 +587,7 @@ export class Home extends Component {
                                             <Linkify componentDecorator={this.componentDecorator}>
                                                 <div className="show-more" data-type="text" data-number="80">
                                                     <p className="whiteSpace">{feeds.post_content}{feeds.answer}</p>
-                                                    <Image cloudName="askookie" publicId={feeds.publicID} className="img-feeds pl-2 pr-2 pb-2" crop="scale" />
+                                                    <Image cloudName="askookie" publicId={feeds.publicID} className="img-feeds pl-2 pr-5 pb-2" crop="scale" />
                                                 </div>
                                             </Linkify>
                                         </li>

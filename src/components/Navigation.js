@@ -443,7 +443,7 @@ class Navigation extends Component {
                                                     required>
                                                     <option value="">Choose one...</option>
                                                     <option value="1">Faculties</option>
-                                                    <option value="2">Accomodation</option>
+                                                    <option value="2">Accommodation</option>
                                                     <option value="3">Student Life</option>
                                                     <option value="4">Job/Internship</option>
                                                     <option value="5">Exchange Program/NOC</option>

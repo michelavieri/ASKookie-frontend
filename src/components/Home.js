@@ -558,7 +558,7 @@ export class Home extends Component {
                         {/* feeds */}
                         {mostRecentPosts && mostRecentPosts.map(feeds => (
                             <div className="card mb-3">
-                                <div className="card-body pb-1 card-thread">
+                                <div className="card-body pb-1">
                                     <ul className="list-group">
                                         <li>
                                             {feeds.type_post == "1" && feeds.anonymous2 == "1" &&

@@ -352,8 +352,8 @@ class Navigation extends Component {
                                         </div>
                                     )}
                                     {this.state.notifications.length == 0 &&
-                                    <div className="dropdown-item mt-2 mb-2 muted-text disabled">
-                                        No Notifications for now!
+                                        <div className="dropdown-item mt-2 mb-2 muted-text disabled">
+                                            No Notifications for now!
                                     </div>
                                     }
 
@@ -460,56 +460,64 @@ class Navigation extends Component {
                                         </form>
                                     </div>
                                     <div className="tab-pane fade ml-5 mr-5" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
-                                        <form className="post" onSubmit={this.handleSubmitPost}>
-                                            <div className="form-row align-items-left mb-3 text-left">
-                                                <div className="form-row align-items-left mb-3">
-                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Post Title</label>
-                                                    <input
-                                                        className="form-control col-sm-9 font-weight-bold"
-                                                        value={this.state.title}
-                                                        onChange={this.onTitleChange}
-                                                        aria-describedby="titleHere"
-                                                        placeholder="Give a Meaningful Title to Your Post..."
-                                                        required
-                                                    />
-                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Your Post</label>
-                                                    <textarea
-                                                        rows="5"
-                                                        className="form-control col-sm-9 mt-3"
-                                                        value={this.state.post_contents}
-                                                        onChange={this.onPostChange}
-                                                        aria-describedby="postHere"
-                                                        placeholder="Write your post here..."
-                                                        required
-                                                    />
-                                                    <small id="passwordHelpBlock" className="form-text text-muted col-sm-11">
-                                                        Try to keep your post clear and short to engage readers to read your message.
+                                        {localStorage.usertoken && this.state.member_type != "Non-NUS Member" &&
+                                            <form className="post" onSubmit={this.handleSubmitPost}>
+                                                <div className="form-row align-items-left mb-3 text-left">
+                                                    <div className="form-row align-items-left mb-3">
+                                                        <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Post Title</label>
+                                                        <input
+                                                            className="form-control col-sm-9 font-weight-bold"
+                                                            value={this.state.title}
+                                                            onChange={this.onTitleChange}
+                                                            aria-describedby="titleHere"
+                                                            placeholder="Give a Meaningful Title to Your Post..."
+                                                            required
+                                                        />
+                                                        <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Your Post</label>
+                                                        <textarea
+                                                            rows="5"
+                                                            className="form-control col-sm-9 mt-3"
+                                                            value={this.state.post_contents}
+                                                            onChange={this.onPostChange}
+                                                            aria-describedby="postHere"
+                                                            placeholder="Write your post here..."
+                                                            required
+                                                        />
+                                                        <small id="passwordHelpBlock" className="form-text text-muted col-sm-11">
+                                                            Try to keep your post clear and short to engage readers to read your message.
                                                         </small>
-                                                </div>
+                                                    </div>
 
-                                                <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Category</label>
-                                                <select
-                                                    onChange={this.onCategoryChange}
-                                                    value={this.state.category}
-                                                    className="form-control col-sm-9"
-                                                    required>
-                                                    <option value="">Choose one...</option>
-                                                    <option value="1">Faculties</option>
-                                                    <option value="2">Accommodation</option>
-                                                    <option value="3">Student Life</option>
-                                                    <option value="4">Job/Internship</option>
-                                                    <option value="5">Exchange Program/NOC</option>
-                                                    <option value="6">Others</option>
-                                                </select>
-                                                <small id="postWarning" className="form-text text-muted col-sm-11">
-                                                    Your post will not be anonymous and any inapporpriate content will be filtered by us.
+                                                    <label for="inputQuestion" className="col-sm-2 col-form-label font-weight-bold">Category</label>
+                                                    <select
+                                                        onChange={this.onCategoryChange}
+                                                        value={this.state.category}
+                                                        className="form-control col-sm-9"
+                                                        required>
+                                                        <option value="">Choose one...</option>
+                                                        <option value="1">Faculties</option>
+                                                        <option value="2">Accommodation</option>
+                                                        <option value="3">Student Life</option>
+                                                        <option value="4">Job/Internship</option>
+                                                        <option value="5">Exchange Program/NOC</option>
+                                                        <option value="6">Others</option>
+                                                    </select>
+                                                    <small id="postWarning" className="form-text text-muted col-sm-11">
+                                                        Your post will not be anonymous and any inapporpriate content will be filtered by us.
                                                     </small>
+                                                </div>
+                                                <div className="modal-footer mb-0 pb-0">
+                                                    <button type="button" className="btn btn-default far-right" data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" className="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
+                                                </div>
+                                            </form>
+                                        }
+                                        {localStorage.usertoken && this.state.member_type == "Non-NUS Member" &&
+                                            <div className="alert alert-danger" role="alert">
+                                                <span className="fa fa-exclamation-triangle mr-2" />
+                                             Sorry your member type (Non-NUS member) is not supported to post notices here. <br /> Please register with your NUS account to make a post.
                                             </div>
-                                            <div className="modal-footer mb-0 pb-0">
-                                                <button type="button" className="btn btn-default far-right" data-dismiss="modal">Cancel</button>
-                                                <button type="submit" className="btn btn-orange my-2 my-sm-0 ml-2">Add Post</button>
-                                            </div>
-                                        </form>
+                                        }
                                     </div>
                                 </div>
                             </div>

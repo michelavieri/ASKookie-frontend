@@ -313,7 +313,7 @@ class Navigation extends Component {
                                                 }
                                                 {notifications.type == 2 &&
                                                     <div>
-                                                        Someone has commented on post @{notifications.postID} : <i>"{notifications.title}"</i>
+                                                        Someone has commented on post @{notifications.postID}
                                                     </div>
                                                 }
                                                 {notifications.type == 3 &&

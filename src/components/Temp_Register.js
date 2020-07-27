@@ -103,7 +103,7 @@ export class Temp_Register extends Component {
                                 <label for="password" className="col-sm-3 col-form-label col-form-label-sm">Password</label>
                                 <div className="col-sm-8">
                                     <PasswordMask type="password"
-                                        className="form-control form-control-sm"
+                                        class="form-control form-control-sm"
                                         placeholder="Enter Password"
                                         value={this.state.password}
                                         onChange={this.handlePassChange}
